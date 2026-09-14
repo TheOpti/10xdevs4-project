@@ -1,0 +1,68 @@
+{
+  "package": "@przeprogramowani/10x-cli",
+  "version": "1.21.0",
+  "manifestVersion": 3,
+  "lastApplied": "2026-09-14T21:12:55.571Z",
+  "lessonId": "m1l1",
+  "course": "10xdevs4",
+  "tool": "codex",
+  "files": {
+    "skills": {
+      "10x-init": {
+        "files": [
+          "SKILL.md"
+        ],
+        "contentHashes": {
+          "SKILL.md": "b053958ce100eafcd6174d30c60a4cbddcc7c8547e8286172b8a2b8a0a3c63eb"
+        }
+      },
+      "10x-shape": {
+        "files": [
+          "SKILL.md",
+          "references/prd-schema.md"
+        ],
+        "contentHashes": {
+          "SKILL.md": "1e78298a61d06474270361806c304082fa83bb4976fb9241bd50b4db00e30e11",
+          "references/prd-schema.md": "69e487a419e06fedd9d7761a6be1f375b5290839bdc58eaca1c1f64fe5f3516e"
+        }
+      },
+      "10x-prd": {
+        "files": [
+          "SKILL.md"
+        ],
+        "contentHashes": {
+          "SKILL.md": "8fdfc15b8076c1dd92b084bef14841e77b4f4b453885799b73c735c6321ecb0d"
+        }
+      }
+    },
+    "prompts": [],
+    "configs": [],
+    "promptHashes": {},
+    "configHashes": {}
+  },
+  "lessons": {
+    "m1l1": {
+      "appliedAt": "2026-09-14T21:12:55.571Z",
+      "skills": {
+        "10x-init": {
+          "files": [
+            "SKILL.md"
+          ]
+        },
+        "10x-shape": {
+          "files": [
+            "SKILL.md",
+            "references/prd-schema.md"
+          ]
+        },
+        "10x-prd": {
+          "files": [
+            "SKILL.md"
+          ]
+        }
+      },
+      "prompts": [],
+      "configs": []
+    }
+  }
+}
