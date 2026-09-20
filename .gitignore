@@ -141,3 +141,26 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# from 10x-astro-starter
+# build output
+dist/
+
+# generated types
+.astro/
+
+# logs
+pnpm-debug.log*
+
+# environment variables
+.env.production
+
+# cloudflare
+.dev.vars
+.wrangler/
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
