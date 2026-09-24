@@ -221,12 +221,12 @@ The migration is additive because no flashcard-domain data exists. It must be ap
 
 #### Automated
 
-- [x] 3.1 Pass the two-user Supabase RLS test suite, including direct source-delete denial
-- [x] 3.2 Pass linting, Astro checking, and the production build
-- [x] 3.3 Pass the existing authentication smoke test through the local preview workflow
+- [x] 3.1 Pass the two-user Supabase RLS test suite, including direct source-delete denial â€” c937fee
+- [x] 3.2 Pass linting, Astro checking, and the production build â€” c937fee
+- [x] 3.3 Pass the existing authentication smoke test through the local preview workflow â€” c937fee
 
 #### Manual
 
-- [x] 3.4 Review explicit deny assertions for source text, sets, and cards
-- [x] 3.5 Confirm F-01 adds neither a flashcard UI route nor a public API
-- [x] 3.6 Confirm CI resets the local database before RLS tests
+- [x] 3.4 Review explicit deny assertions for source text, sets, and cards â€” c937fee
+- [x] 3.5 Confirm F-01 adds neither a flashcard UI route nor a public API â€” c937fee
+- [x] 3.6 Confirm CI resets the local database before RLS tests â€” c937fee
