@@ -210,23 +210,23 @@ The migration is additive because no flashcard-domain data exists. It must be ap
 
 #### Automated
 
-- [x] 2.1 Pass linting for the server-only repository
-- [x] 2.2 Pass Astro type checking for repository contracts
+- [x] 2.1 Pass linting for the server-only repository — 357f563
+- [x] 2.2 Pass Astro type checking for repository contracts — 357f563
 
 #### Manual
 
-- [x] 2.3 Review that repository methods derive ownership from the authenticated session and never expose source text
+- [x] 2.3 Review that repository methods derive ownership from the authenticated session and never expose source text — 357f563
 
 ### Phase 3: RLS Proof and CI Coverage
 
 #### Automated
 
-- [ ] 3.1 Pass the two-user Supabase RLS test suite, including direct source-delete denial
-- [ ] 3.2 Pass linting, Astro checking, and the production build
-- [ ] 3.3 Pass the existing authentication smoke test through the local preview workflow
+- [x] 3.1 Pass the two-user Supabase RLS test suite, including direct source-delete denial
+- [x] 3.2 Pass linting, Astro checking, and the production build
+- [x] 3.3 Pass the existing authentication smoke test through the local preview workflow
 
 #### Manual
 
-- [ ] 3.4 Review explicit deny assertions for source text, sets, and cards
-- [ ] 3.5 Confirm F-01 adds neither a flashcard UI route nor a public API
-- [ ] 3.6 Confirm CI resets the local database before RLS tests
+- [x] 3.4 Review explicit deny assertions for source text, sets, and cards
+- [x] 3.5 Confirm F-01 adds neither a flashcard UI route nor a public API
+- [x] 3.6 Confirm CI resets the local database before RLS tests

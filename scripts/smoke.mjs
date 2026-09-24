@@ -1,10 +1,36 @@
 // Smoke test: proves the built app, the Cloudflare adapter and the Supabase auth flow still work together.
-// Zero dependencies on purpose. Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
+// Run against a live server: BASE_URL=http://localhost:4321 node scripts/smoke.mjs
+
+import { createClient } from "@supabase/supabase-js";
 
 const BASE_URL = process.env.BASE_URL ?? "http://localhost:4321";
-const email = `smoke-${Date.now()}@example.com`;
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const signupEmail = `smoke-signup-${Date.now()}@gmail.com`;
+const confirmedEmail = `smoke-confirmed-${Date.now()}@gmail.com`;
 const password = "Smoke-Test-Passw0rd!";
 const jar = new Map();
+
+async function createConfirmedUser() {
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required for the smoke test");
+  }
+
+  const admin = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+    auth: { autoRefreshToken: false, persistSession: false },
+  });
+  const { error } = await admin.auth.admin.createUser({
+    email: confirmedEmail,
+    password,
+    email_confirm: true,
+  });
+
+  if (error) {
+    console.error(`Could not create confirmed smoke user: ${error.message}`);
+  }
+
+  return { status: error ? 500 : 200, location: "" };
+}
 
 function cookieHeader() {
   return [...jar.entries()].map(([k, v]) => `${k}=${v}`).join("; ");
@@ -40,17 +66,18 @@ const steps = [
   ["dashboard redirects anonymous user", () => request("/dashboard"), { status: 302, location: "/auth/signin" }],
   [
     "signup creates account",
-    () => request("/api/auth/signup", { method: "POST", form: { email, password } }),
+    () => request("/api/auth/signup", { method: "POST", form: { email: signupEmail, password } }),
     { status: 302, location: "/auth/confirm-email" },
   ],
+  ["admin creates confirmed smoke user", createConfirmedUser, { status: 200 }],
   [
     "signin rejects wrong password",
-    () => request("/api/auth/signin", { method: "POST", form: { email, password: "wrong" } }),
+    () => request("/api/auth/signin", { method: "POST", form: { email: confirmedEmail, password: "wrong" } }),
     { status: 302, location: "/auth/signin?error=" },
   ],
   [
     "signin accepts correct password",
-    () => request("/api/auth/signin", { method: "POST", form: { email, password } }),
+    () => request("/api/auth/signin", { method: "POST", form: { email: confirmedEmail, password } }),
     { status: 302, location: "/" },
   ],
   ["dashboard renders for signed-in user", () => request("/dashboard"), { status: 200 }],
