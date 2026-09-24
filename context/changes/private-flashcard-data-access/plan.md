@@ -197,14 +197,14 @@ The migration is additive because no flashcard-domain data exists. It must be ap
 
 #### Automated
 
-- [ ] 1.1 Apply the private flashcard migration to a clean local Supabase database
-- [ ] 1.2 Verify the schema includes the required tables, constraints, indexes, grants, and per-table RLS policies
+- [x] 1.1 Apply the private flashcard migration to a clean local Supabase database
+- [x] 1.2 Verify the schema includes the required tables, constraints, indexes, grants, and per-table RLS policies
 
 #### Manual
 
-- [ ] 1.3 Inspect local RLS configuration and anonymous-access denial
-- [ ] 1.4 Verify set deletion removes its cards and source record
-- [ ] 1.5 Verify atomic set-and-source creation cannot leave an orphaned set
+- [x] 1.3 Inspect local RLS configuration and anonymous-access denial
+- [x] 1.4 Verify set deletion removes its cards and source record
+- [x] 1.5 Verify atomic set-and-source creation cannot leave an orphaned set
 
 ### Phase 2: Server-Only Flashcard Repository
 
