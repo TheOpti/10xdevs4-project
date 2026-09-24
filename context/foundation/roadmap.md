@@ -3,7 +3,7 @@ project: Memoro
 version: 1
 status: draft
 created: 2026-09-22
-updated: 2026-09-22
+updated: 2026-09-24
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -41,7 +41,7 @@ Samodzielnie ucząca się osoba potrzebuje szybko zamieniać własne materiały 
 
 | ID | Change ID | Outcome (user can …) | Prerequisites | PRD refs | Status |
 | --- | --- | --- | --- | --- | --- |
-| F-01 | private-flashcard-data-access | (foundation) trwały dostęp do danych fiszek jest ograniczony do właściciela | — | FR-001, FR-002 | ready |
+| F-01 | private-flashcard-data-access | (foundation) trwały dostęp do danych fiszek jest ograniczony do właściciela | — | FR-001, FR-002 | planning |
 | S-01 | pasted-text-proposals | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji | F-01 | US-01, FR-001, FR-002 | blocked |
 | S-02 | proposal-review-and-save | zaakceptować komplet propozycji albo edytować i usunąć propozycje przed zapisem zestawu | S-01 | US-01, FR-003 | proposed |
 | S-03 | saved-card-editing | edytować i usuwać wygenerowane fiszki w zapisanym zestawie | S-02 | FR-004 | proposed |
@@ -83,7 +83,7 @@ What's already in place in the codebase as of `2026-09-22` (auto-researched + us
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** This is the smallest shared privacy contract needed before any user material is persisted; postponing it risks building a flow that violates the MVP guardrail.
-- **Status:** ready
+- **Status:** planning
 
 ## Slices
 
