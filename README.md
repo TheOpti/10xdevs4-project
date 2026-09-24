@@ -59,6 +59,16 @@ Put the reported `API_URL` into `SUPABASE_URL` and `ANON_KEY` into
 `SUPABASE_KEY` in `.env`. Stop the stack with `supabase stop --no-backup` when
 finished.
 
+To load the idempotent local mock data, run:
+
+```sh
+npm run seed
+```
+
+It creates `seeded-owner@gmail.com` (password: `Seeded-Password1!`) and a
+small flashcard set. Each run removes and recreates that mock user's records;
+it never needs a service-role key in `.env`.
+
 ## Authentication setup
 
 The app uses email/password authentication. For a hosted Supabase project:
