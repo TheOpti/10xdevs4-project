@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import { execFile } from "node:child_process";
+import { URL } from "node:url";
 import { promisify } from "node:util";
 
 const LEGACY_SQL_SEED_OWNER_ID = "11111111-1111-1111-1111-111111111111";
@@ -36,6 +37,15 @@ async function getLocalSupabaseCredentials() {
 }
 
 const { url: supabaseUrl, serviceRoleKey } = await getLocalSupabaseCredentials();
+
+const seedUrl = new URL(supabaseUrl);
+const localHostnames = new Set(["localhost", "127.0.0.1", "[::1]"]);
+if (!localHostnames.has(seedUrl.hostname) && process.env.ALLOW_REMOTE_SEED !== "true") {
+  throw new Error(
+    "Refusing to seed a non-local Supabase project. Set ALLOW_REMOTE_SEED=true only for an intentional remote seed.",
+  );
+}
+
 const admin = createClient(supabaseUrl, serviceRoleKey, {
   auth: { autoRefreshToken: false, persistSession: false },
 });

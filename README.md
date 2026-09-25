@@ -15,7 +15,7 @@ and Supabase authentication. It is deployed to Cloudflare Workers at
 
 ### Prerequisites
 
-- Node.js **26.9.0** (the version is pinned in `.nvmrc`)
+- Node.js **24.21.0** (the version is pinned in `.nvmrc`)
 - npm
 - A Supabase project, or Docker Desktop plus the Supabase CLI for a fully local
   Supabase instance
@@ -67,7 +67,9 @@ npm run seed
 
 It creates `seeded-owner@gmail.com` (password: `Seeded-Password1!`) and a
 small flashcard set. Each run removes and recreates that mock user's records;
-it never needs a service-role key in `.env`.
+it never needs a service-role key in `.env`. The command refuses non-local
+Supabase URLs by default. Set `ALLOW_REMOTE_SEED=true` only for an intentional
+remote seed with externally supplied service-role credentials.
 
 ## Authentication setup
 

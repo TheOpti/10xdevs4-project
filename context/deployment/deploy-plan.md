@@ -14,7 +14,7 @@ terminal transcript, source files, or Git.
 
 ### Local workstation
 
-- [ ] Node.js 26.9 and npm are available: `node --version` and `npm --version`.
+- [ ] Node.js 24.21 and npm are available: `node --version` and `npm --version`.
 - [ ] Dependencies install reproducibly: `npm ci` succeeds from the repository
   root.
 - [ ] Wrangler is available at the version pinned by the project:

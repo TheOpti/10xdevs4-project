@@ -1,9 +1,9 @@
 ---
 change_id: private-flashcard-data-access
 title: Private flashcard data access
-status: implemented
+status: impl_reviewed
 created: 2026-09-24
-updated: 2026-09-24
+updated: 2026-09-25
 archived_at: null
 ---
 
