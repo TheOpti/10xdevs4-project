@@ -2,6 +2,7 @@
 name: 10x-init
 description: Initialize the /context directory in this project — scaffold context/{changes,archive,foundation}/ plus universal README.md files if absent.
 ---
+
 # /10x-init — Zainicjuj katalog /context
 
 Utwórz szkielet katalogu `/context` (`changes/`, `archive/`, `foundation/`) oraz uniwersalny plik `README.md` w każdym z nich, aby konwencje śledzenia zmian i dokumentów fundamentowych miały miejsce docelowe. Idempotentne: każdy z sześciu artefaktów (3 katalogi + 3 pliki README) jest niezależnie tworzony tylko, jeśli nie istnieje; ponowne uruchomienie w projekcie, w którym wszystko już istnieje, nie wykonuje żadnych zmian.

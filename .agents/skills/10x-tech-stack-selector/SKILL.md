@@ -8,6 +8,7 @@ description: >
   stack should I use", "pick a stack", "choose framework",
   "co wybrać do projektu". Use AFTER /10x-prd, BEFORE /10x-bootstrapper.
 ---
+
 # Selektor stosu technologicznego: od PRD do startera
 
 Ta umiejętność jest trzecim ogniwem w łańcuchu bootstrap (`/10x-shape → /10x-prd → 10x-tech-stack-selector → /10x-bootstrapper`). Jej jedyne zadanie: przekształcić zapisany PRD w rekomendowany starter oraz niewielkie, czytelne dla maszyn przekazanie, które `/10x-bootstrapper` może odczytać, aby wygenerować szkielet projektu.
@@ -108,6 +109,7 @@ Zapytaj użytkownika:
 "Czy te priory są poprawne, czy chcesz coś skorygować, zanim przejdziemy dalej?"
 
 Opcje:
+
 - **Correct — proceed (Recommended)**: Kontynuuj z tymi priorami.
 - **Correct a value**: Zapytaj, które pole skorygować, a następnie zaktualizuj nadpisanie w pamięci (PRD na dysku pozostaje bez zmian).
 - **Stop — fix the PRD first**: Zakończ. Uruchom ponownie /10x-prd, aby poprawić priory, a następnie ponownie wywołaj /10x-tech-stack-selector.
@@ -179,6 +181,7 @@ Jeśli plik istnieje, zapytaj użytkownika:
 "context/foundation/tech-stack.md already exists. How would you like to proceed?"
 
 Opcje:
+
 - **Overwrite (Recommended)**: Zastąp istniejący tech-stack.md nowym wyborem. Poprzednia wersja zostanie utracona, chyba że została zatwierdzona w repozytorium.
 - **Save as tech-stack-v2.md**: Zachowaj historię. Nowy wybór trafi do kolejnego dostępnego slotu tech-stack-vN.md.
 - **Abort**: Zakończ bez zapisu. Uzasadnienie rozmowy zostanie zachowane wyłącznie na czacie.
@@ -241,7 +244,6 @@ hints:
   has_ai: <bool>
   has_background_jobs: <bool>
 ---
-
 ## Why this stack
 
 <one paragraph, ≤ 200 words>

@@ -8,6 +8,7 @@ description: >
   "scaffold the app", "set up the codebase", "let's start the project".
   Use AFTER /10x-tech-stack-selector.
 ---
+
 # Bootstrapper: od stosu technologicznego do projektu ze szkieletem
 
 Ta umiejętność jest końcowym ogniwem sekwencji bootstrap (`/10x-shape → /10x-prd → /10x-tech-stack-selector → 10x-bootstrapper`). Jej jedynym zadaniem jest przekształcenie pisanego przekazania stosu technologicznego w projekt ze szkieletem w bieżącym katalogu roboczym, z ustaleniami weryfikacyjnymi zapisanymi do wglądu użytkownika.
@@ -99,6 +100,7 @@ Hand-off received:
 Zapytaj użytkownika: „Proceed with this hand-off, or correct something first?”
 
 Opcje:
+
 - **Proceed (Recommended)** — Kontynuuj z przekazaniem w odczytanej postaci.
 - **Correct a value** — Zapytaj, które pole nadpisać dla tego uruchomienia; plik na dysku pozostaje bez zmian.
 - **Stop — fix the hand-off first** — Zakończ. Uruchom ponownie /10x-tech-stack-selector, aby zaktualizować tech-stack.md, a następnie wywołaj ponownie.

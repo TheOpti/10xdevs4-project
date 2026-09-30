@@ -10,12 +10,12 @@ Record four independent identities: CLI runner/version, CLI package source,
 public helper source revision, and the course content release. Updating one does
 not automatically update the others.
 
-| Evidence | What it establishes | What it does not establish |
-|---|---|---|
-| Actual executable `--version`, command help | The runner and syntax in use | Working API, entitlement or a published helper revision |
-| npm version, `dist.integrity`, `gitHead`, matching packaged README/source | Origin of that published package | Publication of changes on a development branch |
-| Full helper commit retained on public CLI master | Reproducible public helper source | Installation in this project or course publication |
-| Successful named download and complete local tree/manifest | Actual package/API/content behavior for this context | A successful agent task or another profile/language |
+| Evidence                                                                  | What it establishes                                  | What it does not establish                              |
+| ------------------------------------------------------------------------- | ---------------------------------------------------- | ------------------------------------------------------- |
+| Actual executable `--version`, command help                               | The runner and syntax in use                         | Working API, entitlement or a published helper revision |
+| npm version, `dist.integrity`, `gitHead`, matching packaged README/source | Origin of that published package                     | Publication of changes on a development branch          |
+| Full helper commit retained on public CLI master                          | Reproducible public helper source                    | Installation in this project or course publication      |
+| Successful named download and complete local tree/manifest                | Actual package/API/content behavior for this context | A successful agent task or another profile/language     |
 
 The earlier planning shorthand `get SKILL_NAME` was incorrect. Released CLI
 uses a lesson reference plus `--type skills --name NAME`; there is no standalone
@@ -273,13 +273,13 @@ through partial writes; normal sync later operates at lesson scope. `--print` is
 inspection surface, not installation: human TTY output can show only SKILL.md,
 while non-TTY output is JSON. Never redirect it into SKILL.md as a full package.
 
-| Item to update | Correct channel |
-|---|---|
-| npx CLI | Choose and verify a new published version, update the runner pin |
-| Global npm CLI | `npm install -g "@przeprogramowani/10x-cli@$CLI_VERSION"` after selecting/verifying the version |
-| Standalone CLI | Replace through its verified release asset procedure, then check the actual executable |
-| Public helper copy | Inspect local changes/ownership; rerun its selected `skills add` command with a deliberate new full source SHA |
-| CLI-owned helper or exercise skill | Repeat its filtered get for a narrow update; `sync` refreshes full recorded lessons after preview |
+| Item to update                     | Correct channel                                                                                                |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| npx CLI                            | Choose and verify a new published version, update the runner pin                                               |
+| Global npm CLI                     | `npm install -g "@przeprogramowani/10x-cli@$CLI_VERSION"` after selecting/verifying the version                |
+| Standalone CLI                     | Replace through its verified release asset procedure, then check the actual executable                         |
+| Public helper copy                 | Inspect local changes/ownership; rerun its selected `skills add` command with a deliberate new full source SHA |
+| CLI-owned helper or exercise skill | Repeat its filtered get for a narrow update; `sync` refreshes full recorded lessons after preview              |
 
 `skills update` is not a substitute for proving an exact selected helper revision;
 it may follow a different ref/latest. npm install includes helper source files in

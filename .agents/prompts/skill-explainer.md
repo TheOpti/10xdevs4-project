@@ -5,6 +5,7 @@ Przeanalizuj umiejętność, aby zrozumieć jej mechanikę, uzasadnienie projekt
 ## Dane wejściowe
 
 Użytkownik podaje nazwę umiejętności (np. `10x-plan`, `10x-shape`, `10x-new`). Akceptuj ją jako:
+
 - Zwykłą nazwę: `10x-plan`
 - Nazwę z prefiksem ukośnika: `/10x-plan`
 - Ścieżkę do pliku SKILL.md: `~/the AI tool's configuration directory/skills/10x-plan/SKILL.md`
@@ -29,9 +30,11 @@ Znajdź pliki źródłowe umiejętności:
    - Ścieżka podana przez użytkownika (jeśli podano pełną ścieżkę)
 
    Jeśli nie znajdziesz żadnego, powiedz użytkownikowi:
+
    ```
    I couldn't find the SKILL.md for "<name>". Please provide the full path to the skill file.
    ```
+
    Następnie poczekaj.
 
 2. **Przeczytaj cały plik SKILL.md** — bez skracania, bez limitu/offsetu.
@@ -42,11 +45,11 @@ Znajdź pliki źródłowe umiejętności:
 
 Po przeczytaniu wszystkich plików źródłowych utwórz poniższy raport. Dostosuj poziom szczegółowości do złożoności umiejętności:
 
-| Rozmiar umiejętności | Głębokość |
-|-----------|-------|
-| Mniej niż 150 wierszy (prosta) | Zwięźle — każda sekcja ma 3–5 zdań. Pomiń sekcje, które nie mają zastosowania (np. proste umiejętności rzadko mają orkiestrację podagentów lub bramki samokontroli). |
-| 150–400 wierszy (średnia) | Standardowo — każda sekcja to krótki akapit. Omów wszystkie 7 sekcji. |
-| Ponad 400 wierszy (złożona/orkiestrator) | Szczegółowo — tabela anatomii, konkretne odwołania do wierszy, rozszerzona analiza mechaniki. Wszystkie 7 sekcji w pełni. |
+| Rozmiar umiejętności                     | Głębokość                                                                                                                                                            |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Mniej niż 150 wierszy (prosta)           | Zwięźle — każda sekcja ma 3–5 zdań. Pomiń sekcje, które nie mają zastosowania (np. proste umiejętności rzadko mają orkiestrację podagentów lub bramki samokontroli). |
+| 150–400 wierszy (średnia)                | Standardowo — każda sekcja to krótki akapit. Omów wszystkie 7 sekcji.                                                                                                |
+| Ponad 400 wierszy (złożona/orkiestrator) | Szczegółowo — tabela anatomii, konkretne odwołania do wierszy, rozszerzona analiza mechaniki. Wszystkie 7 sekcji w pełni.                                            |
 
 Nie wypełniaj raportów o prostych umiejętnościach ogólnikowymi zapychaczami. Umiejętność licząca 95 wierszy powinna otrzymać zwarty, skoncentrowany raport. Orkiestrator liczący 831 wierszy wymaga dogłębnego omówienia.
 
@@ -73,6 +76,7 @@ Następnie przejdź do każdej sekcji w całości:
 Odpowiedz na pytanie: **„Dlaczego ta umiejętność istnieje?”**
 
 Wyodrębnij z deklaracji roli oraz sekcji „Kiedy używać / kiedy pominąć”:
+
 - Jaki problem rozwiązuje ta umiejętność? Co działo się, zanim powstała?
 - Kiedy użytkownik powinien po nią sięgnąć? Jakie są sygnały wyzwalające?
 - Kiedy użytkownik NIE powinien jej używać? Jaki kontekst jest niewłaściwy?
@@ -85,11 +89,13 @@ Nie opisuj jedynie tego, co robi umiejętność — wyjaśnij, jaki problem elim
 Odpowiedz na pytanie: **„Gdzie ta umiejętność znajduje się w przepływie pracy?”**
 
 Wyodrębnij z sekcji „Relacja z innymi umiejętnościami”:
+
 - **Upstream**: Jakich plików lub artefaktów ta umiejętność oczekuje jako danych wejściowych? Która umiejętność je tworzy? (np. `/10x-shape` tworzy `shape-notes.md`, który wykorzystuje `/10x-prd`)
 - **Downstream**: Co ta umiejętność zwraca? Która umiejętność wykorzystuje to następnie? Do jakiego pliku zapisuje na dysku?
 - **Model przekazania**: Umiejętności komunikują się za pośrednictwem plików na dysku, a nie pamięci. Każda umiejętność zapisuje artefakt, zatrzymuje się i przekazuje kontrolę człowiekowi, zanim uruchomiona zostanie kolejna umiejętność. Wyjaśnij, jak ta umiejętność wpisuje się w ten łańcuch.
 
 Gdy jest to przydatne, pokaż pozycję w łańcuchu wizualnie:
+
 ```
 [upstream skill] → input artifact → THIS SKILL → output artifact → [downstream skill]
 ```
@@ -99,17 +105,18 @@ Gdy jest to przydatne, pokaż pozycję w łańcuchu wizualnie:
 Odpowiedz na pytanie: **„Jakie są sekcje tego pliku SKILL.md i co robi każda z nich?”**
 
 Podziel plik SKILL.md na sekcje i dla każdej opisz:
+
 - **Nazwę sekcji** i przybliżony zakres wierszy
 - **Co robi** — jedno zdanie
 - **Dlaczego istnieje** — co zepsułoby się lub pogorszyło po usunięciu tej sekcji
 
 Dla średnich i złożonych umiejętności przedstaw to w tabeli:
 
-| Sekcja | Wiersze | Cel | Dlaczego ma znaczenie |
-|---------|-------|---------|----------------|
-| YAML frontmatter | 1-8 | Nazwa, opis, uprawnienia narzędzi | `description` kontroluje moment aktywacji umiejętności; uprawnienia narzędzi stanowią twardą granicę bezpieczeństwa |
-| Deklaracja roli | 10-15 | Jednozdaniowa filozofia | Ustala osobowość zachowania umiejętności |
-| ... | ... | ... | ... |
+| Sekcja           | Wiersze | Cel                               | Dlaczego ma znaczenie                                                                                               |
+| ---------------- | ------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| YAML frontmatter | 1-8     | Nazwa, opis, uprawnienia narzędzi | `description` kontroluje moment aktywacji umiejętności; uprawnienia narzędzi stanowią twardą granicę bezpieczeństwa |
+| Deklaracja roli  | 10-15   | Jednozdaniowa filozofia           | Ustala osobowość zachowania umiejętności                                                                            |
+| ...              | ...     | ...                               | ...                                                                                                                 |
 
 Cel: wyjaśnić „tysiące wierszy”. Pokaż uczącemu się, że długa umiejętność to w rzeczywistości N sekcji, z których każda ma jasne zadanie. Całość jest mniej onieśmielająca niż poszczególne części.
 
@@ -164,16 +171,19 @@ Odpowiedz na pytanie: **„Co mogę zmienić i jak ryzykowna jest każda zmiana?
 Uporządkuj według poziomów trudności, z 1–2 konkretnymi przykładami na poziom, specyficznymi dla analizowanej umiejętności:
 
 **Łatwe (niskie ryzyko, natychmiastowy efekt):**
+
 - Co zmienić: np. frazy wyzwalające w `description`, nagłówki sekcji szablonu, etykiety opcji pytań, formatowanie raportu
 - Przykład: „Aby dodać polskie frazy wyzwalające, edytuj pole `description` i dodaj „stwórz plan” obok „create plan””
 - Co się zepsuje, jeśli zrobisz to źle: nic krytycznego — w najgorszym razie umiejętność aktywuje się w niewłaściwych momentach albo formatowanie wyjścia będzie wyglądać inaczej
 
 **Średnie (wymaga zrozumienia łańcucha):**
+
 - Co zmienić: np. kryteria bramki samokontroli, wymiary punktacji, kategorie pytań, liczbę podagentów
 - Przykład: „Aby dodać wymiar „Security” do karty wyników przeglądu, dodaj go do listy wymiarów w krokach procesu i zaktualizuj szablon raportu”
 - Co się zepsuje, jeśli zrobisz to źle: umiejętność może tworzyć niekompletne lub niespójne wyjście, ale nie zepsuje innych umiejętności w łańcuchu
 
 **Trudne (strukturalne, ryzyko zerwania kontraktów łańcucha):**
+
 - Co zmienić: np. uprawnienia narzędzi, format pliku wyjściowego, nazewnictwo artefaktów, wartości cyklu życia statusu
 - Przykład: „Zmiana nazwy pliku wyjściowego z `plan.md` na `implementation-plan.md` zepsułaby `/10x-implement`, który wyszukuje `plan.md`”
 - Co się zepsuje, jeśli zrobisz to źle: kolejne umiejętności zależne od dokładnych nazw plików, nagłówków sekcji lub wartości statusów zawiodą po cichu albo utworzą nieprawidłowe wyjście
@@ -185,6 +195,7 @@ Odpowiedz na pytanie: **„Gdybym chciał zbudować własną wersję tej umieję
 Przedstaw praktyczną, krok po kroku ścieżkę tworzenia. Zacznij prosto i stopniowo rozwijaj — to progresywna droga od „pustego pliku” do „działającej umiejętności”.
 
 Przed przejściem do ręcznych kroków zwróć uwagę na dwa skróty:
+
 - **Podejście konwersacyjne**: Po prostu powiedz swojemu asystentowi AI „let's build a skill that does X” i iterujcie wspólnie nad plikiem SKILL.md w 3–4 rundach. To najszybsza ścieżka dla osobistych umiejętności.
 - **Meta-umiejętność tworzenia umiejętności**: Meta-umiejętność do budowania umiejętności z ustrukturyzowanymi ewaluacjami. Dostępna pod adresem `github.com/anthropics/skills/tree/main/skills/skill-creator`. Jest lepsza dla współdzielonych umiejętności lub umiejętności zintegrowanych z łańcuchem, dla których potrzebujesz automatycznej weryfikacji.
 
@@ -194,6 +205,7 @@ Oba skróty tworzą ten sam plik SKILL.md — poniższe kroki wyjaśniają, co g
 
 **Krok 2: Utwórz plik umiejętności.** Utwórz `<skill-name>/SKILL.md` w swoim katalogu umiejętności. Dodaj minimalny frontmatter:
 ---
+
 name: <skill-name>
 description: <one-line description with trigger phrases>
 ---
@@ -209,6 +221,7 @@ description: <one-line description with trigger phrases>
 **Krok 7: (W razie potrzeby) Dodaj integrację z łańcuchem.** Jeśli ta umiejętność jest częścią łańcucha, zdefiniuj dane wejściowe upstream (jaki plik odczytuje) i wyjście downstream (do jakiego pliku zapisuje). Dodaj sekcję „Relacja z innymi umiejętnościami”. Dodaj „STOP, do not chain” do zabezpieczeń.
 
 **Krok 8: (W razie potrzeby) Dodaj zaawansowane wzorce.** W oparciu o to, co demonstruje ta umiejętność, wymień, które zaawansowane wzorce osoba ucząca się może dodać:
+
 - Orkiestrację podagentów (jeśli umiejętność uruchamia agentów)
 - Skalowanie złożoności (jeśli umiejętność dostosowuje się do wielkości danych wejściowych)
 - Bramki samokontroli (jeśli umiejętność waliduje własne wyjście)
@@ -218,6 +231,7 @@ description: <one-line description with trigger phrases>
 Dla każdego kroku wskaż, co analizowana umiejętność robi na tym poziomie, aby osoba ucząca się mogła dostrzec zależność między krokami budowy a gotowym produktem.
 
 **Typowe błędy, których należy unikać:**
+
 - Rozpoczynanie od zaawansowanych wzorców, zanim podstawowe zachowanie zacznie działać
 - Pisanie zbyt ogólnikowych zabezpieczeń („be careful”) zamiast konkretnych („NEVER auto-chain to the next skill”)
 - Pomijanie sekcji „Czego ta umiejętność NIE robi” — rozszerzanie zakresu jest głównym trybem awarii umiejętności

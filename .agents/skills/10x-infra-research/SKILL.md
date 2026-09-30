@@ -8,6 +8,7 @@ description: >
   "gdzie deployować", "jaka platforma do deploymentu". Use AFTER /10x-prd or
   /10x-tech-stack-selector, BEFORE /10x-implement.
 ---
+
 # Badanie platform: świadoma platforma wdrożeniowa dla MVP
 
 Ta umiejętność prowadzi do **świadomej decyzji infrastrukturalnej** — nie rekomendacji opartej na przeczuciach, lecz zakorzenionej w stosie technologicznym projektu, ograniczeniach operacyjnych dewelopera, aktualnych badaniach internetowych oraz trzech perspektywach antystronniczych, które testują zwycięską platformę, zanim decyzja zostanie zapisana.
@@ -30,6 +31,7 @@ Jedynym rezultatem jest `context/foundation/infrastructure.md` — trzeci kontra
 ## Cele nieobjęte zakresem
 
 Ta umiejętność **nie**:
+
 - Buduje obrazów Docker ani nie pisze Dockerfile'ów.
 - Konfiguruje potoków CI/CD.
 - Planuje poza zakresem MVP (średnioterminowe prognozy kosztów są w porządku; HA w wielu regionach jest poza zakresem).
@@ -81,6 +83,7 @@ Zapytaj użytkownika: „Czy Twoja aplikacja wymaga trwałych połączeń po str
 Nagłówek: „Ograniczenia platformy”
 
 Opcje:
+
 - **Tak**: Aplikacja potrzebuje stale działających procesów lub długotrwałych połączeń.
 - **Nie**: Tylko żądanie/odpowiedź — każde żądanie jest bezstanowe.
 - **Nie wiem**: Nie jestem jeszcze pewien/pewna.
@@ -92,6 +95,7 @@ Zapytaj użytkownika: „Czy minimalizacja miesięcznych kosztów jest najwyższ
 Nagłówek: „Preferencja kompromisów”
 
 Opcje:
+
 - **Minimalizuj koszt**: Chcę najtańszą realną opcję, nawet jeśli DX jest gorszy.
 - **Priorytet dla DX**: Zapłacę rozsądną kwotę za płynniejszy cykl rozwoju.
 - **Nie wiem / mniej więcej równie ważne**: Brak wyraźnej preferencji.
@@ -103,6 +107,7 @@ Zapytaj użytkownika: „Czy Ty lub Twój zespół macie już praktyczne doświa
 Nagłówek: „Obecna znajomość”
 
 Opcje:
+
 - **Tak — Vercel / Netlify**: Komfortowa praca z platformami w stylu JAMstack.
 - **Tak — Cloudflare (Workers / Pages)**: Komfortowa praca z wdrożeniami edge-first.
 - **Tak — Railway / Render / Fly.io**: Komfortowa praca z PaaS opartym na kontenerach.
@@ -116,6 +121,7 @@ Zapytaj użytkownika: „Czy spodziewasz się, że aplikacja będzie obsługiwa�
 Nagłówek: „Zasięg geograficzny”
 
 Opcje:
+
 - **Globalny — opóźnienia między regionami mają znaczenie**: Użytkownicy będą na różnych kontynentach.
 - **Jeden region wystarczy**: Wszyscy użytkownicy są w jednym kraju / regionie.
 - **Jeszcze nie wiem**: Nie mam pewności co do docelowej geografii.
@@ -127,6 +133,7 @@ Zapytaj użytkownika: „Czy wdrożenie będzie wymagać współlokalizowanych u
 Nagłówek: „Współlokalizacja usług”
 
 Opcje:
+
 - **Współlokalizacja preferowana**: Chcę DB, storage itd. od tego samego dostawcy, aby zachować prostotę.
 - **Zewnętrzni dostawcy są w porządku**: Użyję osobnych usług (np. Supabase, Upstash, Cloudflare R2).
 - **Jeszcze nie wiem**: Nie podjęto jeszcze decyzji o warstwie danych.
@@ -139,14 +146,14 @@ Użyj równoległych zadań badawczych, aby badać platformy równocześnie. Cel
 
 **Pula kandydatów platformowych** (zbadaj je, a następnie oceń i zawęź):
 
-| Platforma | Główny przypadek użycia |
-|---|---|
-| Cloudflare Workers + Pages | Edge-first, serverless JS/TS, globalny CDN |
-| Vercel | Frontend + funkcje serverless, natywne dla Next.js |
-| Netlify | Frontend + serverless, JAMstack, prymitywy formularzy/autoryzacji |
-| Fly.io | PaaS oparty na kontenerach, trwałe procesy, wiele regionów |
-| Railway | Pełnostosowy PaaS, współlokalizowane bazy danych, szybki DX |
-| Render | Hosting kontenerów/statyczny, darmowy poziom, zadania cron |
+| Platforma                  | Główny przypadek użycia                                           |
+| -------------------------- | ----------------------------------------------------------------- |
+| Cloudflare Workers + Pages | Edge-first, serverless JS/TS, globalny CDN                        |
+| Vercel                     | Frontend + funkcje serverless, natywne dla Next.js                |
+| Netlify                    | Frontend + serverless, JAMstack, prymitywy formularzy/autoryzacji |
+| Fly.io                     | PaaS oparty na kontenerach, trwałe procesy, wiele regionów        |
+| Railway                    | Pełnostosowy PaaS, współlokalizowane bazy danych, szybki DX       |
+| Render                     | Hosting kontenerów/statyczny, darmowy poziom, zadania cron        |
 
 Dla każdej platformy uruchom ukierunkowane zadanie badawcze. Uruchom wszystkie sześć równolegle:
 
@@ -178,21 +185,23 @@ Po ukończeniu wszystkich równoległych zadań badawczych zestaw ich ustalenia 
 Oceń każdą zbadaną platformę względem pięciu kryteriów z `references/agent-friendly-criteria.md`. Najpierw zastosuj twarde filtry:
 
 **Twarde filtry** (platforma, która ich nie spełnia, jest odrzucana z krótkiej listy):
+
 - Jeśli odpowiedź na pytanie 1 = „Tak (wymagane trwałe połączenia)” → odrzuć platformy, które nie mogą uruchamiać trwałych procesów (Netlify, Vercel wyłącznie serverless).
 - Jeśli stos technologiczny używa środowiska uruchomieniowego nieobsługiwanego przez platformę → odrzuć tę platformę.
 
 **Punktacja** (Pass / Partial / Fail dla każdego kryterium):
 
-| Platforma | CLI-first | Managed/Serverless | Dokumentacja czytelna dla agentów | Stabilne API wdrożeniowe | MCP / Integracja | Suma |
-|---|---|---|---|---|---|---|
-| Cloudflare | | | | | | |
-| Vercel | | | | | | |
-| Netlify | | | | | | |
-| Fly.io | | | | | | |
-| Railway | | | | | | |
-| Render | | | | | | |
+| Platforma  | CLI-first | Managed/Serverless | Dokumentacja czytelna dla agentów | Stabilne API wdrożeniowe | MCP / Integracja | Suma |
+| ---------- | --------- | ------------------ | --------------------------------- | ------------------------ | ---------------- | ---- |
+| Cloudflare |           |                    |                                   |                          |                  |      |
+| Vercel     |           |                    |                                   |                          |                  |      |
+| Netlify    |           |                    |                                   |                          |                  |      |
+| Fly.io     |           |                    |                                   |                          |                  |      |
+| Railway    |           |                    |                                   |                          |                  |      |
+| Render     |           |                    |                                   |                          |                  |      |
 
 Nadaj kryteriom miękkie wagi na podstawie odpowiedzi z wywiadu:
+
 - P2 „minimalizuj koszt” → karz platformy z drogimi poziomami podstawowymi.
 - P3 „obecna znajomość” → rozstrzygaj remisy na korzyść znanej platformy.
 - P4 „zasięg globalny” → preferuj platformy natywne dla edge.
@@ -240,6 +249,7 @@ Zapytaj użytkownika: „Antystronnicza weryfikacja krzyżowa ujawniła pewne ry
 Nagłówek: „Wynik weryfikacji krzyżowej”
 
 Opcje:
+
 - **Kontynuuj z <Platform A> — ryzyka odnotowane**: Ryzyka są możliwe do opanowania. Uwzględnij je w rejestrze ryzyk wyniku.
 - **Zamień na <Platform B>**: Ryzyka są na tyle istotne, że lepiej wybrać drugą opcję.
 - **Zamień na <Platform C>**: Ryzyka są na tyle istotne, że lepiej wybrać trzecią opcję.
@@ -257,6 +267,7 @@ Zapytaj użytkownika: „context/foundation/infrastructure.md już istnieje. Jak
 Nagłówek: „Kolizja”
 
 Opcje:
+
 - **Nadpisz (zalecane)**: Zastąp istniejący plik. Poprzednia wersja zostanie utracona, chyba że została zatwierdzona.
 - **Zapisz jako infrastructure-v2.md**: Zachowaj historię. Nowy plik trafi do następnego dostępnego miejsca wersji.
 - **Przerwij**: Zakończ bez zapisywania. Rekomendacja zostanie zachowana wyłącznie w czacie.
@@ -326,11 +337,11 @@ How the chosen platform actually operates day to day. One concrete answer per li
 
 ## Risk Register
 
-For each identified risk: name, the cross-check lens that surfaced it, likelihood, impact, and a concrete mitigation step. Tying every risk back to a lens makes the register auditable — a future reader can see *why* each item is on the list.
+For each identified risk: name, the cross-check lens that surfaced it, likelihood, impact, and a concrete mitigation step. Tying every risk back to a lens makes the register auditable — a future reader can see _why_ each item is on the list.
 
-| Risk | Source | Likelihood | Impact | Mitigation |
-|---|---|---|---|---|
-| <risk> | Devil's advocate / Pre-mortem / Unknown unknowns / Research finding | <L/M/H> | <L/M/H> | <concrete step> |
+| Risk   | Source                                                              | Likelihood | Impact  | Mitigation      |
+| ------ | ------------------------------------------------------------------- | ---------- | ------- | --------------- |
+| <risk> | Devil's advocate / Pre-mortem / Unknown unknowns / Research finding | <L/M/H>    | <L/M/H> | <concrete step> |
 
 ## Getting Started
 
@@ -339,6 +350,7 @@ For each identified risk: name, the cross-check lens that surfaced it, likelihoo
 ## Out of Scope
 
 The following were not evaluated in this research:
+
 - Docker image configuration
 - CI/CD pipeline setup
 - Production-scale architecture (multi-region, HA, DR)

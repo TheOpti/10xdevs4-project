@@ -219,15 +219,15 @@ unregister contract: use a new isolated project instead of hand-editing manifest
 
 Full skill trees land under the selected profile's `skills/<canonical-name>/`:
 
-| Profile | Tool directory | Rules file for full lesson delivery |
-|---|---|---|
-| claude-code | `.claude/` | `CLAUDE.md` |
-| cursor | `.cursor/` | `.cursor/rules/10x-course.mdc` |
-| copilot | `.github/` | `.github/copilot-instructions.md` |
-| codex | `.agents/` | `AGENTS.md` |
-| devin-desktop | `.devin/` | `AGENTS.md` |
-| gemini | `.gemini/` | `GEMINI.md` |
-| generic | `.ai/` | `AGENTS.md` |
+| Profile       | Tool directory | Rules file for full lesson delivery |
+| ------------- | -------------- | ----------------------------------- |
+| claude-code   | `.claude/`     | `CLAUDE.md`                         |
+| cursor        | `.cursor/`     | `.cursor/rules/10x-course.mdc`      |
+| copilot       | `.github/`     | `.github/copilot-instructions.md`   |
+| codex         | `.agents/`     | `AGENTS.md`                         |
+| devin-desktop | `.devin/`      | `AGENTS.md`                         |
+| gemini        | `.gemini/`     | `GEMINI.md`                         |
+| generic       | `.ai/`         | `AGENTS.md`                         |
 
 Profile changes may offer migrate, delete eligible managed files, or keep both;
 none means deleting arbitrary user content or switching the course edition.
@@ -241,20 +241,20 @@ profile, not a `--tool` or `--course` argument. Before first get, a missing tool
 directory can be expected; explain only that failure and keep other failures
 visible. Doctor exit 78 can coexist with outer JSON `status: "ok"`.
 
-| Symptom | Next step |
-|---|---|
-| Missing/expired auth | Inspect auth status and live-access result; let the user complete login through setup. Login may send email. |
-| No email received | Offer `10x_cli auth --method circle`; let the user request the message. |
-| `circle_login_disabled` | Circle is unavailable; use `10x_cli auth --method email`. |
-| `dm_rejected` | Enable Circle direct messages or use email login. |
-| `circle_login_expired` | Ask for a fresh Circle login or use email; never auto-resend. |
-| Denied course access | Confirm selected course and membership; changing tool/reinstalling does not grant access. |
-| Locked or unpublished v4 | Inspect module availability/release evidence; do not bypass the gate or fall back to v3. |
-| Unsupported name/missing index | Verify exact CLI package and content release; preserve the error for the release owner. |
-| Network/API failure | Keep diagnostics, retry the same context when service returns; no config reset. |
-| Wrong directory/profile | Recheck cwd and explicit flags; a fresh project may legitimately have no tool directory. |
-| Signature/release mismatch | Preserve failure and source identity; do not disable verification or reuse unrelated bytes. |
-| Edition/manifest conflict | Preserve binding and manifests for repair; use a separate v4 project rather than deleting them. |
+| Symptom                             | Next step                                                                                                         |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| Missing/expired auth                | Inspect auth status and live-access result; let the user complete login through setup. Login may send email.      |
+| No email received                   | Offer `10x_cli auth --method circle`; let the user request the message.                                           |
+| `circle_login_disabled`             | Circle is unavailable; use `10x_cli auth --method email`.                                                         |
+| `dm_rejected`                       | Enable Circle direct messages or use email login.                                                                 |
+| `circle_login_expired`              | Ask for a fresh Circle login or use email; never auto-resend.                                                     |
+| Denied course access                | Confirm selected course and membership; changing tool/reinstalling does not grant access.                         |
+| Locked or unpublished v4            | Inspect module availability/release evidence; do not bypass the gate or fall back to v3.                          |
+| Unsupported name/missing index      | Verify exact CLI package and content release; preserve the error for the release owner.                           |
+| Network/API failure                 | Keep diagnostics, retry the same context when service returns; no config reset.                                   |
+| Wrong directory/profile             | Recheck cwd and explicit flags; a fresh project may legitimately have no tool directory.                          |
+| Signature/release mismatch          | Preserve failure and source identity; do not disable verification or reuse unrelated bytes.                       |
+| Edition/manifest conflict           | Preserve binding and manifests for repair; use a separate v4 project rather than deleting them.                   |
 | File conflict or permission failure | Inspect affected paths and local edits, retain backup and resolve the specific issue. No broad chmod/reset/force. |
 
 Use `--verbose` only when needed, and redact credentials before sharing diagnostics.

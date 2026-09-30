@@ -9,11 +9,13 @@ description: >
   "generate PRD", "create the PRD from notes", "stwórz PRD", "turn notes into a
   PRD", "PRD from shape-notes". Use AFTER /10x-shape, not in place of it.
 ---
+
 # PRD: Generowanie context/foundation/prd.md z shape-notes
 
 Ta umiejętność jest drugim ogniwem w łańcuchu bootstrapowania. Dla greenfield: `/10x-shape → /10x-prd → 10x-tech-stack-selector → bootstrapper`. Dla brownfield: `/10x-shape → /10x-prd → 10x-stack-assess → 10x-health-check`. Jej jedyne zadanie: wziąć plik ukształtowanych notatek i wygenerować `context/foundation/prd.md`, który jest zgodny z zablokowanym schematem PRD, kierując każdą lukę do `## Open Questions` zamiast wymyślać treść.
 
 Umiejętność automatycznie kieruje do poprawnego szablonu na podstawie `context_type` w danych wejściowych:
+
 - **greenfield** → 10-sekcyjny szablon PRD (produkt budowany od podstaw)
 - **brownfield** → 11-sekcyjny szablon PRD (zmiana różnicowa w istniejącym systemie)
 
@@ -25,7 +27,7 @@ Zablokowany schemat, z którym zgodna jest ta umiejętność, znajduje się w `.
 
 **Używaj, gdy**: użytkownik uruchomił `/10x-shape` (a `context/foundation/shape-notes.md` istnieje z blokiem checkpoint), LUB użytkownik ma plik surowych notatek, który chce przekształcić w szkic PRD, LUB użytkownik wyraźnie prosi o (ponowne) wygenerowanie `context/foundation/prd.md`.
 
-**Pomiń, gdy**: użytkownik nadal tworzy pomysły i nie ma notatek — najpierw wskaż `/10x-shape`. Pomiń także, gdy użytkownik chce ręcznie *edytować* istniejący PRD — ta umiejętność zapisuje całe pliki; precyzyjne edycje są poza zakresem.
+**Pomiń, gdy**: użytkownik nadal tworzy pomysły i nie ma notatek — najpierw wskaż `/10x-shape`. Pomiń także, gdy użytkownik chce ręcznie _edytować_ istniejący PRD — ta umiejętność zapisuje całe pliki; precyzyjne edycje są poza zakresem.
 
 ## Relacja z innymi umiejętnościami
 
@@ -104,7 +106,7 @@ Oceń dane wejściowe według heurystyki 0–4 ukształtowane-vs-ubogie. Każdy 
 **Sygnały brownfield** (zastępują sygnał 1, gdy `context_type: brownfield`):
 
 1. **Obecny blok frontmatter `checkpoint:` ORAZ `context_type: brownfield`** — najsilniejszy sygnał, że dane pochodzą z `/10x-shape` w trybie brownfield. Sprawdź także sekcję `## Current System` w treści.
-2–4. Tak samo jak dla greenfield.
+   2–4. Tak samo jak dla greenfield.
 
 Oblicz sumę. Jawnie udokumentuj heurystykę w rozmowie, aby przyszły opiekun mógł ją dostroić:
 

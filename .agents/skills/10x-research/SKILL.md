@@ -2,6 +2,7 @@
 name: 10x-research
 description: Investigate codebase questions with source-backed findings, scoped research and parallel sub-agents. Save research for implementation planning.
 ---
+
 # Badanie bazy kodu
 
 Odpowiedz na pytanie badawcze użytkownika, korzystając z aktualnych ustaleń popartych źródłami. Zachowaj implementację, decyzje produktowe i zmiany cyklu życia poza zakresem badania, chyba że zostaną osobno zażądane.

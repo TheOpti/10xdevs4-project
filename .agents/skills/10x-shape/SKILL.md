@@ -8,6 +8,7 @@ description: >
   "brownfield", "istniejący projekt", "zmiana w projekcie".
   Use BEFORE /10x-prd, not in place of it.
 ---
+
 # Shape: Ułatw odkrywanie (Greenfield i Brownfield) przed /10x-prd
 
 Ta umiejętność jest początkiem łańcucha bootstrapowania. Dla greenfield: `/10x-shape → /10x-prd → 10x-tech-stack-selector → bootstrapper`. Dla brownfield: `/10x-shape → /10x-prd → 10x-stack-assess → 10x-health-check`. Jej jedyne zadanie: przeprowadzić użytkownika od „Mam pomysł” (greenfield) lub „Chcę zmienić ten system” (brownfield) do ustrukturyzowanego `context/foundation/shape-notes.md`, które `/10x-prd` może przekształcić w PRD zgodny z zablokowanym schematem.
@@ -26,7 +27,7 @@ Zablokowany schemat, z którym zgodne są zarówno ta umiejętność, jak i `/10
 
 - `/10x-init` — tworzy szkielet `/context` (`changes/`, `archive/`, `foundation/`) oraz uniwersalne README w każdym z nich. `/10x-shape` wymaga istnienia `context/foundation/`; jeśli go nie ma, deleguje do `/10x-init` (Krok 0 poniżej).
 - `/10x-prd` — konsumuje `shape-notes.md`. Przekazanie następuje przez zapis do schowka w `## Step 8`.
-- `/10x-frame` — do *przeformułowania* problemów o małym zakresie w istniejących systemach, gdy pełne PRD byłoby przesadą. `/10x-shape` służy większym zmianom brownfield (nowe moduły, istotne funkcje), które wymagają ustrukturyzowanego odkrywania i PRD.
+- `/10x-frame` — do _przeformułowania_ problemów o małym zakresie w istniejących systemach, gdy pełne PRD byłoby przesadą. `/10x-shape` służy większym zmianom brownfield (nowe moduły, istotne funkcje), które wymagają ustrukturyzowanego odkrywania i PRD.
 - `/10x-stack-assess` — element downstream od `/10x-prd` dla projektów brownfield. Ocenia istniejący stack względem bramek jakości.
 - `/10x-health-check` — element downstream od `/10x-stack-assess` dla brownfield. Audytuje kondycję istniejącego projektu.
 - `/10x-plan` — element downstream od `/10x-prd`, nigdy nie jest wywoływany stąd bezpośrednio.
@@ -164,6 +165,7 @@ Get-ChildItem -Path . -Filter 'vite.config.*' -File -ErrorAction SilentlyContinu
 ```
 
 Punktacja:
+
 - **Trafienie Tier 1** (istnieje historia git) → silny sygnał brownfield
 - **Trafienie Tier 2** (istnieje lockfile) → silny sygnał brownfield
 - **Tier 1 + Tier 2** → brownfield o wysokiej pewności
@@ -171,6 +173,7 @@ Punktacja:
 - **Brak sygnałów** → greenfield
 
 Logika decyzji:
+
 - **Dowolne trafienie Tier 1 lub Tier 2** → zaproponuj `context_type: brownfield`
 - **Tylko Tier 3** → zaproponuj brownfield, ale oznacz niejednoznaczność: „Znalazłem plik manifestu, ale bez lockfile lub historii git — może to być świeżo zainicjalizowany projekt, a nie prawdziwy brownfield.”
 - **Brak sygnałów** → zaproponuj `context_type: greenfield`
@@ -178,6 +181,7 @@ Logika decyzji:
 Wypisz, co zostało wykryte:
 
 - **Brownfield o wysokiej pewności** (T1 lub T2):
+
   ```
   This looks like an existing project:
     [list detected signals, e.g. "git history (47 commits)", "package-lock.json", "src/ directory"]
@@ -186,6 +190,7 @@ Wypisz, co zostało wykryte:
   ```
 
 - **Niejednoznaczne** (tylko T3):
+
   ```
   I found [manifest file] but no lockfile or git history — this could be a
   freshly initialized project or a real brownfield. I'll propose brownfield
@@ -398,7 +403,7 @@ Ta faza tworzy sekcje `## Functional Requirements` oraz `## User Stories`.
 
 #### Tryb Greenfield
 
-Otwórz słowami: „Teraz przejdźmy do konkretów. Na podstawie naszkicowanego przez Ciebie przepływu MVP, co aktor musi *móc* zrobić? Wymień możliwości — sformatuję je jako FR-y.”
+Otwórz słowami: „Teraz przejdźmy do konkretów. Na podstawie naszkicowanego przez Ciebie przepływu MVP, co aktor musi _móc_ zrobić? Wymień możliwości — sformatuję je jako FR-y.”
 
 Uchwyć każdą możliwość jako pojedynczą linię FR zgodnie z formatem schematu:
 
@@ -567,7 +572,7 @@ Po ustaleniu ram dodaj: „Jakie ograniczenia nakłada istniejący system na tę
 
 #### Oba tryby
 
-Po zablokowaniu ram produktu przeprowadź **jedną** rundę wielokrotnego wyboru Non-Goals. Ma formę listy unikania z możliwością wielokrotnego wyboru — lecz skierowanej na unikanie *zakresu* (możliwości, których MVP nie zbuduje / zmiana nie dotknie, wymiary jakości, do których nie będzie dążyć), a nie unikanie technologii. Zapytaj:
+Po zablokowaniu ram produktu przeprowadź **jedną** rundę wielokrotnego wyboru Non-Goals. Ma formę listy unikania z możliwością wielokrotnego wyboru — lecz skierowanej na unikanie _zakresu_ (możliwości, których MVP nie zbuduje / zmiana nie dotknie, wymiary jakości, do których nie będzie dążyć), a nie unikanie technologii. Zapytaj:
 
 ```
 What is this [MVP/change] explicitly NOT doing? Pick anything that should be
@@ -602,7 +607,7 @@ Odczytaj bieżące `shape-notes.md` i sprawdź każdy z następujących element�
 3. **Project artifacts** — samo `shape-notes.md` istnieje z prawidłowym checkpointem frontmatter. (W tym momencie jest to zawsze obecne.)
 4. **Timeline-cost acknowledged** — albo `timeline_budget.mvp_weeks` / `delivery_weeks` ≤ 3, ALBO w shape-notes istnieje blok `## Timeline acknowledgment` zapisujący, że użytkownik zaakceptował koszt stałego wysiłku w Kroku 3. Dłuższe terminy są prawidłowe; bramka wymaga ujawnienia i zaakceptowania kosztu, a nie krótkiego terminu.
 5. **Non-Goals** — blok `## Non-Goals` istnieje z co najmniej jednym wpisem.
-6. **Preserved behavior** *(tylko brownfield)* — blok `## Constraints & Preserved Behavior` istnieje i wyraźnie nazywa to, co nie może się zepsuć. Pomiń tę kontrolę dla sesji greenfield.
+6. **Preserved behavior** _(tylko brownfield)_ — blok `## Constraints & Preserved Behavior` istnieje i wyraźnie nazywa to, co nie może się zepsuć. Pomiń tę kontrolę dla sesji greenfield.
 
 NIE sprawdzaj `## Testing Strategy`, `## Deployment & CI/CD` ani `## Implementation Decisions` — nie są częścią schematu PRD. Znajdują się downstream od wyboru/oceny stacka, a nie w PRD.
 

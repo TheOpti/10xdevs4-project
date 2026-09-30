@@ -7,6 +7,7 @@ description: >
   tool the rules target. Use when the user asks to "review AI rules",
   "audit AGENTS.md", "check my AGENTS.md", "score my agent instructions".
 ---
+
 # Przegląd zasad 10x
 
 Oceń plik zasad dla AI w pięciu osiach i zwróć konkretne poprawki. Plikiem poddawanym przeglądowi jest dowolny markdown z zasadami dla AI przekazany przez użytkownika — ta umiejętność nie zakłada pliku konfiguracji AI projektu (AGENTS.md), AGENTS.md ani żadnego konkretnego narzędzia.
@@ -32,10 +33,10 @@ Jeśli plik nie istnieje, zatrzymaj się i zgłoś ścieżkę. Nie wymyślaj zaw
 
 ## Czego ta umiejętność NIE robi
 
-- Nie edytuje pliku zasad *chyba że użytkownik wyraźnie zatwierdzi zmianę kolejności zaproponowaną przez Check 5*. Domyślne wyjście jest tylko do odczytu.
+- Nie edytuje pliku zasad _chyba że użytkownik wyraźnie zatwierdzi zmianę kolejności zaproponowaną przez Check 5_. Domyślne wyjście jest tylko do odczytu.
 - Nie generuje pełnej „poprawionej wersji” pliku. Co najwyżej Check 5 może przenieść/przegrupować sekcje; nigdy nie przepisuje treści zasad.
 - Nie zakłada docelowego narzędzia pliku. Plik konfiguracji AI projektu (AGENTS.md), AGENTS.md, `.mdc`, `.windsurfrules`, niestandardowe nazwy — wszystkie są traktowane jako „plik zasad dla AI”.
-- Nie ocenia *treści projektu* (architektury, wyborów technologicznych, konwencji). Ocenia *stan artefaktu zasad* — tak samo jak przegląd kodu ocenia kod, a nie produkt.
+- Nie ocenia _treści projektu_ (architektury, wyborów technologicznych, konwencji). Ocenia _stan artefaktu zasad_ — tak samo jak przegląd kodu ocenia kod, a nie produkt.
 
 ## Procedura
 
@@ -53,34 +54,38 @@ Jeśli plik nie istnieje, zatrzymaj się i zgłoś ścieżkę. Nie wymyślaj zaw
 
 Policz niepuste wiersze (ignoruj puste wiersze i wiersze będące wyłącznie separatorami, takimi jak `---`).
 
-| Wiersze | Werdykt | Symbol |
-|-------------|--------------|--------|
-| 0–200 | w porządku | OK |
-| 201–500 | uwaga | WARN |
-| 501+ | ostrzeżenie | FAIL |
+| Wiersze | Werdykt     | Symbol |
+| ------- | ----------- | ------ |
+| 0–200   | w porządku  | OK     |
+| 201–500 | uwaga       | WARN   |
+| 501+    | ostrzeżenie | FAIL   |
 
 Dlaczego to ma znaczenie: długie pliki zasad wypierają prompt użytkownika z okna kontekstu, a zasady ze środka pliku otrzymują od modelu najsłabszą uwagę. Długość jest wskaźnikiem tego, że „płacisz kontekstem za rzeczy, których agent nie potrzebuje w każdej sesji”.
 
 Dla WARN/FAIL zasugeruj:
+
 - Podziel zasady dotyczące poszczególnych obszarów na zagnieżdżone pliki bliżej ich kodu (np. `src/api/AGENTS.md`).
 - Zastąp zduplikowaną dokumentację odwołaniami `@` do pliku kanonicznego.
 - Usuń zasady, które nie są powiązane z powtarzającym się trybem błędu agenta.
 
 ### Check 2 — Bezpośrednie fragmenty kodu/konfiguracji
 
-Skanuj w poszukiwaniu bloków kodu ogrodzonych (```` ``` ````) i bloków kodu inline dłuższych niż około 3 wiersze.
+Skanuj w poszukiwaniu bloków kodu ogrodzonych (` ``` `) i bloków kodu inline dłuższych niż około 3 wiersze.
 
 Oznacz każdy blok, który wygląda jak:
+
 - Przykładowy komponent, endpoint, migracja, schemat, zapytanie, skrypt bash lub test.
 - Plik konfiguracji (`tsconfig.json`, `eslintrc`, `package.json`, `wrangler.toml`).
 - Szablon migracji lub boilerplate znajdujący się w innym miejscu repozytorium.
 
 **Nie** oznaczaj:
-- Krótkich fragmentów strukturalnych używanych do zdefiniowania *formatu*, który agent musi wygenerować (np. 2–4-wierszowy szablon struktury błędu).
+
+- Krótkich fragmentów strukturalnych używanych do zdefiniowania _formatu_, który agent musi wygenerować (np. 2–4-wierszowy szablon struktury błędu).
 - Przykładów poleceń (`npm run dev`, `git rebase` itd.).
 - Bloków Mermaid/diagramów.
 
 Dla każdego oznaczonego bloku zasugeruj:
+
 - Przenieś fragment do prawdziwego pliku w repozytorium.
 - Zastąp blok jednoliniowym odwołaniem `@`, np. `@src/features/users/user.service.ts`, `@docs/api-errors.md`.
 - Powód: przy następnym refaktorze przykład będzie błędny w dwóch miejscach; odwołanie nie może się rozjechać.
@@ -103,6 +108,7 @@ Skanuj w poszukiwaniu niejasnych intencji, których nie da się sprawdzić wzgl�
 Dla każdego dopasowania **zawsze zaproponuj co najmniej jedną konkretną, testowalną alternatywę osadzoną w kontekście tego projektu**. Nigdy nie sugeruj „po prostu to usuń” — autor umieścił tę linijkę z jakiegoś powodu; Twoim zadaniem jest przełożyć intencję na coś, co recenzent może sprawdzić względem diffu.
 
 Aby osadzić sugestię w kontekście, wykorzystaj sygnały z:
+
 - pliku poddawanego przeglądowi (wspomniany stos technologiczny, konwencje nazewnicze określone gdzie indziej, twarde zasady w innych sekcjach),
 - sąsiednich akapitów wokół niejasnego sformułowania (co autor zamierzał powiedzieć?),
 - widocznego kontekstu repozytorium, jeśli jest dostępny (`package.json`, `tsconfig.json`, wybór frameworka, konfiguracja lintera, sąsiednie pliki zasad).
@@ -111,14 +117,14 @@ Jeśli kontekst projektu naprawdę nie sugeruje nic konkretnego, zaproponuj rozs
 
 Przykłady (zauważ, że każde zastąpienie wykorzystuje nazwy/konwencje specyficzne dla projektu, a nie ogólne porady):
 
-| Niejasne sformułowanie w pliku | Sygnał z kontekstu projektu | Osadzone w kontekście, testowalne zastąpienie |
-|-----------------------------------|--------------------------------------------------|------------------------------------------------------------------------------------------------------------|
-| „Pisz czysty kod” | TypeScript + ESLint wspomniane w tym samym pliku | „Unikaj `any`. Funkcje dłuższe niż 40 wierszy muszą zostać podzielone. Przed commitem uruchom `pnpm lint`.” |
-| „Prawidłowo obsługuj błędy” | Twarda zasada wcześniej: API zwraca strukturę `{ error: {...} }` | „Handlery API muszą zwracać `{ error: { code, message, context } }` zgodnie ze strukturą zdefiniowaną powyżej. Nigdy nie rzucaj surowych błędów.” |
-| „Bądź konsekwentny w nazewnictwie” | Plik wspomina gdzie indziej `feature.handler.ts` | „Używaj `<feature>.handler.ts` (zgodnie z istniejącymi handlerami w `src/api/`), a nie `featureHandler.ts`.” |
-| „Stosuj nowoczesne wzorce” | Projekt używa natywnego JS, brak lodash w `package.json` | „Używaj natywnych metod `Array`/`Object`. Nie dodawaj `lodash` — nie ma go w `package.json` i tak ma pozostać.” |
-| „Zadbaj o czytelność komponentów” | Projekt React + Tailwind | „Komponenty dłuższe niż 150 wierszy muszą zostać podzielone. Klasy Tailwind dla warunków przechodzą przez `cn()` (assumed — potwierdź, jeśli używany jest inny helper).” |
-| „Zachowaj prostotę” | Usługa Python FastAPI | „Preferuj jeden model Pydantic na żądanie/odpowiedź. Bez zagnieżdżonych dekoratorów poza `@router.post` + `@requires_auth`.” |
+| Niejasne sformułowanie w pliku     | Sygnał z kontekstu projektu                                      | Osadzone w kontekście, testowalne zastąpienie                                                                                                                            |
+| ---------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| „Pisz czysty kod”                  | TypeScript + ESLint wspomniane w tym samym pliku                 | „Unikaj `any`. Funkcje dłuższe niż 40 wierszy muszą zostać podzielone. Przed commitem uruchom `pnpm lint`.”                                                              |
+| „Prawidłowo obsługuj błędy”        | Twarda zasada wcześniej: API zwraca strukturę `{ error: {...} }` | „Handlery API muszą zwracać `{ error: { code, message, context } }` zgodnie ze strukturą zdefiniowaną powyżej. Nigdy nie rzucaj surowych błędów.”                        |
+| „Bądź konsekwentny w nazewnictwie” | Plik wspomina gdzie indziej `feature.handler.ts`                 | „Używaj `<feature>.handler.ts` (zgodnie z istniejącymi handlerami w `src/api/`), a nie `featureHandler.ts`.”                                                             |
+| „Stosuj nowoczesne wzorce”         | Projekt używa natywnego JS, brak lodash w `package.json`         | „Używaj natywnych metod `Array`/`Object`. Nie dodawaj `lodash` — nie ma go w `package.json` i tak ma pozostać.”                                                          |
+| „Zadbaj o czytelność komponentów”  | Projekt React + Tailwind                                         | „Komponenty dłuższe niż 150 wierszy muszą zostać podzielone. Klasy Tailwind dla warunków przechodzą przez `cn()` (assumed — potwierdź, jeśli używany jest inny helper).” |
+| „Zachowaj prostotę”                | Usługa Python FastAPI                                            | „Preferuj jeden model Pydantic na żądanie/odpowiedź. Bez zagnieżdżonych dekoratorów poza `@router.post` + `@requires_auth`.”                                             |
 
 Werdykt: OK przy 0 niejasnych sformułowań · WARN przy 1–3 · FAIL przy 4+.
 
@@ -141,12 +147,14 @@ Podczas skanowania korzystaj z tych samokontroli:
 - **Test „zapachu tutorialu”.** Jeśli akapit brzmi jak sekcja ze strony „Getting Started” frameworka lub artykułu na Medium — to treść tutorialowa, a nie wiedza o projekcie. Czytałeś takie materiały podczas treningu.
 
 Co **nie** jest nadmiarowe (nie oznaczaj):
+
 - Konwencje specyficzne dla projektu, które są sprzeczne z domyślnym zachowaniem frameworka („używamy `useEffect` tylko dla efektów ubocznych niezwiązanych z danymi”).
 - Lokalne pułapki i historyczne obejścia, których nie można wywnioskować z kodu („tabela `events` jest partycjonowana miesięcznie — masowe inserty do niewłaściwej partycji kończą się po cichu niepowodzeniem”).
 - Wewnętrzne zasady nazewnictwa, układu lub workflow („postingi znajdują się w `<verb>_<noun>.posting.ts`”).
 - Zasady, które wyglądają ogólnie, ale są powiązane z rzeczywistym incydentem (plik powinien wspominać incydent lub odsyłać do rejestru trybów awarii).
 
 Dla każdego oznaczonego akapitu zasugeruj jedną z opcji:
+
 - **Usuń go** — już to wiedziałeś.
 - **Zastąp odwołaniem `@`** — `@README.md`, `@tsconfig.json`, `@docs/...`.
 - **Zachowaj tylko, jeśli jest poparty incydentem** — a jeśli tak, poproś autora o dodanie notatki o incydencie inline, aby zasada przetrwała przyszłe audyty.
@@ -157,13 +165,14 @@ Werdykt: OK przy 0 nadmiarowych akapitów · WARN przy 1–3 · FAIL przy 4+.
 
 Modele zwracają większą uwagę na początek i koniec długich kontekstów („U-shaped attention”). Krytyczne zasady ukryte w środku długiego pliku są statystycznie rzadziej przestrzegane. Ta kontrola ma własny wieloetapowy przepływ, ponieważ zmiana kolejności pliku jest istotną edycją, a nie jednoliniową poprawką.
 
-Wykonuj kroki po kolei. Wynik tej kontroli trafia do karty wyników *i* może uruchomić interaktywną zmianę kolejności.
+Wykonuj kroki po kolei. Wynik tej kontroli trafia do karty wyników _i_ może uruchomić interaktywną zmianę kolejności.
 
 #### Krok 5a — Wypisz obecną kolejność wysokiego poziomu
 
 Przejdź przez plik i wypisz obecną strukturę najwyższego poziomu jako listę numerowaną. Użyj nagłówków H1/H2 (oraz H3 tylko wtedy, gdy nie ma H2). Uwzględnij numer wiersza każdego nagłówka. **Nie** komentuj jeszcze — tylko przedstaw istniejącą strukturę.
 
 Przykład:
+
 ```
 Current order:
 1. # Welcome to OrderFlow            (line 1)
@@ -177,7 +186,7 @@ Current order:
 N. ## Project conventions            (line 312)
 ```
 
-Jeśli plik nie ma nagłówków, powiedz to wyraźnie: *„No section headings — file is one undifferentiated block.”*
+Jeśli plik nie ma nagłówków, powiedz to wyraźnie: _„No section headings — file is one undifferentiated block.”_
 
 #### Krok 5b — Skomentuj kolejność
 
@@ -198,9 +207,10 @@ Następnie w jednym akapicie opisz problem strukturalny. Przykłady:
 
 #### Krok 5c — Zaproponuj lepszą kolejność (tylko jeśli jest potrzebna)
 
-Jeśli komentarz w 5b zidentyfikował rzeczywisty problem, zaproponuj docelową kolejność. Sformułuj ją jako *„sekcje przeniesione na górę / zachowane / przeniesione na dół / usunięte”*, a nie jako pełne przepisanie każdego wiersza.
+Jeśli komentarz w 5b zidentyfikował rzeczywisty problem, zaproponuj docelową kolejność. Sformułuj ją jako _„sekcje przeniesione na górę / zachowane / przeniesione na dół / usunięte”_, a nie jako pełne przepisanie każdego wiersza.
 
 Przykład:
+
 ```
 Proposed order:
 1. ## Hard rules         (was: line 312)        ← moved to top
@@ -211,7 +221,7 @@ Proposed order:
 —   ## About the team / Mission / Values        ← remove (Check 3/4 already flagged these)
 ```
 
-Jeśli 5b nie wykrył problemu, całkowicie pomiń 5c — powiedz *„Order is sound; no reshuffle needed.”*
+Jeśli 5b nie wykrył problemu, całkowicie pomiń 5c — powiedz _„Order is sound; no reshuffle needed.”_
 
 #### Krok 5d — Zapytaj przed zmianą kolejności
 

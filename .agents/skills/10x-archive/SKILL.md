@@ -2,6 +2,7 @@
 name: 10x-archive
 description: Archive a completed change by moving its folder into context/archive/ and stamping change.md with archived status
 ---
+
 # /10x-archive — Zamknij zmianę
 
 Przenieś folder ukończonej zmiany z `context/changes/<change-id>/` do `context/archive/<created-date>-<change-id>/`, oznacz `change.md` za pomocą `status: archived` + `archived_at`, użyj `git mv`, aby historia plików została zachowana, oraz — jeśli `context/foundation/roadmap.md` zawiera element roadmapy, którego `Change ID` jest równe `<change-id>` — zamknij również ten element: zmień jego `Status` na `done` i dodaj wpis do sekcji `## Done` roadmapy.
@@ -28,7 +29,7 @@ Examples:
 You can list active changes with: `ls context/changes/`
 ```
 
-   Następnie **poczekaj**, aż użytkownik poda argument.
+Następnie **poczekaj**, aż użytkownik poda argument.
 
 ## Parsowanie argumentu
 
@@ -99,6 +100,7 @@ Zbierz następujące ostrzeżenia, a następnie przedstaw je wszystkie naraz za 
    - **Jeśli plan używa podsekcji Auto/Manual** (dowolny blok `### Phase N:` zawiera nagłówek `#### Automated` lub `#### Manual`) i `<N> > 0`, dodaj do kolejki: `<N> Progress items still pending (<X> automated, <Y> manual): <comma-separated list of \"N.M <title>\" tokens, truncated to 5 with \"…\" if longer>.` Uporządkuj połączoną listę tokenów najpierw według pozycji automatycznych (w kolejności dokumentu), a następnie ręcznych (w kolejności dokumentu); limit skrócenia wynoszący 5 dotyczy połączonej listy.
    - **Starsze zachowanie awaryjne**: jeśli żaden blok `### Phase N:` w Progress nie zawiera nagłówka `#### Automated` ani `#### Manual`, wróć do pierwotnego zachowania — policz linie `- [ ]` pod podnagłówkami `### Phase`; jeśli jakiekolwiek pozostają, dodaj do kolejki: `<N> Progress items still pending: <comma-separated list of \"N.M <title>\" tokens, truncated to 5 with \"…\" if longer>.` (bez rozbicia w nawiasie). Zachowuje to zerową zmianę zachowania dla planów utworzonych przed workflow-v2.
    - Jeśli brakuje `plan.md`, dodaj do kolejki: `No plan.md found in change folder.` i pomiń liczenie Progress.
+
 3. **Kontrola pokrycia przeglądami**: zbierz numery wszystkich faz z `## Progress` (w tym oczekujących faz), a następnie odczytaj `reviews/impl-review*.md` i utwórz sumę zbiorów numerów faz faktycznie sprawdzonych dla tego planu. Nowe raporty deklarują `Reviewed phases`; pełny raport wymieniający wszystkie fazy obejmuje je tak samo jak kilka raportów fazowych. W przypadku starszych raportów akceptuj jednoznaczny zakres, taki jak `Phase 3 of 4` (obejmuje tylko 3), jawny zakres/listę lub pełny przegląd, którego treść ustala dokładnie, które fazy zostały sprawdzone. Sama nazwa pliku, status `impl_reviewed`, werdykt lub samodzielna etykieta „Full plan” nie są dowodem. Ignoruj raporty dla innych planów. Sprzeczny lub niejasny zakres → dodaj do kolejki `Uncertain review coverage: <report paths and reason>` bez zgadywania numerów faz. Dodaj do kolejki `Missing review coverage for phases: <numbers>` dla różnicy między Progress a potwierdzonym pokryciem. Jeśli żadne raporty nie istnieją, dodaj również do kolejki `No impl-review found at reviews/impl-review*.md.` Jeśli Progress jest nieobecny lub nie można go przeanalizować, ostrzeż, że nie można określić pokrycia; nie twierdź, że pokrycie jest pełne.
 4. **Kontrola brakujących SHA**: przeanalizuj sekcję `## Progress` w `plan.md` (jeśli istnieje). Policz wiersze `- [x]`, których linia NIE kończy się na ` — <sha>`, gdzie `<sha>` ma 7+ znaków szesnastkowych (tj. regex ` — [0-9a-f]{7,}$` nie pasuje). Jeśli liczba jest niezerowa, dodaj do kolejki: `<N> Progress rows missing SHA suffix: <comma-separated \"N.M <title>\" tokens, truncated to 5 with \"…\" if longer>.` Wiersze bez SHA są uzasadnione dla faz z pustym diffem oraz planów ukończonych przed wdrożeniem kontraktu SHA — jest to miękki sygnał, a nie defekt. Pomiń bez komunikatu, jeśli brakuje `plan.md` (kontrola oczekującego Progress już obsłużyła ten przypadek).
 
@@ -127,7 +129,7 @@ W przeciwnym razie zapytaj użytkownika:
     opis: `Don't archive. Suggest /10x-implement <change-id> next.`
   - etykieta: `Cancel`
     opis: `Don't archive. Exit cleanly without further action.`
-  multiSelect: false
+    multiSelect: false
 
 **Zachęta tylko dla ręcznych pozycji**: jeśli kontrola oczekującego Progress powyżej dodała do kolejki ostrzeżenie, którego rozbicie wynosiło dokładnie `0 automated, <Y> manual`, gdzie `<Y> ≥ 1`, dodaj ` (Recommended)` do etykiety `Continue archiving`, aby monit wyraźnie zachęcał do archiwizacji — kontrole ręczne są często celowo odraczane, a archiwizacja jest oczekiwaną ścieżką. We wszystkich innych przypadkach (mieszane oczekujące, wyłącznie automatyczne, ostrzeżenie starszego zachowania awaryjnego lub brak ostrzeżenia Progress) przedstaw etykiety dosłownie.
 
@@ -159,7 +161,7 @@ Jeśli nie dodano do kolejki żadnych ostrzeżeń i nie zaproponowano mapowania 
 
 4. **Dodaj oznaczenie do stagingu wraz ze zmianą nazwy.** Aktualizacja w kroku 2 zmodyfikowała `change.md` w drzewie roboczym, ale `git mv` umieszcza w stagingu tylko zmianę nazwy z zawartością pliku z HEAD. Uruchom `git add \"$DEST/change.md\"`, aby oznaczenie frontmatter trafiło do tego samego commitu co zmiana nazwy. Jeśli zatwierdzono przepięcie, uruchom również `git add \"$DEST/plan.md\" \"$DEST/reviews/archive-sha-repoint.md\"`. Zweryfikuj, że diff w stagingu zawiera zatwierdzone zamiany sufiksów i notatkę mapowania, jak również przeniesienie; samo `git mv` nie ujmuje tych edycji ani nowej notatki.
 
-5. **Zamknij pasujący element roadmapy.** Uruchom to przy **każdej** archiwizacji — wyszukiwanie roadmapy jest obowiązkowe. „Best effort” dotyczy tylko *edycji*: brakująca roadmapa lub nieznaleziony cel edycji są pomijane bez komunikatu i nigdy nie blokują, nie wycofują ani nie wywołują monitu dla archiwizacji. NIE oznacza to „załóż, że nie ma roadmapy i pomiń kontrolę”. Nieprzeprowadzenie wyszukiwania jest defektem — potwierdzenie (krok 7) musi zgłosić wynik w obu przypadkach.
+5. **Zamknij pasujący element roadmapy.** Uruchom to przy **każdej** archiwizacji — wyszukiwanie roadmapy jest obowiązkowe. „Best effort” dotyczy tylko _edycji_: brakująca roadmapa lub nieznaleziony cel edycji są pomijane bez komunikatu i nigdy nie blokują, nie wycofują ani nie wywołują monitu dla archiwizacji. NIE oznacza to „załóż, że nie ma roadmapy i pomiń kontrolę”. Nieprzeprowadzenie wyszukiwania jest defektem — potwierdzenie (krok 7) musi zgłosić wynik w obu przypadkach.
 
    1. `test -f context/foundation/roadmap.md`. Jeśli nie istnieje, pomiń ten krok bez komunikatu.
    2. Zapisz, czy plik jest już zmodyfikowany: `ROADMAP_PREDIRTY=$(git status --porcelain context/foundation/roadmap.md 2>/dev/null)`. (Używane w podkroku 7 do podjęcia decyzji, czy dodać go do stagingu commitu archiwizacji).
@@ -168,7 +170,8 @@ Jeśli nie dodano do kolejki żadnych ostrzeżeń i nie zaproponowano mapowania 
       - oraz w treściach `## Foundations` / `## Slices` — blok `### <ID>: …`, który zawiera linię `- **Change ID:** <change-id>`.
 
       `<ID>` jest lokalnym identyfikatorem roadmapy tego elementu (`F-NN` lub `S-NN`); `<Outcome>` jest tekstem jego linii `- **Outcome:**` (zachowaj początkowe `(foundation) `, jeśli występuje).
-   4. **Brak dopasowania** → wypisz `ℹ context/foundation/roadmap.md has no item with Change ID \"<change-id>\" — roadmap left untouched.` i pomiń resztę tego kroku. Dopasowanie jest wyłącznie dokładnym ciągiem znaków; fragment roadmapy może tworzyć kilka zmian, więc niemal dopasowanie celowo *nie* jest zamykane.
+
+   4. **Brak dopasowania** → wypisz `ℹ context/foundation/roadmap.md has no item with Change ID \"<change-id>\" — roadmap left untouched.` i pomiń resztę tego kroku. Dopasowanie jest wyłącznie dokładnym ciągiem znaków; fragment roadmapy może tworzyć kilka zmian, więc niemal dopasowanie celowo _nie_ jest zamykane.
    5. **Znaleziono dopasowanie** → zastosuj trzy poniższe edycje. Każda jest niezależna i best effort: jeśli cel nie znajduje się tam, gdzie umieszcza go szablon `/10x-roadmap` (ręcznie edytowana roadmapa, starszy format), pomiń tę podedycję, kontynuuj i odnotuj, co pominięto — nigdy nie przerywaj archiwizacji z powodu struktury roadmapy. Zmieniaj wyłącznie pola nazwane tutaj; pozostaw `Outcome`, `Prerequisites`, `Parallel with`, `Risk` itd. bez zmian.
       1. **`## At a glance`** — w dopasowanym wierszu tabeli ustaw komórkę kolumny **Status** na `done`.
       2. **Treść elementu** — w bloku `### <ID>: …` zmień linię `- **Status:**` na `- **Status:** done`.

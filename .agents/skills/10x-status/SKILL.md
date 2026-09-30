@@ -2,6 +2,7 @@
 name: 10x-status
 description: Show status of changes by reading change.md frontmatter and parsing each plan's ## Progress section
 ---
+
 # /10x-status — Status zmiany
 
 Pokaż status każdej zmiany w drzewie `context/` bieżącego projektu, odczytując frontmatter `change.md` i analizując sekcję `## Progress` każdego planu. **Nie jest używany żaden plik stanu** — Progress jest jedynym źródłem prawdy (zobacz `references/progress-format.md`).
@@ -47,15 +48,15 @@ Jeśli sekcja Progress tej zmiany ma co najmniej jeden wiersz `- [x]`, którego 
 
 Podczas renderowania uwidocznij rozbieżności między `change.md.status` a rzeczywistym stanem Progress. Ostrzeżenia pojawiają się inline obok wiersza zmiany:
 
-| Warunek | Ostrzeżenie |
-|---|---|
-| `status: implementing` AND Progress has 0 `[x]` | `⚠ status drift: implementing but no progress` |
-| `status: implementing` AND every Progress item `[x]` | `⚠ status drift: should be implemented` |
-| `status: planned` AND any Progress item `[x]` | `⚠ status drift: should be implementing` |
-| `status: archived` AND folder is in `context/changes/` (not `archive/`) | `⚠ status drift: archived in wrong folder` |
-| Folder in `context/archive/` AND `status` ≠ `archived` | `⚠ status drift: in archive/ but status not archived` |
-| `status: plan_reviewed` AND `reviews/plan-review.md` missing | `⚠ missing plan-review artifact` |
-| `status: impl_reviewed` AND no `reviews/impl-review*.md` present | `⚠ missing impl-review artifact` |
+| Warunek                                                                 | Ostrzeżenie                                           |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| `status: implementing` AND Progress has 0 `[x]`                         | `⚠ status drift: implementing but no progress`        |
+| `status: implementing` AND every Progress item `[x]`                    | `⚠ status drift: should be implemented`               |
+| `status: planned` AND any Progress item `[x]`                           | `⚠ status drift: should be implementing`              |
+| `status: archived` AND folder is in `context/changes/` (not `archive/`) | `⚠ status drift: archived in wrong folder`            |
+| Folder in `context/archive/` AND `status` ≠ `archived`                  | `⚠ status drift: in archive/ but status not archived` |
+| `status: plan_reviewed` AND `reviews/plan-review.md` missing            | `⚠ missing plan-review artifact`                      |
+| `status: impl_reviewed` AND no `reviews/impl-review*.md` present        | `⚠ missing impl-review artifact`                      |
 
 Nigdy nie zgłaszaj błędu ani nie kończ z kodem niezerowym z powodu rozbieżności — `/10x-status` ma charakter informacyjny. Ostrzeżenie przypomina użytkownikowi o poprawieniu `change.md` lub przeniesieniu folderu.
 

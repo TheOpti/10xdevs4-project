@@ -9,13 +9,14 @@ description: >
   the assumption", "rethink", "before I plan". Use BEFORE /10x-plan, not in
   place of it.
 ---
+
 # Frame: Podważ założenia przed planowaniem
 
 Plany oparte na błędnym sformułowaniu problemu są doskonałymi rozwiązaniami na niewłaściwe pytanie. Ta umiejętność istnieje w jednym celu: rozdzielić **obserwację** od **podanej przyczyny** — oraz **problem** od **proponowanego rozwiązania** — zanim rozpocznie się jakiekolwiek planowanie.
 
 Zakres, którym zajmuje się ta umiejętność, jest ogólny: użytkownik opisuje coś (obserwację, postrzegany problem, zakres, którego chce się podjąć) i jednocześnie proponuje reakcję (przyczynę, podejście, strukturę planu). Te dwie rzeczy zostają potraktowane jako jeden fakt. Doskonały /10x-plan dostarcza wtedy doskonałe rozwiązanie — a rzeczywisty problem pozostaje, ponieważ założenia były błędne; plan był poprawny; użytkownik stracił dzień.
 
-Ta umiejętność jest krokiem weryfikacji założeń. /10x-plan odpowiada na pytanie *jak to zbudować*. /10x-frame odpowiada na pytanie *co właściwie należy zaplanować*.
+Ta umiejętność jest krokiem weryfikacji założeń. /10x-plan odpowiada na pytanie _jak to zbudować_. /10x-frame odpowiada na pytanie _co właściwie należy zaplanować_.
 
 ## Kiedy używać, kiedy pominąć
 
@@ -29,7 +30,7 @@ W razie wątpliwości ta umiejętność zadaje krótką serię pytań i tanio ko
 
 - `/10x-research` — szeroka eksploracja codebase'u. Frame może przyjąć dokument badawczy jako dane wejściowe, ale go nie zastępuje.
 - `/10x-plan` — przyjmuje dane wyjściowe frame jako dane wejściowe. Frame Brief JEST prawidłowym pierwszym argumentem dla /10x-plan.
-- `/10x-plan-review` — waliduje istniejący plan. Frame waliduje *założenie* przed powstaniem planu.
+- `/10x-plan-review` — waliduje istniejący plan. Frame waliduje _założenie_ przed powstaniem planu.
 
 Frame Brief jest przydatny samodzielnie (jako artefakt do dyskusji lub do określenia zakresu szybkiej poprawki) — nie wymaga następującego po nim /10x-plan.
 
@@ -87,7 +88,7 @@ Jeśli użytkownik nie podał jasnych początkowych założeń („coś wydaje s
 
 ### Krok 1.5: Pytania doprecyzowujące przed delegowaniem
 
-Ten krok jest wykonywany zawsze. Przed zbudowaniem mapy wymiarów (Krok 2) lub delegowaniem równoległych podagentów (Krok 3), zatrzymaj się na jedną rundę pytań doprecyzowujących przy każdym wywołaniu. Celem jest usunięcie niejednoznaczności dotyczących *obserwacji i zakresu* — „która z tych pozycji jest głównym problemem?”, „czy to jedna obserwacja, czy kilka?”, „czy obserwowalny element jest pojedynczym objawem czy klasą objawów?” — aby mapa wymiarów została zbudowana wokół skupionej obserwacji, a nie wielowątkowej listy zadań.
+Ten krok jest wykonywany zawsze. Przed zbudowaniem mapy wymiarów (Krok 2) lub delegowaniem równoległych podagentów (Krok 3), zatrzymaj się na jedną rundę pytań doprecyzowujących przy każdym wywołaniu. Celem jest usunięcie niejednoznaczności dotyczących _obserwacji i zakresu_ — „która z tych pozycji jest głównym problemem?”, „czy to jedna obserwacja, czy kilka?”, „czy obserwowalny element jest pojedynczym objawem czy klasą objawów?” — aby mapa wymiarów została zbudowana wokół skupionej obserwacji, a nie wielowątkowej listy zadań.
 
 Zadaj użytkownikowi **2–3 pytania** w jednej rundzie. Każda opcja opisuje obserwację lub pozycję zakresu — co użytkownik faktycznie widzi albo który fragment pracy chce najpierw zbadać — nigdy przyczynę, podejście ani poprawkę. Zawsze uwzględniaj opcję „Nie jestem pewien / jeszcze ich nie rozdzieliłem”, zgodnie z zasadą traktowania pewności jako sygnału z Kroku 4.
 
@@ -103,11 +104,11 @@ Skonstruuj **mapę** wymiarów, z których może pochodzić obserwacja — dla T
 
 Jak zbudować mapę:
 
-- **Najpierw czytaj.** Otwórz pliki wspomniane przez użytkownika. Otwórz sąsiednie elementy. Prześledź ścieżkę od podanej przyczyny do zaobserwowanego efektu — *niezależnie od tego, czy jest to przepływ danych w runtime, łańcuch decyzji projektowych czy sekwencja założeń*. Wymiary wynikają z tego, co faktycznie istnieje: etapów wejścia, transformacji, stanu, skutków ubocznych; albo osi przestrzeni projektowej; albo warstw decyzji o zakresie. Nie wymieniaj wymiarów, dla których nie widziałeś dowodów.
+- **Najpierw czytaj.** Otwórz pliki wspomniane przez użytkownika. Otwórz sąsiednie elementy. Prześledź ścieżkę od podanej przyczyny do zaobserwowanego efektu — _niezależnie od tego, czy jest to przepływ danych w runtime, łańcuch decyzji projektowych czy sekwencja założeń_. Wymiary wynikają z tego, co faktycznie istnieje: etapów wejścia, transformacji, stanu, skutków ubocznych; albo osi przestrzeni projektowej; albo warstw decyzji o zakresie. Nie wymieniaj wymiarów, dla których nie widziałeś dowodów.
 - **Używaj podagentów, gdy powierzchnia jest duża lub nieznana.** Deleguj jedno lub dwa zadania eksploracyjne z promptami w rodzaju: „Prześledź ścieżkę od <stated cause> do <observed effect>. Wymień każdy odrębny etap lub oś, przez którą przechodzi łańcuch, z odwołaniami file:line lub document:section.” Mapa jest tym, co zwracają — a nie tym, co zgadłeś przed przeczytaniem materiałów.
 - **Traktuj każdy wymiar jako możliwe źródło.** Użyteczny wymiar to taki, w którym, gdyby założenia załamały się w tym miejscu, zobaczyłbyś w przybliżeniu tę obserwację. Wymiary, które nie mogłyby wiarygodnie wywołać obserwacji, nie należą do mapy.
 
-**Przypnij obserwację do mapy**: na którym wymiarze lądują założenia użytkownika? Gdzie jeszcze *mogłaby* powstać obserwacja? Założenia użytkownika są jednym węzłem na mapie; reszta mapy to przestrzeń hipotez.
+**Przypnij obserwację do mapy**: na którym wymiarze lądują założenia użytkownika? Gdzie jeszcze _mogłaby_ powstać obserwacja? Założenia użytkownika są jednym węzłem na mapie; reszta mapy to przestrzeń hipotez.
 
 Przedstaw krótko mapę w formie tekstowej:
 
@@ -142,7 +143,7 @@ Po powrocie wszystkich wyników dokonaj syntezy: które hipotezy mają **mocne**
 
 ### Krok 4: Pytania zawężające (sokratyczne, nie dotyczące rozwiązania)
 
-Zapytaj użytkownika. **Pytania i opcje tutaj zasadniczo różnią się od tych w /10x-plan**: w /10x-plan opcje są *wyborami rozwiązań*; tutaj opcje są *elementami rozstrzygającymi między hipotezami*. Odpowiedź użytkownika zawęża przestrzeń hipotez.
+Zapytaj użytkownika. **Pytania i opcje tutaj zasadniczo różnią się od tych w /10x-plan**: w /10x-plan opcje są _wyborami rozwiązań_; tutaj opcje są _elementami rozstrzygającymi między hipotezami_. Odpowiedź użytkownika zawęża przestrzeń hipotez.
 
 **Zasady pytań zawężających:**
 
@@ -183,10 +184,10 @@ Zapisz brief do `context/changes/<change-id>/frame.md` (jeden artefakt na zmian�
 
 Użyj tego szablonu:
 
-````markdown
+```markdown
 # Frame Brief: [Topic]
 
-> Framing step before /10x-plan. This document captures what is *actually*
+> Framing step before /10x-plan. This document captures what is _actually_
 > at issue, separated from what was initially assumed.
 
 ## Reported Observation
@@ -205,18 +206,18 @@ Step 1, unchanged.]
 The observation could originate at any of these dimensions:
 
 1. **[Dimension A]** — [what would go wrong / what the framing assumes here]
-2. **[Dimension B]** — [...]  ← initial framing
+2. **[Dimension B]** — [...] ← initial framing
 3. **[Dimension C]** — [...]
 4. **[Dimension D]** — [...]
 
 ## Hypothesis Investigation
 
-| Hypothesis | Evidence | Verdict |
-| --- | --- | --- |
-| [Dimension A: brief claim] | [file:line / document:section / observations] | STRONG / WEAK / NONE |
-| [Dimension B: initial framing] | [evidence] | STRONG / WEAK / NONE |
-| [Dimension C] | [evidence] | STRONG / WEAK / NONE |
-| [Dimension D] | [evidence] | STRONG / WEAK / NONE |
+| Hypothesis                     | Evidence                                      | Verdict              |
+| ------------------------------ | --------------------------------------------- | -------------------- |
+| [Dimension A: brief claim]     | [file:line / document:section / observations] | STRONG / WEAK / NONE |
+| [Dimension B: initial framing] | [evidence]                                    | STRONG / WEAK / NONE |
+| [Dimension C]                  | [evidence]                                    | STRONG / WEAK / NONE |
+| [Dimension D]                  | [evidence]                                    | STRONG / WEAK / NONE |
 
 ## Narrowing Signals
 
@@ -260,7 +261,7 @@ If reframe is "no change", state that the original framing held up.]
 - Source files: [file:line]
 - Related research: `context/changes/<change-id>/research.md` (if present)
 - Investigation tasks: [list of task IDs from Step 3]
-````
+```
 
 Brief powinien być zwięzły — celuj w ~80–150 wierszy. Tabela hipotez jest sercem dokumentu; wszystko inne ją wspiera.
 
@@ -313,7 +314,7 @@ I wypisz: `→ /10x-plan <change-id> (✓ copied)`
 
 3. **Bez projektowania rozwiązania.** Ta umiejętność nigdy nie wybiera podejścia implementacyjnego. Nie proponuje faz, zmian plików ani decyzji technicznych. Tworzy JEDEN artefakt: przeformułowane (lub potwierdzone) sformułowanie problemu. Rozwiązanie należy do /10x-plan.
 
-4. **Pytania zawężające ≠ pytania o rozwiązanie.** /10x-plan pyta „które podejście?”. /10x-frame pyta „w którym miejscu mapy wymiarów znajduje się rzeczywisty problem?”. Ta reguła obowiązuje zarówno w Kroku 1.5 (zawężanie zakresu/obserwacji przed delegowaniem), jak i w Kroku 4 (zawężanie hipotez po delegowaniu). Opcje opisują obserwacje lub pozycje projektowe, a nie wybory dotyczące sposobu ich rozwiązania. Jeśli zauważysz, że tworzysz pytanie, którego odpowiedź zmienia *kierunek*, wkroczyłeś na obszar /10x-plan — zatrzymaj się.
+4. **Pytania zawężające ≠ pytania o rozwiązanie.** /10x-plan pyta „które podejście?”. /10x-frame pyta „w którym miejscu mapy wymiarów znajduje się rzeczywisty problem?”. Ta reguła obowiązuje zarówno w Kroku 1.5 (zawężanie zakresu/obserwacji przed delegowaniem), jak i w Kroku 4 (zawężanie hipotez po delegowaniu). Opcje opisują obserwacje lub pozycje projektowe, a nie wybory dotyczące sposobu ich rozwiązania. Jeśli zauważysz, że tworzysz pytanie, którego odpowiedź zmienia _kierunek_, wkroczyłeś na obszar /10x-plan — zatrzymaj się.
 
 5. **Przeczytaj materiał źródłowy, zanim sięgniesz po wcześniejsze prawdopodobieństwa.** Materiał źródłowy oznacza kod, dokumentację, wcześniejsze decyzje lub cokolwiek, na czym faktycznie opierają się założenia. Łatwo rozpoznać wzorzec na podstawie znajomości danych treningowych i zaproponować przeformułowanie przed zbadaniem sprawy. Nie rób tego. Hipotezy muszą wynikać z mapy wymiarów skonstruowanej w Kroku 2 na podstawie TEGO materiału, a dowody muszą pochodzić z odczytów podagentów w TYM projekcie. Brzmiące pewnie przeformułowanie bez dowodów file:line lub document:section to tryb porażki, któremu ta umiejętność ma zapobiegać.
 

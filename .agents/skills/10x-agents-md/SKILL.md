@@ -10,6 +10,7 @@ description: >
   optimized to be small, precise, reference-heavy, and ordered with critical
   rules at the top — so a future agent reads it once and stays unblocked.
 ---
+
 # Agenci 10x MD
 
 Utwórz `AGENTS.md`, który służy jako dokument wdrożeniowy dla agentów AI piszących kod w tym repozytorium. Plik jest krótki, specyficzny dla repo i skonstruowany tak, aby najważniejsze zasady pojawiały się jako pierwsze.
@@ -33,16 +34,16 @@ Ta sama umiejętność może utworzyć dwa istotnie różne dokumenty zależnie 
 
 **Zakres na poziomie repozytorium.** Postępuj zgodnie z poniższą procedurą i „Strukturą wyjściową” — dokument jest przewodnikiem wdrożeniowym wysokiego poziomu (struktura projektu, polecenia budowania, bramka CI, konwencje commitów itd.).
 
-**Zakres na poziomie katalogu.** Całkowicie pomiń kontekst wdrożenia do repozytorium. Czytelnik zna już repo; potrzebuje zasad *tego* katalogu. Przeorientuj analizę i wynik:
+**Zakres na poziomie katalogu.** Całkowicie pomiń kontekst wdrożenia do repozytorium. Czytelnik zna już repo; potrzebuje zasad _tego_ katalogu. Przeorientuj analizę i wynik:
 
 - **Najpierw analizuj lokalnie.** Sprawdź pliki rzeczywiście znajdujące się obok celu: sąsiednie pliki źródłowe, najbliższy `index.*`/`mod.rs`/`__init__.py`, testy współlokowane, README katalogu nadrzędnego, jeśli istnieje, oraz każdą zagnieżdżoną konfigurację (np. `tsconfig.json`, `.eslintrc`, manifesty tras), która nadpisuje domyślne ustawienia poziomu repo. Dokumenty z katalogu głównego repo (`README.md`, `AGENTS.md`) konsultuj tylko, aby **rozstrzygnąć konflikty** lub pobrać pojedyncze kanoniczne odwołanie `@` — nie jako główne źródło.
 - **Wnioskuj lokalny wzorzec, czytając sąsiadów.** Jaką formę mają istniejące pliki w tym katalogu? Układ plików komponentu, nazewnictwo (`PascalCase.tsx`, `kebab-case.ts`, `*.handler.ts`), eksporty domyślne vs. nazwane, konwencje propsów/argumentów, gdzie znajdują się typy/style/testy względem jednostki, idiomy obsługi błędów, co jest importowane i skąd. AGENTS.md ma uchwycić zaobserwowaną konwencję, a nie ogólną poradę.
 - **Przeformułuj sekcje wokół lokalnej jednostki.** Zastąp sekcje poziomu repozytorium sekcjami istotnymi dla katalogu. Przydatne domyślne sekcje (dostosuj do tego, co istnieje):
-  - *Dodawanie nowej \\<jednostki\\>* — konkretne kroki dla dominującego artefaktu w tym katalogu (komponent, handler trasy, migracja, hook, worker itd.), z wskazaniem jednego istniejącego sąsiada jako wzorca przez `@./<sibling-file>`.
-  - *Układ plików i nazewnictwo* — wzorzec nazewnictwa, zasady współlokowania (test obok źródła? style inline? typy w sąsiednim pliku?), polityka eksportów zbiorczych, jeśli istnieje.
-  - *Lokalne konwencje* — kształt propsów/argumentów, zasady stanu/przepływu danych, dozwolone importy (i zakazane — np. „komponenty w tym katalogu nie mogą importować z `src/server/`”), zasady dostępności lub i18n widoczne u sąsiadów.
-  - *Testowanie tej jednostki* — wzorzec testów używany przez sąsiadów, sposób uruchomienia testów tylko dla tego katalogu.
-  - *Pułapki* — specyficzne dla katalogu zasady „nigdy nie rób X” widoczne u sąsiadów lub w pobliskim fragmencie AGENTS.md.
+  - _Dodawanie nowej \\<jednostki\\>_ — konkretne kroki dla dominującego artefaktu w tym katalogu (komponent, handler trasy, migracja, hook, worker itd.), z wskazaniem jednego istniejącego sąsiada jako wzorca przez `@./<sibling-file>`.
+  - _Układ plików i nazewnictwo_ — wzorzec nazewnictwa, zasady współlokowania (test obok źródła? style inline? typy w sąsiednim pliku?), polityka eksportów zbiorczych, jeśli istnieje.
+  - _Lokalne konwencje_ — kształt propsów/argumentów, zasady stanu/przepływu danych, dozwolone importy (i zakazane — np. „komponenty w tym katalogu nie mogą importować z `src/server/`”), zasady dostępności lub i18n widoczne u sąsiadów.
+  - _Testowanie tej jednostki_ — wzorzec testów używany przez sąsiadów, sposób uruchomienia testów tylko dla tego katalogu.
+  - _Pułapki_ — specyficzne dla katalogu zasady „nigdy nie rób X” widoczne u sąsiadów lub w pobliskim fragmencie AGENTS.md.
 - **Pomiń sekcje poziomu repozytorium.** Bez mapy struktury projektu na najwyższym poziomie, bez listy pakietów monorepo, bez globalnego przeglądu build/CI, bez przypomnienia o konwencjach commitów — należą one do głównego `AGENTS.md`. Jeśli czytelnik ich potrzebuje, podaj jedno odwołanie: `See @AGENTS.md at the repo root for repo-wide rules.`
 - **Budżet długości jest mniejszy.** Celuj w **120–250 słów** treści dla przewodników poziomu katalogu; powierzchnia zagadnienia jest mniejsza, a wypełnianie tekstu jest tu gorsze niż w katalogu głównym.
 
@@ -50,7 +51,7 @@ Kontrole jakości nadal obowiązują, z jedną zmianą: kontrola 5 („Najpierw 
 
 ## Interaktywne pytania — niezależne od hosta
 
-Gdy procedura mówi *„zapytaj użytkownika”*, użyj dowolnej funkcji interaktywnych pytań udostępnianej przez hostującego agenta. Umiejętność jest niezależna od hosta; nie koduj na sztywno jednej nazwy narzędzia. Znane odpowiedniki (lista niepełna):
+Gdy procedura mówi _„zapytaj użytkownika”_, użyj dowolnej funkcji interaktywnych pytań udostępnianej przez hostującego agenta. Umiejętność jest niezależna od hosta; nie koduj na sztywno jednej nazwy narzędzia. Znane odpowiedniki (lista niepełna):
 
 - twój asystent AI do programowania → funkcja interaktywnych pytań
 - Cursor → `ask_question`
@@ -146,7 +147,7 @@ Uruchamiana, gdy plik docelowy już istnieje. Domyślnie wykonuje **chirurgiczn�
    - **UPDATE** — kierunkowo poprawna, ale szczegół jest nieaktualny (przemianowany skrypt, przeniesiona ścieżka, zmienione narzędzie, podbicie wersji). Zanotuj dokładne zastąpienie.
    - **REMOVE** — bazowy plik/polecenie/konwencja już nie istnieje lub zasada została zaprzeczona przez nowsze źródło (AGENTS.md, README), któremu bardziej ufasz.
    - **MISSING** — obecnie nie ma jej w pliku, ale powinna być (nowy pakiet najwyższego poziomu, nowy wymagany skrypt, nowa zasada „nigdy nie rób X” dodana przez walidator CI, nowa konwencja commitów widoczna w `git log`).
-   Zachowaj tę klasyfikację jako krótką tabelę, którą możesz pokazać użytkownikowi. Cytuj `path:line` (w istniejącym AGENTS.md) dla każdego wpisu UPDATE/REMOVE oraz cytuj ścieżkę źródła prawdy (np. `package.json:42`) dla każdego wpisu UPDATE/MISSING.
+     Zachowaj tę klasyfikację jako krótką tabelę, którą możesz pokazać użytkownikowi. Cytuj `path:line` (w istniejącym AGENTS.md) dla każdego wpisu UPDATE/REMOVE oraz cytuj ścieżkę źródła prawdy (np. `package.json:42`) dla każdego wpisu UPDATE/MISSING.
 
 5. **Potwierdź zakres przed edycją.** Zapytaj użytkownika, używając jednokrotnie funkcji interaktywnych pytań hosta (zob. „Interaktywne pytania — niezależne od hosta” powyżej), z tymi opcjami:
    - **Zastosuj proponowane aktualizacje** — wykonaj listę UPDATE/REMOVE/MISSING jako celowane edycje; linii KEEP nie dotykaj.
@@ -158,7 +159,7 @@ Uruchamiana, gdy plik docelowy już istnieje. Domyślnie wykonuje **chirurgiczn�
 
 7. **Ponownie uruchom Kontrole jakości** dla zaktualizowanego pliku. Obowiązuje tych samych pięć bramek. Jeśli kontrola teraz nie przejdzie przez aktualizację (np. treść przekroczyła 400 słów po dodaniu MISSING), skróć zawartość KEEP, która stała się mało istotna, zamiast usuwać nową zawartość MISSING.
 
-8. **Zaraportuj.** Potwierdź ścieżkę, nową liczbę słów i jednolinijkowe podsumowanie zmian w każdym koszyku (np. *„3 zaktualizowane, 1 usunięty, 2 dodane; kolejność sekcji bez zmian”*).
+8. **Zaraportuj.** Potwierdź ścieżkę, nową liczbę słów i jednolinijkowe podsumowanie zmian w każdym koszyku (np. _„3 zaktualizowane, 1 usunięty, 2 dodane; kolejność sekcji bez zmian”_).
 
 ## Struktura wyjściowa
 
@@ -172,8 +173,8 @@ Porządkuj sekcje według **wartości dla nowego agenta**, a nie według tradycj
 4. **Styl kodowania i konwencje nazewnictwa** — wcięcia, wersja języka, wzorce nazewnictwa (z jednym krótkim przykładowym wzorcem, nie blokiem kodu) oraz narzędzia lint/format, które je egzekwują.
 5. **Wytyczne testowania** — framework, miejsce testów, wzorzec nazewnictwa, sposób uruchomienia pojedynczego testu, każdy próg pokrycia, który repo faktycznie sprawdza.
 6. **Wytyczne dotyczące commitów i Pull Requestów** — konwencja zaobserwowana w `git log` (np. widoczne prefiksy Conventional Commits), oczekiwania dotyczące opisu PR, wymagane kontrole CI.
-7. **Wskazówki bezpieczeństwa i konfiguracji** *(opcjonalnie)* — obsługa sekretów, lokalizacja pliku env, skrypty walidatora powodujące niepowodzenie CI.
-8. **Przegląd architektury** *(opcjonalnie, tylko jeśli nie został już pokryty przez odwołanie `@`)* — maks. 3–6 punktów; w przeciwnym razie dodaj link.
+7. **Wskazówki bezpieczeństwa i konfiguracji** _(opcjonalnie)_ — obsługa sekretów, lokalizacja pliku env, skrypty walidatora powodujące niepowodzenie CI.
+8. **Przegląd architektury** _(opcjonalnie, tylko jeśli nie został już pokryty przez odwołanie `@`)_ — maks. 3–6 punktów; w przeciwnym razie dodaj link.
 
 Otwórz plik jednym krótkim akapitem (1–2 zdania) określającym, czym jest projekt i jaki jest główny stack — wystarczająco, aby agent trafiający do repo po raz pierwszy miał punkt odniesienia. Bez deklaracji misji, przedstawiania zespołu ani wartości.
 
@@ -183,7 +184,7 @@ Każda kontrola jest twardą bramką. Jeśli którakolwiek nie przejdzie, popraw
 
 1. **Długość.** Treść ma 200–400 słów. Poniżej 200 oznacza pominięcie szczegółów; powyżej 400 oznacza wypełnienie tekstu lub wklejenie czegoś, co powinno być odwołaniem.
 2. **Brak wieloliniowych fragmentów.** Brak bloków kodu ogrodzonych fence dłuższych niż jedna linia polecenia. Zastąp przykładowe komponenty / konfiguracje / migracje przez `@path/to/file`. Krótkie jednolinijkowe przykłady poleceń (`pnpm test`, `git rebase main`) są dozwolone.
-3. **Każda zasada jest weryfikowalna.** Przeczytaj ponownie każde zdanie i zapytaj: *czy recenzent mógłby oznaczyć różnicę na podstawie tego?* Jeśli nie, przepisz je używając konkretnego wzorca, progu lub nazwanego narzędzia. Usuń zwroty takie jak „czysty kod”, „najlepsze praktyki”, „nowoczesne wzorce”, „bądź konsekwentny”, „prawidłowo obsługuj błędy”, „zachowaj prostotę”.
+3. **Każda zasada jest weryfikowalna.** Przeczytaj ponownie każde zdanie i zapytaj: _czy recenzent mógłby oznaczyć różnicę na podstawie tego?_ Jeśli nie, przepisz je używając konkretnego wzorca, progu lub nazwanego narzędzia. Usuń zwroty takie jak „czysty kod”, „najlepsze praktyki”, „nowoczesne wzorce”, „bądź konsekwentny”, „prawidłowo obsługuj błędy”, „zachowaj prostotę”.
 4. **Brak nadmiarowej wiedzy.** Usuń każdą linię, którą można było napisać bez otwierania repo. Domyślne zachowania frameworków, samouczki językowe i definicje powszechnych terminów nie zasługują na miejsce. Jeśli zasada powiela `README.md` / `package.json` / konfigurację lint, zastąp ją przez `@README.md` / `@package.json` / `@.eslintrc.json`.
 5. **Najpierw krytyczne zasady.** Pierwsza trzecia pliku musi zawierać zasady o najwyższej stawce i najczęściej używane polecenia. Jeśli jedyna zasada „nigdy nie rób X” jest na dole, przenieś ją wyżej. Jeśli na górze są powitanie/misja/wartości, usuń je.
 
@@ -198,7 +199,7 @@ Zaraportuj użytkownikowi:
 - ścieżkę zapisanego pliku,
 - liczbę słów treści,
 - jednolinijkowe podsumowanie wybranej kolejności sekcji,
-- przypomnienie: *test the file by running a real task with a fresh agent session — onboarding docs only prove themselves on the next run.*
+- przypomnienie: _test the file by running a real task with a fresh agent session — onboarding docs only prove themselves on the next run._
 
 Nie proponuj dalszych działań, chyba że użytkownik o nie poprosi.
 

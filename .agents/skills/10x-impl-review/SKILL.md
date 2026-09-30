@@ -2,15 +2,18 @@
 name: 10x-impl-review
 description: Review implementation against plan for drift, dangerous decisions, and pattern compliance
 ---
+
 # Przegląd implementacji
 
 Porównaj rzeczywistą pracę implementacyjną z oryginalnym planem, aby wychwycić odchylenia, niebezpieczne decyzje, naruszenia architektury i niewłaściwe użycie wzorców, zanim się skumulują.
 
 Dwa poziomy szczegółowości:
+
 - **Przegląd fazy**: po pojedynczej fazie — szybki, skupiony na zmianach z tej fazy
 - **Przegląd pełnego planu**: po wszystkich fazach — kompleksowe sprawdzenie
 
 Dwa tryby:
+
 - **Nowy przegląd**: analiza → ustalenia → interaktywny triage
 - **Wznowienie triage**: wczytaj zapisany raport i przejdź do triage dla poszczególnych problemów
 
@@ -43,6 +46,7 @@ Utwórz zadanie: „Przegląd implementacji” z aktywnym statusem „Wczytywani
    Jeśli zakresu nie da się jednoznacznie określić, użyj jako rozwiązania awaryjnego commitów, których komunikaty odnoszą się do planu/funkcji.
 
 Porównaj listę zmienionych plików z listą plików planu:
+
 - **W planie I w diffie** → oczekiwana zmiana, zweryfikuj, czy treść odpowiada intencji
 - **W diffie, ale NIE w planie** → nieplanowana zmiana, zbadaj i oznacz
 - **W planie, ale NIE w diffie** → potencjalnie brakująca implementacja
@@ -60,6 +64,7 @@ Uruchom jednocześnie **dwóch** równoległych agentów przeglądu. Każdy otrz
 Przekaż mu: tekst „Changes Required” dla sprawdzanych faz, listę ścieżek plików do przeczytania.
 
 Instrukcje: dla każdej planowanej zmiany przeczytaj rzeczywisty plik i zweryfikuj, czy implementacja odpowiada intencji. Sprawdź:
+
 - Zmiany zaimplementowane inaczej niż planowano (niezgodność intencji, nie formatowania)
 - Planowane elementy pominięte bez dokumentacji
 - Dodatki nieopisane w planie (rozrastanie się zakresu)
@@ -99,6 +104,7 @@ Dla każdej sprawdzanej fazy:
 Zaktualizuj status zadania na „Kompilowanie ustaleń”.
 
 Każde ustalenie zawiera:
+
 - **ID**: F1, F2, F3…
 - **Ważność**: CRITICAL / WARNING / OBSERVATION (jak poważne są skutki zignorowania)
 - **Wpływ**: LOW / MEDIUM / HIGH (ile uwagi wymaga decyzja)
@@ -112,11 +118,11 @@ Każde ustalenie zawiera:
 
 Niezależny od ważności. CRITICAL z LOW impact (oczywista jednolinijkowa poprawka) jest tani; WARNING z HIGH impact (przebudowa architektoniczna) zasługuje na uważne rozważenie.
 
-| Wpływ | Znaczenie |
-|---|---|
-| 🏃 **LOW** | Szybka decyzja. Poprawka jest oczywista i wąsko ograniczona zakresem. Bezpieczna do grupowania. |
-| 🔎 **MEDIUM** | Warto się zatrzymać. Rzeczywisty kompromis lub nietrywialna zmiana — pomyśl przed podjęciem decyzji. |
-| 🔬 **HIGH** | Stawka architektoniczna. Szeroki zasięg skutków, strategiczne implikacje lub niejasna najlepsza ścieżka. |
+| Wpływ         | Znaczenie                                                                                                |
+| ------------- | -------------------------------------------------------------------------------------------------------- |
+| 🏃 **LOW**    | Szybka decyzja. Poprawka jest oczywista i wąsko ograniczona zakresem. Bezpieczna do grupowania.          |
+| 🔎 **MEDIUM** | Warto się zatrzymać. Rzeczywisty kompromis lub nietrywialna zmiana — pomyśl przed podjęciem decyzji.     |
+| 🔬 **HIGH**   | Stawka architektoniczna. Szeroki zasięg skutków, strategiczne implikacje lub niejasna najlepsza ścieżka. |
 
 ### Opcje naprawy
 
@@ -125,6 +131,7 @@ Domyślnie stosuj **jedną** poprawkę. Oferuj dwie tylko wtedy, gdy istnieje rz
 **Ustalenia o LOW-impact**: tylko `Fix: [one line]`. Szum nie jest pomocny, gdy odpowiedź jest oczywista.
 
 **Ustalenia o MEDIUM/HIGH-impact**: każda opcja otrzymuje:
+
 ```
 [1-sentence approach] · Strength: [advantage, ideally grounded in code/plan evidence] · Tradeoff: [cost or risk] · Confidence: HIGH|MED|LOW — [1-line why] · Blind spot: [what we haven't verified, or "None significant"]
 ```
@@ -134,6 +141,7 @@ Gdy oferujesz dwie opcje, oznacz dokładnie jedną jako `⭐ Recommended`.
 ### Werdykty wymiarów
 
 PASS / WARNING / FAIL dla każdego wymiaru:
+
 - **Plan Adherence** — zaplanowane zmiany wdrożone zgodnie z opisem? FAIL przy MISSING lub poważnym DRIFT.
 - **Scope Discipline** — granice „not doing” zachowane? WARNING, jeśli istnieją zmiany EXTRA, ale są nieszkodliwe.
 - **Safety & Quality** — bezpieczeństwo, wydajność, niezawodność, bezpieczeństwo danych. FAIL przy każdym ustaleniu CRITICAL.
@@ -251,7 +259,7 @@ Zwykły tekst, znaki ramek. Wymiary PASS pojawiają się wyłącznie w tabeli we
 
 Zachowaj `Reviewed phases` jako jawną listę numerów faktycznie sprawdzonych faz rozdzielonych przecinkami (np. `1, 3`) albo `none`, gdy nie sprawdzono żadnej. Nigdy nie wywnioskuj zakresu z nazwy pliku raportu, werdyktu ani etykiety „Full plan”. Pełny przegląd wymienia każdy sprawdzony numer i może zastąpić kilka raportów faz dla pokrycia archiwum; dodane lub pozostawione bez przeglądu fazy nie są uwzględniane. Wznowienie triage zachowuje oryginalne pokrycie; nie uzupełniaj niepewnego starszego zakresu.
 
-**Każda ścieżka przez tę umiejętność zapisuje raport i oznacza zmianę** — Triage now, Triage later i Done zapisują plik. To pozwala `/10x-archive` i `/10x-status` zobaczyć przegląd oraz zachowuje poprawny `change.md.status`. Zrób to *przed* przedstawieniem opcji kontynuowania — nigdy warunkowo i nigdy wyłącznie w gałęziach „save”.
+**Każda ścieżka przez tę umiejętność zapisuje raport i oznacza zmianę** — Triage now, Triage later i Done zapisują plik. To pozwala `/10x-archive` i `/10x-status` zobaczyć przegląd oraz zachowuje poprawny `change.md.status`. Zrób to _przed_ przedstawieniem opcji kontynuowania — nigdy warunkowo i nigdy wyłącznie w gałęziach „save”.
 
 1. **Zapisz plik raportu** do `context/changes/<change-id>/reviews/impl-review.md` (albo `context/changes/<change-id>/reviews/impl-review-phase-N.md` dla przeglądu ograniczonego do fazy), używając poniższego formatu. Utwórz katalog `reviews/`, jeśli nie istnieje.
 2. **Oznacz `change.md`**: ustaw `status: impl_reviewed` oraz `updated: <today>`. Raz, tutaj — niezależnie od opcji kontynuowania wybranej przez użytkownika. (Jeśli pole `change.md` ma już `impl_reviewed`, tylko odśwież `updated`.)
@@ -259,6 +267,7 @@ Zachowaj `Reviewed phases` jako jawną listę numerów faktycznie sprawdzonych f
 
 ```markdown
 <!-- IMPL-REVIEW-REPORT -->
+
 # Implementation Review: [Plan Title]
 
 - **Plan**: [plan file path]
@@ -270,14 +279,14 @@ Zachowaj `Reviewed phases` jako jawną listę numerów faktycznie sprawdzonych f
 
 ## Verdicts
 
-| Dimension | Verdict |
-|-----------|---------|
-| Plan Adherence | PASS/WARNING/FAIL |
-| Scope Discipline | PASS/WARNING/FAIL |
-| Safety & Quality | PASS/WARNING/FAIL |
-| Architecture | PASS/WARNING/FAIL |
+| Dimension           | Verdict           |
+| ------------------- | ----------------- |
+| Plan Adherence      | PASS/WARNING/FAIL |
+| Scope Discipline    | PASS/WARNING/FAIL |
+| Safety & Quality    | PASS/WARNING/FAIL |
+| Architecture        | PASS/WARNING/FAIL |
 | Pattern Consistency | PASS/WARNING/FAIL |
-| Success Criteria | PASS/WARNING/FAIL |
+| Success Criteria    | PASS/WARNING/FAIL |
 
 ## Findings
 
@@ -404,6 +413,7 @@ Detail: [detail]
 - **Zapisz jako lekcję**: Zapisz jako powtarzającą się regułę projektu przez `/10x-lesson`.
 
 **Obsługa odpowiedzi:**
+
 - **Apply Fix A/B / Fix now**: pokaż dokładną zmianę kodu przed/po. Krótkie potwierdzenie („Zastosować to?”), a następnie edytuj. Oznacz FIXED (zapisz wybraną opcję, np. „Fixed via Fix A”).
 - **Fix differently**: zapytaj o preferowane podejście, zastosuj je, oznacz FIXED.
 - **Record as lesson**: wstępnie wypełnij cztery pola wpisu lekcji bezpośrednio na podstawie ustalenia — `Context` z Location ustalenia, `Problem` z Detail ustalenia, `Rule` i `Applies to` pozostaw jako puste placeholdery do wypełnienia przez użytkownika. Pokaż proponowany wpis jako kompletny blok markdown i poproś użytkownika o edycję lub potwierdzenie: „Zatwierdzić ten wpis?” z opcjami „Zatwierdzić ten wpis?”, „Edytuj przed zapisaniem” lub „Anuluj”. Po potwierdzeniu dodaj wpis jako nową sekcję H2 do `context/foundation/lessons.md` — jeśli plik nie istnieje, najpierw go utwórz z tym kanonicznym 5-wierszowym nagłówkiem (bez osobnego pliku szablonu; nagłówek jest osadzony bezpośrednio tutaj):
@@ -416,6 +426,7 @@ Detail: [detail]
   ```
 
   Przepływ wstępnego wypełnienia, a następnie potwierdzenia jest kluczowym szczegółem UX; użytkownik musi zobaczyć pełny proponowany wpis z wstępnie wypełnionymi Context/Problem i mieć możliwość edytowania Rule oraz Applies-to przed dodaniem. Po pomyślnym dodaniu **zawsze** zapytaj użytkownika: „Lekcja zapisana. Czy zastosować także poprawkę w bieżącym kodzie?” z opcjami „Tak — napraw teraz” / „Nie — tylko lekcja”. **Nigdy nie pomijaj tego pytania ani nie decyduj w imieniu użytkownika** — niezależnie od tego, czy poprawka jest trywialna, poza zakresem lub obejmuje wiele plików, decyzja należy do użytkownika. Jeśli tak: pokaż zmianę kodu przed/po, zastosuj ją, oznacz `FIXED + ACCEPTED-AS-RULE: <rule title>`. Jeśli nie: oznacz `ACCEPTED-AS-RULE: <rule title>` (ustalenie pozostaje nienaprawione, reguła jest zapisana dla przyszłej pracy).
+
 - **Skip** → SKIPPED. Przejdź dalej, nie dyskutuj.
 - **Inne (wolny tekst)**: zinterpretuj intencję użytkownika. Typowe intencje: „fix differently” (szczególnie w kontekście dwóch poprawek) → zapytaj o preferowane podejście, zastosuj je, oznacz FIXED; „accept risk” → oznacz ACCEPTED z uzasadnieniem użytkownika; „dismiss”/„disagree” → oznacz DISMISSED.
 
@@ -444,7 +455,7 @@ Zaktualizuj zapisany raport o końcowe decyzje. Oznacz zadanie przeglądu jako u
 - Bądź konkretny. „src/auth/handler.ts:42 — SQL query built with string concatenation, vulnerable to injection” — nie „gdzieś może występować problem z bezpieczeństwem”.
 - Nie oznaczaj preferencji stylistycznych, chyba że mają znaczenie. Jeśli kod działa i realizuje plan, drobne różnice stylistyczne względem istniejącego kodu są obserwacjami, a nie ostrzeżeniami.
 - Jeśli sam plan był błędny (np. zakładał niebezpieczne podejście), oznacz to — ten przegląd wychwytuje również problemy planu.
-- Wpływ dotyczy *wysiłku decyzyjnego*, a nie *ważności*. LOW impact przy ustaleniu CRITICAL oznacza, że poprawka jest oczywista; HIGH impact przy WARNING oznacza, że kompromis jest rzeczywisty.
+- Wpływ dotyczy _wysiłku decyzyjnego_, a nie _ważności_. LOW impact przy ustaleniu CRITICAL oznacza, że poprawka jest oczywista; HIGH impact przy WARNING oznacza, że kompromis jest rzeczywisty.
 - Dwie opcje naprawy tylko wtedy, gdy istnieje rzeczywisty kompromis. Nie wymyślaj alternatyw dla trywialnych poprawek.
 - Przy przeglądzie pojedynczej fazy nadal sprawdź, czy zmiany z tej fazy nie naruszyły założeń poprzednich faz. Fazy mogą wzajemnie oddziaływać.
 - Podczas triage utrzymuj tempo. Użytkownik przeczytał już raport.

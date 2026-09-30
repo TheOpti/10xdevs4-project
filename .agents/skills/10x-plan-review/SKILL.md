@@ -7,6 +7,7 @@ description: >
   for feedback. Also trigger when user finishes /10x-plan and wants validation
   before starting /10x-implement.
 ---
+
 # Przegląd planu
 
 Wykrywaj problemy merytoryczne w planie implementacji, zanim zostanie napisana choć jedna linia kodu. Wadliwy plan kosztuje godziny — wadliwy przegląd kosztuje minuty.
@@ -14,6 +15,7 @@ Wykrywaj problemy merytoryczne w planie implementacji, zanim zostanie napisana c
 Tam, gdzie `/10x-impl-review` pyta „czy zbudowaliśmy to, co zaplanowaliśmy?”, to pyta „czy ten plan faktycznie zadziała?”.
 
 Dwa tryby:
+
 - **Nowy przegląd**: analiza → ustalenia → interaktywne triage
 - **Wznowienie triage**: wczytaj zapisany raport i przejdź do triage dla poszczególnych problemów
 
@@ -30,6 +32,7 @@ Jeśli rozwiązana ścieżka planu zaczyna się od `context/archive/`, odmów za
 ## Krok 1: Wczytanie i skanowanie spójności wewnętrznej
 
 Przeczytaj cały plik planu. Przeczytaj również sąsiedni plik `plan-brief.md` w tym samym folderze zmiany, jeśli istnieje. Przeczytaj `context/foundation/lessons.md`, jeśli istnieje, i użyj zaakceptowanych reguł jako wcześniejszych założeń podczas skanowania pod kątem problemów merytorycznych / wykonalności / naruszeń kontraktów — ustalenie, które powtarza znaną, cyklicznie występującą regułę, powinno ważyć więcej, a nie mniej. Wyodrębnij:
+
 - **Pożądany stan końcowy** i **Kryteria sukcesu**
 - **Analizę stanu obecnego** — udokumentowane ograniczenia i pułapki
 - **Granice zakresu** — „What We're NOT Doing”
@@ -48,11 +51,12 @@ Przed weryfikacją jakiegokolwiek kodu sprawdź plan względem niego samego. Te 
   - Każde `## Phase N: <name>` lub `## Faza N: <name>` w treści planu ma odpowiadające `### Phase N: <name>` w Progress, dopasowane według numeru fazy. Zachowaj język opisowego nagłówka; samo `Faza` zamiast `Phase` nie jest ustaleniem CRITICAL ani żadnym defektem spójności.
   - Każdy punkt Kryteriów sukcesu (pod `#### Automated Verification:` / `#### Manual Verification:`) w bloku Fazy ma odpowiadające `- [ ] N.M <title>` (lub `- [x]`) w odpowiadającej podsekcji Progress.
   - Bloki faz zawierają wyłącznie zwykłe punkty `- ` — bez `- [ ]` ani `- [x]` poza sekcją Progress.
-  Traktuj każdy z tych przypadków jako ustalenie CRITICAL w obszarze Plan Completeness — `/10x-implement` nie zdoła sparsować wadliwej sekcji Progress.
+    Traktuj każdy z tych przypadków jako ustalenie CRITICAL w obszarze Plan Completeness — `/10x-implement` nie zdoła sparsować wadliwej sekcji Progress.
 
 ## Krok 2: Ugruntowanie
 
 Szybko, bez sub-agentów:
+
 - **Ścieżki**: sprawdź ≥5 ścieżek plików, które plan deklaruje zmodyfikować. Nieistniejące ścieżki są krytyczne.
 - **Symbole**: wyszukaj konkretne funkcje/klucze konfiguracji, do których plan się odwołuje.
 - **Spójność brief↔plan**: czy fazy, decyzje i zakres się zgadzają?
@@ -112,11 +116,11 @@ Każde ustalenie zawiera:
 
 Niezależny od ważności. CRITICAL z LOW wpływem (oczywista poprawka) jest tani do rozwiązania; WARNING z HIGH wpływem (niejasne kompromisy, szeroki promień rażenia) zasługuje na staranne rozważenie.
 
-| Wpływ | Znaczenie |
-|---|---|
-| 🏃 **LOW** | Szybka decyzja. Poprawka jest oczywista i wąsko ograniczona. Można bezpiecznie grupować. |
-| 🔎 **MEDIUM** | Warto się zatrzymać. Rzeczywisty kompromis lub nietrywialna edycja — pomyśl przed decyzją. |
-| 🔬 **HIGH** | Stawka architektoniczna. Szeroki promień rażenia, implikacje strategiczne lub niejasna najlepsza ścieżka. |
+| Wpływ         | Znaczenie                                                                                                 |
+| ------------- | --------------------------------------------------------------------------------------------------------- |
+| 🏃 **LOW**    | Szybka decyzja. Poprawka jest oczywista i wąsko ograniczona. Można bezpiecznie grupować.                  |
+| 🔎 **MEDIUM** | Warto się zatrzymać. Rzeczywisty kompromis lub nietrywialna edycja — pomyśl przed decyzją.                |
+| 🔬 **HIGH**   | Stawka architektoniczna. Szeroki promień rażenia, implikacje strategiczne lub niejasna najlepsza ścieżka. |
 
 ### Opcje naprawy
 
@@ -127,6 +131,7 @@ Domyślnie przedstaw **jedną** poprawkę. Przedstaw dwie tylko wtedy, gdy istni
 **Ustalenia o LOW wpływie**: pomiń rozkładanie na części — tylko `Fix: [one line]`. Szum nie jest pomocny, gdy odpowiedź jest oczywista.
 
 **Ustalenia o MEDIUM/HIGH wpływie**: każda opcja otrzymuje:
+
 ```
 [1-sentence approach] · Strength: [advantage, ideally grounded in plan/codebase evidence] · Tradeoff: [cost or risk] · Confidence: HIGH|MED|LOW — [1-line why] · Blind spot: [what we haven't verified, or "None significant"]
 ```
@@ -247,6 +252,7 @@ Następnie zapytaj użytkownika:
 „Plan review complete. How would you like to proceed?”
 
 Opcje:
+
 - **Triage findings**: Przejdź przez każde ustalenie i podejmij decyzję.
 - **Save report & triage later**: Zapisz pełny raport. Wznów przez `/10x-plan-review <report-path>`.
 - **Save report only**: Zapisz i zakończ — sam zajmę się ustaleniami.
@@ -257,6 +263,7 @@ Zapisz w `context/changes/<change-id>/reviews/plan-review.md` (jeden plan-review
 
 ```markdown
 <!-- PLAN-REVIEW-REPORT -->
+
 # Plan Review: [Plan Title]
 
 - **Plan**: [plan file path]
@@ -267,15 +274,16 @@ Zapisz w `context/changes/<change-id>/reviews/plan-review.md` (jeden plan-review
 
 ## Verdicts
 
-| Dimension | Verdict |
-|-----------|---------|
-| End-State Alignment | PASS/WARNING/FAIL |
-| Lean Execution | PASS/WARNING/FAIL |
+| Dimension             | Verdict           |
+| --------------------- | ----------------- |
+| End-State Alignment   | PASS/WARNING/FAIL |
+| Lean Execution        | PASS/WARNING/FAIL |
 | Architectural Fitness | PASS/WARNING/FAIL |
-| Blind Spots | PASS/WARNING/FAIL |
-| Plan Completeness | PASS/WARNING/FAIL |
+| Blind Spots           | PASS/WARNING/FAIL |
+| Plan Completeness     | PASS/WARNING/FAIL |
 
 ## Grounding
+
 [grounding line]
 
 ## Findings
@@ -343,6 +351,7 @@ Detail: [detail]
 [Fix B block]”
 
 Opcje:
+
 - **Apply Fix A ⭐**: [Fix A one-liner]
 - **Apply Fix B**: [Fix B one-liner]
 - **Fix differently**: Inne podejście — omówmy je.
@@ -353,6 +362,7 @@ Opcje:
 **Z 1 opcją naprawy:** te same opcje, ale zastąp „Apply Fix A/B” pojedynczym „Fix in plan”.
 
 **Obsługa odpowiedzi:**
+
 - **Apply Fix A/B / Fix in plan**: pokaż dokładną edycję planu (przed/po). Krótkie potwierdzenie, następnie zastosuj. Oznacz jako FIXED (zapisz, której poprawki użyto, np. „Fixed via Fix A”).
 - **Fix differently**: zapytaj o preferowane podejście, zastosuj je, oznacz jako FIXED.
 - **Skip** → SKIPPED. **Accept risk** → ACCEPTED. **Disagree** → DISMISSED. Przejdź dalej, nie dyskutuj.
@@ -381,7 +391,7 @@ Po każdej decyzji, jeśli pracujesz z zapisanego pliku, zaktualizuj jego pole `
 - Bądź konkretny. „Phase 3 introduces a second event system alongside the existing EventBus in `src/core/events.ts`” — nie „architecture might have issues”.
 - Rozróżniaj „won't work” (FAIL) od „could be better” (WARNING).
 - Jeśli plan jest naprawdę dobry, powiedz to krótko i zakończ. Nie twórz sztucznych ustaleń.
-- Wpływ dotyczy *wysiłku decyzyjnego*, nie *ważności*. LOW wpływ przy ustaleniu CRITICAL oznacza, że poprawka jest oczywista; HIGH wpływ przy WARNING oznacza, że kompromis jest rzeczywisty.
+- Wpływ dotyczy _wysiłku decyzyjnego_, nie _ważności_. LOW wpływ przy ustaleniu CRITICAL oznacza, że poprawka jest oczywista; HIGH wpływ przy WARNING oznacza, że kompromis jest rzeczywisty.
 - Dwie opcje naprawy tylko wtedy, gdy istnieje rzeczywisty kompromis. Nie wymyślaj alternatyw dla błahych poprawek.
 - Podczas triage utrzymuj tempo. Użytkownik już przeczytał raport — przedstaw ustalenie, przyjmij decyzję, przejdź dalej.
 - Przy stosowaniu poprawki do planu wprowadzaj minimalne, ukierunkowane edycje. Nie restrukturyzuj całego planu dla jednego ustalenia.

@@ -2,6 +2,7 @@
 name: 10x-plan
 description: Create detailed implementation plans with thorough research and iteration
 ---
+
 # Plan wdrożenia
 
 Twoim zadaniem jest tworzenie szczegółowych planów wdrożenia poprzez interaktywny, iteracyjny proces. Powinieneś być sceptyczny, dokładny i współpracować z użytkownikiem, aby tworzyć wysokiej jakości specyfikacje techniczne.
@@ -64,24 +65,26 @@ Przed jakimkolwiek czytaniem zidentyfikuj, jakie rodzaje artefaktów wcześniejs
 
 **Liczba pytań i ich zakres zależą od tego, co dostarczono:**
 
-| Artefakty wcześniejszych etapów | NISKI | ŚREDNI | WYSOKI | Co się zmienia względem wariantu bazowego |
-| --------------------------- | ----- | ------ | ----- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| Tylko zadanie (wariant bazowy) | 4–6 | 7–10 | 11–15 | Pełny zestaw pytań we wszystkich istotnych kategoriach. |
-| Zadanie + badania | 3–5 | 5–7 | 8–11 | Pomiń pytania, na które odpowiedź już znajduje się w dokumencie badawczym. Nie uruchamiaj ponownie podagentów, aby znaleźć to, co badania już zmapowały. |
-| Zadanie + rama | 2–3 | 4–6 | 7–9 | Pomiń kategorie [D]iagnostyczne — rama ustaliła ujęcie problemu. Traktuj Przeformułowane (lub Potwierdzone) Stwierdzenie Problemu jako wiążące. |
-| Zadanie + rama + badania | 1–2 | 3–5 | 5–7 | Pomiń oba rodzaje. Zadawaj wyłącznie pytania dotyczące projektu [S]olution, które rzeczywiście wymagają wkładu użytkownika. |
+| Artefakty wcześniejszych etapów | NISKI | ŚREDNI | WYSOKI | Co się zmienia względem wariantu bazowego                                                                                                                |
+| ------------------------------- | ----- | ------ | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Tylko zadanie (wariant bazowy)  | 4–6   | 7–10   | 11–15  | Pełny zestaw pytań we wszystkich istotnych kategoriach.                                                                                                  |
+| Zadanie + badania               | 3–5   | 5–7    | 8–11   | Pomiń pytania, na które odpowiedź już znajduje się w dokumencie badawczym. Nie uruchamiaj ponownie podagentów, aby znaleźć to, co badania już zmapowały. |
+| Zadanie + rama                  | 2–3   | 4–6    | 7–9    | Pomiń kategorie [D]iagnostyczne — rama ustaliła ujęcie problemu. Traktuj Przeformułowane (lub Potwierdzone) Stwierdzenie Problemu jako wiążące.          |
+| Zadanie + rama + badania        | 1–2   | 3–5    | 5–7    | Pomiń oba rodzaje. Zadawaj wyłącznie pytania dotyczące projektu [S]olution, które rzeczywiście wymagają wkładu użytkownika.                              |
 
 **Wyjątek dotyczący rozstrzygniętych danych wejściowych:** jeśli artefakty wcześniejszych etapów już rozstrzygają każdą istotną decyzję dotyczącą rozwiązania, zaproponuj **0 merytorycznych pytań**, krótko wskaż te dowody i uzyskaj zwykłe natywne potwierdzenie złożoności/budżetu. Zachowaj akceptację natywnej struktury. Jeśli uzgodniony budżet stanie się niepotrzebny po późniejszych odpowiedziach, potwierdź korektę zamiast sztucznie wypełniać pytania. Powyższe zakresy wskazują nierozstrzygniętą pracę; nie wymagają wymyślonych decyzji.
 
 **Zasada**: każdy przekazany artefakt jest źródłem już podjętych decyzji. Czytanie ich jest równoznaczne ze słuchaniem użytkownika. Nie pytaj użytkownika o to, co już zapisał.
 
 **Gdy obecna jest rama**, przeczytaj ją W CAŁOŚCI i traktuj jako wiążącą:
+
 - Skopiuj **Reported Observation** + **Reframed (or Confirmed) Problem Statement** jako definicję zadania. Nie podważaj ponownie ujęcia problemu.
 - Przenieś tabelę **Hypothesis Investigation** oraz **Narrowing Signals** do swojej „Analizy stanu bieżącego” — ta praca została już wykonana.
 - Jeśli oznaczono **Confidence: LOW** ramy, uwzględnij to w sekcji „Otwarte ryzyka i założenia” planu i zadaj JEDNO pytanie doprecyzowujące, jak postąpić (najpierw zweryfikować czy planować z uznanym ryzykiem).
 - NIE badaj ponownie ujęcia problemu. Rama odpowiada za ujęcie problemu; Ty odpowiadasz za projekt rozwiązania.
 
 **Gdy obecne są badania**, przeczytaj je W CAŁOŚCI i użyj jako podstawy wiedzy o bazie kodu:
+
 - Sekcja „Code References” JEST Twoim ugruntowaniem w bazie kodu — nie uruchamiaj ponownie agentów Explore, aby znaleźć te same pliki.
 - „Architecture Insights” trafiają bezpośrednio do „Current State Analysis.”
 - Uruchamiaj podagentów wyłącznie, aby wypełnić konkretne luki, których badania nie objęły (np. dokładne pliki, które zmodyfikuje ten plan, jeśli badania miały szerszy zakres).
@@ -156,11 +159,11 @@ Przed jakimkolwiek czytaniem zidentyfikuj, jakie rodzaje artefaktów wcześniejs
 
    **Skala złożoności:**
 
-   | Poziom | Pytania | Kiedy używać |
-   | ---------- | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-   | **LOW** | 4-6 | Proste zadanie z jasnymi wymaganiami. Niewiele ruchomych części, podąża za ustalonymi wzorcami lub konwencjami, ograniczone niewiadome. Przykłady programistyczne: zmiana w jednym pliku, korekta konfiguracji. Przykłady nieprogramistyczne: konspekt dotyczący jednego tematu, prosta korekta procesu. |
-   | **MEDIUM** | 7-10 | Wiele współdziałających komponentów lub kwestii. Wymaga decyzji projektowych, ma przypadki brzegowe warte omówienia, pewną niejednoznaczność podejścia. Przykłady programistyczne: funkcja wieloplikowa, nowy endpoint API. Przykłady nieprogramistyczne: wieloczęściowy plan treści, przeprojektowanie przepływu pracy, moduł kursu. |
-   | **HIGH** | 11-15 | Przekrojowe kwestie, istotne niewiadome, wielu interesariuszy lub ograniczeń. Wymaga myślenia architektonicznego, niesie ryzyko kosztownej przeróbki przy błędzie. Przykłady programistyczne: przeprojektowanie systemu, migracja danych. Przykłady nieprogramistyczne: strategia uruchomienia wielokanałowego, przebudowa programu nauczania, zmiana procesu organizacyjnego. |
+   | Poziom     | Pytania | Kiedy używać                                                                                                                                                                                                                                                                                                                                                                   |
+   | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+   | **LOW**    | 4-6     | Proste zadanie z jasnymi wymaganiami. Niewiele ruchomych części, podąża za ustalonymi wzorcami lub konwencjami, ograniczone niewiadome. Przykłady programistyczne: zmiana w jednym pliku, korekta konfiguracji. Przykłady nieprogramistyczne: konspekt dotyczący jednego tematu, prosta korekta procesu.                                                                       |
+   | **MEDIUM** | 7-10    | Wiele współdziałających komponentów lub kwestii. Wymaga decyzji projektowych, ma przypadki brzegowe warte omówienia, pewną niejednoznaczność podejścia. Przykłady programistyczne: funkcja wieloplikowa, nowy endpoint API. Przykłady nieprogramistyczne: wieloczęściowy plan treści, przeprojektowanie przepływu pracy, moduł kursu.                                          |
+   | **HIGH**   | 11-15   | Przekrojowe kwestie, istotne niewiadome, wielu interesariuszy lub ograniczeń. Wymaga myślenia architektonicznego, niesie ryzyko kosztownej przeróbki przy błędzie. Przykłady programistyczne: przeprojektowanie systemu, migracja danych. Przykłady nieprogramistyczne: strategia uruchomienia wielokanałowego, przebudowa programu nauczania, zmiana procesu organizacyjnego. |
 
    Po potwierdzeniu (lub dostosowaniu) przez użytkownika przejdź do pytań.
 
@@ -180,7 +183,7 @@ Przed jakimkolwiek czytaniem zidentyfikuj, jakie rodzaje artefaktów wcześniejs
      `[1-zdaniowy opis działania] · Strength: [kluczowa zaleta] · Tradeoff: [kluczowy koszt lub ryzyko]`
    - Rekomendacja powinna opierać się na badaniach (wzorce bazy kodu dla oprogramowania, wiedza domenowa i kontekst dla zadań nieprogramistycznych) — nie na zgadywaniu
 
-   **Sprawdź ładunek przed zadaniem pytania:** każdy `header` ma 1–12 znaków (licząc spacje), każde pytanie ma 2–4 odrębne wybory w rzeczywistym limicie hosta, tylko pierwsza etykieta zawiera dokładny znacznik `⭐ Recommended`, a każdy opis zawiera zarówno ` · Strength: `, jak i ` · Tradeoff: ` z konkretną treścią. Użyj `Format` zamiast 13-znakowego `Output format`. Zweryfikuj same natywne argumenty pytania, a nie tylko tekstowy podgląd.
+   **Sprawdź ładunek przed zadaniem pytania:** każdy `header` ma 1–12 znaków (licząc spacje), każde pytanie ma 2–4 odrębne wybory w rzeczywistym limicie hosta, tylko pierwsza etykieta zawiera dokładny znacznik `⭐ Recommended`, a każdy opis zawiera zarówno `· Strength:`, jak i `· Tradeoff:` z konkretną treścią. Użyj `Format` zamiast 13-znakowego `Output format`. Zweryfikuj same natywne argumenty pytania, a nie tylko tekstowy podgląd.
 
    **Przykładowe ustrukturyzowane pytanie z rekomendacjami (oprogramowanie — dostarczenie):** `Rollout` to `[S]` — strategia dostarczenia; pytaj tylko wtedy, gdy zmiana może zawieść na produkcji w sposób, który ścieżka wydania musiałaby ograniczyć, w przeciwnym razie odziedzicz domyślną praktykę zespołu.
 
@@ -194,7 +197,7 @@ Przed jakimkolwiek czytaniem zidentyfikuj, jakie rodzaje artefaktów wcześniejs
        description: "Wdróż nowe obliczenie dla wszystkich kont w jednym wydaniu. · Strength: Jedna ścieżka kodu od pierwszego dnia — nic do sprzątania i brak obsługi flag. · Tradeoff: Wycofanie oznacza ponowne wdrożenie, a nieprawidłowe faktury już dotarły do klientów."
      - label: "Najpierw uruchomienie cieniowe"
        description: "Obliczaj stare i nowe ceny równolegle, zapisuj różnice w logach, przez dwa tygodnie zwracaj wyłącznie stary wynik. · Strength: Ujawnia rozbieżności na rzeczywistym ruchu bez wpływu na klientów. · Tradeoff: Opóźnia start o okno obserwacji i dodaje log różnic, za który nikt jeszcze nie odpowiada."
-     multiSelect: false
+       multiSelect: false
 
    **Przykładowe ustrukturyzowane pytanie z rekomendacjami (oprogramowanie):** `Conflicts` to `[S]` — architektura rozwiązania; pytaj tylko wtedy, gdy decyzja pozostaje nierozstrzygnięta po przeczytaniu artefaktów wcześniejszych etapów.
 
@@ -208,7 +211,7 @@ Przed jakimkolwiek czytaniem zidentyfikuj, jakie rodzaje artefaktów wcześniejs
        description: "Późniejszy zapis bez ostrzeżenia nadpisuje wcześniejszy. · Strength: Zero dodatkowej złożoności, nie wymaga zmian UI. · Tradeoff: Użytkownicy mogą stracić pracę bez ostrzeżenia — akceptowalne tylko, jeśli edycje są rzadkie lub mało istotne."
      - label: "Oparte na blokadach"
        description: "Pierwszy edytor blokuje zasób; inni widzą tryb tylko do odczytu do czasu zwolnienia. · Strength: Całkowicie zapobiega konfliktom — najprostszy model mentalny dla użytkowników. · Tradeoff: Zaległe blokady wymagają TTL + logiki czyszczenia; blokuje uzasadnioną równoległą pracę."
-     multiSelect: false
+       multiSelect: false
 
    **Przykładowe ustrukturyzowane pytanie z rekomendacjami (nieprogramistyczne — treść/strategia):** `Depth` to `[D]` — diagnostyczne pytanie o odbiorców/zakres; pomiń, jeśli brief ramowy już ustalił, dla kogo jest materiał.
 
@@ -222,7 +225,7 @@ Przed jakimkolwiek czytaniem zidentyfikuj, jakie rodzaje artefaktów wcześniejs
        description: "Zasady wysokiego poziomu, bez kodu. · Strength: Dostępne dla wszystkich poziomów umiejętności, szybsze do przygotowania. · Tradeoff: Zaawansowani uczestnicy mogą uznać materiał za zbyt płytki — ryzyko utraty zaangażowania."
      - label: "Dogłębna analiza z otwartymi wyzwaniami"
        description: "Minimalne wsparcie, problemy z rzeczywistego świata. · Strength: Wymusza autentyczne rozwiązywanie problemów, najwyższe utrwalenie nauki. · Tradeoff: Wysokie ryzyko rezygnacji u mniej doświadczonych uczestników; trudniejsze wsparcie na dużą skalę."
-     multiSelect: false
+       multiSelect: false
 
    **O co pytać** — dostosuj kategorie do domeny zadania:
 
@@ -471,7 +474,7 @@ Przy `$10x-plan <change-id> save` (oraz ścieżce utrwalania w [plan-persistence
 
 `context/foundation/roadmap.md` (tworzony przez `/10x-roadmap`) indeksuje każdy Foundation/Slice według stabilnego **Change ID**. Gdy planowanie przekształca element roadmapy w konkretny folder zmiany + plan, oznacz ten element jako **`planning`**, aby roadmapa odzwierciedlała, że element opuścił backlog i wszedł do aktywnej pracy. `/10x-implement` później przesuwa ten sam element do `in-progress`, a `/10x-archive` zamyka go jako `done`.
 
-Wykonaj to w Kroku 4 (tuż po oznaczeniu `change.md` jako → `planned`). Wyszukiwanie jest **obowiązkowe**; „best effort” dotyczy tylko *edycji* — brak roadmapy lub nieznalezienie celu jest pomijane po cichu i nigdy nie blokuje, nie pyta ani nie przerywa wykonania. Nie pomijaj sprawdzenia, zakładając, że nie ma roadmapy.
+Wykonaj to w Kroku 4 (tuż po oznaczeniu `change.md` jako → `planned`). Wyszukiwanie jest **obowiązkowe**; „best effort” dotyczy tylko _edycji_ — brak roadmapy lub nieznalezienie celu jest pomijane po cichu i nigdy nie blokuje, nie pyta ani nie przerywa wykonania. Nie pomijaj sprawdzenia, zakładając, że nie ma roadmapy.
 
 1. Sprawdź, czy istnieje `context/foundation/roadmap.md`. Jeśli nie istnieje, pomiń ten krok po cichu.
 2. Przeczytaj plik. Szukaj `<change-id>` użytego jako `Change ID`:
@@ -479,11 +482,13 @@ Wykonaj to w Kroku 4 (tuż po oznaczeniu `change.md` jako → `planned`). Wyszuk
    - oraz w treściach `## Foundations` / `## Slices` — blok `### <ID>: …`, który zawiera linię `- **Change ID:** <change-id>`.
 
    Dopasowanie odbywa się wyłącznie jako dokładny ciąg. **Brak dopasowania** → wypisz `ℹ context/foundation/roadmap.md has no item with Change ID "<change-id>" — roadmap left untouched.` i zakończ tutaj.
+
 3. **Znaleziono dopasowanie** → jeśli `- **Status:**` elementu ma już wartość `planning`, `in-progress` lub `done`, pozostaw go bez zmian (**tylko do przodu**: nigdy nie cofaj bardziej zaawansowanego statusu) i zakończ. W przeciwnym razie zastosuj obie edycje — każda niezależna i best effort; pomiń podedycję, której cel nie znajduje się tam, gdzie umieszcza go szablon `/10x-roadmap`, i odnotuj pominięcie. Zmieniaj tylko pole `Status`:
    1. **`## At a glance`** — ustaw komórkę **Status** dopasowanego wiersza na `planning`.
    2. **Treść elementu** — przepisz linię `- **Status:**` elementu na `- **Status:** planning`.
 
    Następnie zaktualizuj frontmatter roadmapy `updated:` do `<today>` (pomiń, jeśli nie ma frontmatter).
+
 4. `/10x-plan` nie commituję własnych artefaktów; pozostaw zmianę w drzewie roboczym. Zostanie zatwierdzona później wraz z pierwszą fazą `/10x-implement` zmiany (która ponownie zmienia ten sam element na `in-progress`).
 
 ## Ważne wytyczne

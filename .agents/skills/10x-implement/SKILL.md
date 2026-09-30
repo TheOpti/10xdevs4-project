@@ -154,9 +154,9 @@ Przed zaproponowaniem wiadomości commitu na końcu fazy lub w epilogu przeskanu
 
 ## Synchronizacja statusu roadmapy
 
-`context/foundation/roadmap.md` (tworzony przez `/10x-roadmap`) indeksuje każdy Foundation/Slice za pomocą stabilnego **Change ID**. `/10x-archive` już zamyka pętlę na dalszym końcu — gdy zmiana jest archiwizowana, zmienia pasujący element roadmapy na `Status: done`. Ten krok obsługuje bliższy koniec: gdy implementacja się *rozpoczyna*, oznacz pasujący element jako **`in-progress`**, aby roadmapa pokazywała aktywną pracę zamiast przechodzić prosto z `ready` do `done`.
+`context/foundation/roadmap.md` (tworzony przez `/10x-roadmap`) indeksuje każdy Foundation/Slice za pomocą stabilnego **Change ID**. `/10x-archive` już zamyka pętlę na dalszym końcu — gdy zmiana jest archiwizowana, zmienia pasujący element roadmapy na `Status: done`. Ten krok obsługuje bliższy koniec: gdy implementacja się _rozpoczyna_, oznacz pasujący element jako **`in-progress`**, aby roadmapa pokazywała aktywną pracę zamiast przechodzić prosto z `ready` do `done`.
 
-Uruchom to **raz, przy wejściu** do zmiany (zaraz po oznaczeniu `change.md` → `implementing`) — nie dla każdej fazy. Wyszukiwanie jest **obowiązkowe**; „best effort” obejmuje wyłącznie *edycje* — brak roadmapy lub brak znalezionego celu jest po cichu pomijany i nigdy nie blokuje, nie wyświetla monitu, nie wycofuje ani nie przerywa uruchomienia. Nie pomijaj sprawdzenia, zakładając, że roadmapy nie ma.
+Uruchom to **raz, przy wejściu** do zmiany (zaraz po oznaczeniu `change.md` → `implementing`) — nie dla każdej fazy. Wyszukiwanie jest **obowiązkowe**; „best effort” obejmuje wyłącznie _edycje_ — brak roadmapy lub brak znalezionego celu jest po cichu pomijany i nigdy nie blokuje, nie wyświetla monitu, nie wycofuje ani nie przerywa uruchomienia. Nie pomijaj sprawdzenia, zakładając, że roadmapy nie ma.
 
 1. `test -f context/foundation/roadmap.md`. Jeśli nie istnieje, pomiń ten krok po cichu.
 2. Zapisz, czy plik jest już brudny: `ROADMAP_PREDIRTY=$(git status --porcelain context/foundation/roadmap.md 2>/dev/null)` — używane w kroku 5 do decyzji o stagingu.
@@ -164,12 +164,14 @@ Uruchom to **raz, przy wejściu** do zmiany (zaraz po oznaczeniu `change.md` →
    - w tabeli `## At a glance` — wiersz, którego komórka kolumny **Change ID** równa się dokładnie `<change-id>`;
    - oraz w treściach `## Foundations` / `## Slices` — blok `### <ID>: …`, który zawiera linię `- **Change ID:** <change-id>`.
 
-   `<ID>` to lokalny identyfikator roadmapy tego elementu (`F-NN` lub `S-NN`). Dopasowanie jest tylko dokładnym ciągiem — slice może tworzyć kilka zmian, dlatego celowe jest, że prawie dopasowanie *nie* zostaje zmienione. **Brak dopasowania** → wyświetl `ℹ context/foundation/roadmap.md has no item with Change ID "<change-id>" — roadmap left untouched.` i pomiń resztę tego kroku.
+   `<ID>` to lokalny identyfikator roadmapy tego elementu (`F-NN` lub `S-NN`). Dopasowanie jest tylko dokładnym ciągiem — slice może tworzyć kilka zmian, dlatego celowe jest, że prawie dopasowanie _nie_ zostaje zmienione. **Brak dopasowania** → wyświetl `ℹ context/foundation/roadmap.md has no item with Change ID "<change-id>" — roadmap left untouched.` i pomiń resztę tego kroku.
+
 4. **Znaleziono dopasowanie** → przeczytaj bieżące `- **Status:**` elementu. Jeśli jest już `in-progress` lub `done`, pozostaw go nietkniętym (**tylko do przodu**: nigdy nie cofaj bardziej zaawansowanego statusu) i przejdź do kroku 5. W przeciwnym razie zastosuj obie edycje — każda niezależna i best effort; jeśli celu nie ma tam, gdzie umieszcza go szablon `/10x-roadmap` (ręcznie edytowana lub starsza roadmapa), pomiń tę podedycję, kontynuuj i odnotuj, co pominięto. Dotykaj tylko pola `Status`; pozostaw `Outcome`, `Prerequisites`, `Change ID` itd. bez zmian.
    1. **`## At a glance`** — w dopasowanym wierszu ustaw komórkę kolumny **Status** na `in-progress`.
    2. **Treść elementu** — przepisz linię `- **Status:**` elementu na `- **Status:** in-progress`.
 
    Następnie zwiększ wartość frontmatter `updated:` roadmapy do `<today>` (pozostaw każdy inny klucz bez zmian; pomiń to, jeśli plik nie ma frontmatter).
+
 5. **Włącz zmianę do historii tej zmiany.** Jeśli `git` jest dostępny **oraz** `ROADMAP_PREDIRTY` (krok 2) był pusty, dodaj `context/foundation/roadmap.md` do zestawu zmodyfikowanych plików bieżącej fazy, aby zmiana statusu trafiła do commitu fazy zamiast pozostać jako brudna. Jeśli `ROADMAP_PREDIRTY` był niepusty, plik już miał niezatwierdzone edycje: pozostaw zmianę w worktree, zachowaj `context/foundation/roadmap.md` POZA zestawem zmodyfikowanych plików i wyświetl `⚠ context/foundation/roadmap.md had pre-existing uncommitted changes — flipped roadmap item <ID> to in-progress in the working tree but did NOT stage it. Commit it yourself.` Jeśli `git` jest niedostępny, edycja po prostu pozostaje w worktree.
 
 ## Podejście do weryfikacji
@@ -178,7 +180,7 @@ Po implementacji fazy uruchom tę stałą sekwencję — kanoniczną kolejność
 
 1. **(a) Kryteria planu** — uruchom polecenia kryteriów sukcesu `#### Automated` fazy z planu, w kolejności. Każde polecenie jest osobną bramką z własną linią werdyktu.
 
-2. **Wykonaj staging zestawu zmodyfikowanych plików** — uruchom kroki 2–4 rytuału commitu poniżej („Compute the staging set”, „Detect unrelated dirty paths”, „Stage explicitly by path”) *tutaj*, a nie w czasie commitu. Staging przed kontrolą zepsucia sprawia, że jej przywrócenie jest dokładne: `git checkout -- <file>` resetuje worktree do wersji w stagingu, więc celowe zepsucie nigdy nie może przeciec do commitu.
+2. **Wykonaj staging zestawu zmodyfikowanych plików** — uruchom kroki 2–4 rytuału commitu poniżej („Compute the staging set”, „Detect unrelated dirty paths”, „Stage explicitly by path”) _tutaj_, a nie w czasie commitu. Staging przed kontrolą zepsucia sprawia, że jej przywrócenie jest dokładne: `git checkout -- <file>` resetuje worktree do wersji w stagingu, więc celowe zepsucie nigdy nie może przeciec do commitu.
 
 3. **(b) Kontrola celowego zepsucia** — tylko dla faz, które dodają lub zmieniają testy. Przy plikach fazy w stagingu zweryfikuj, że nowy lub zmieniony test faktycznie coś chroni:
 
@@ -227,7 +229,7 @@ Równolegle z sekwencją:
 
   2. **Oblicz zestaw stagingu.** Kroki 2–4 zostały już uruchomione raz jako krok 2 stosu bramek; uruchom je ponownie tutaj, aby objąć wszystko, czego dotknęła poprawka bramki. Gdy od tego czasu nic się nie zmieniło, są no-op. Weź zestaw zmodyfikowanych plików utrzymywany podczas fazy (zob. „Tracking files touched during a phase” powyżej) i połącz go z `{context/changes/<change-id>/plan.md}`. Plik planu jest zawsze w stagingu, ponieważ każda faza powoduje co najmniej jedną edycję swojej sekcji `## Progress`.
 
-  3. **Wykryj niezwiązane brudne ścieżki.** Uruchom `git status --porcelain` i wykonaj część wspólną ze ścieżkami *poza* zestawem stagingu. Jeśli zestaw brudnych, ale nietkniętych ścieżek nie jest pusty, przedstaw problematyczne ścieżki i zapytaj użytkownika: „`<N>` unrelated path(s) are dirty. How should I handle them?”
+  3. **Wykryj niezwiązane brudne ścieżki.** Uruchom `git status --porcelain` i wykonaj część wspólną ze ścieżkami _poza_ zestawem stagingu. Jeśli zestaw brudnych, ale nietkniętych ścieżek nie jest pusty, przedstaw problematyczne ścieżki i zapytaj użytkownika: „`<N>` unrelated path(s) are dirty. How should I handle them?”
 
      - **Continue — stage only the planned set (Recommended)**: Commituj tylko pliki, których dotknęła ta faza. Pozostaw niezwiązane ścieżki brudne, aby obsłużyć je osobno.
      - **Stage all**: Dodaj niezwiązane ścieżki do tego commitu. Bierzesz odpowiedzialność za szerszy zakres.
@@ -293,6 +295,7 @@ Równolegle z sekwencją:
 
   **Jeśli użytkownik wybierze wyczyszczenie**: Skopiuj polecenie wznowienia do schowka i wyświetl je:
   1. Skopiuj:
+
      ```bash
      echo -n "/10x-implement <change-id> phase [next-phase-number]" | pbcopy 2>/dev/null || echo -n "/10x-implement <change-id> phase [next-phase-number]" | clip.exe 2>/dev/null || echo -n "/10x-implement <change-id> phase [next-phase-number]" | xclip -selection clipboard 2>/dev/null || true
      ```
@@ -301,6 +304,7 @@ Równolegle z sekwencją:
      # PowerShell (Windows)
      Set-Clipboard "/10x-implement <change-id> phase [next-phase-number]"
      ```
+
   2. Wyświetl:
      ```
      → /10x-implement <change-id> phase [next-phase-number] (✓ copied)

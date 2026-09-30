@@ -10,6 +10,7 @@ description: >
   systems without requiring a repository or documents. Do not use for a final
   submission audit, PRD generation, or an explicit request to start shaping.
 ---
+
 # Weryfikacja pomysłu 10x
 
 Pomóż uczestnikowi wybrać kolejne działanie: przejść do sesji planistycznej dla tego pomysłu, przygotować sesję planistyczną dla dostosowanej wersji albo najpierw rozwiązać konkretną przeszkodę. Oceń, czy analiza odkrywcza jest warta inwestycji; szczegółowe wymagania są zadaniem `/10x-shape`.

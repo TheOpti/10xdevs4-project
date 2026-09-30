@@ -8,6 +8,7 @@ description: >
   stack", "is my stack agent-friendly", "oceń mój stack", "stack assessment".
   Use AFTER /10x-prd (brownfield), BEFORE /10x-health-check.
 ---
+
 # Ocena stosu: oceń istniejący stos pod kątem przyjazności dla agentów
 
 Ta umiejętność jest odpowiednikiem `/10x-tech-stack-selector` dla projektów brownfield. Podczas gdy tech-stack-selector pomaga użytkownikom greenfield **wybrać** stos, stack-assess pomaga użytkownikom brownfield **ocenić** ich stos. Wykorzystuje te same cztery bramki jakości przyjazne agentom (`references/agent-friendly-criteria.md`), ale stosuje je jako perspektywę oceny, a nie filtr wyboru.
@@ -72,16 +73,16 @@ Sprawdź pliki projektu, aby zidentyfikować stos. Wykrywanie opiera się na pli
 
 **Źródła wykrywania według rodziny języków:**
 
-| Rodzina języków | Pliki znaczników | Co wyodrębnić |
-|---|---|---|
-| JS/TS | `package.json`, `tsconfig.json`, `next.config.*`, `astro.config.*`, `vite.config.*`, `svelte.config.*`, `nuxt.config.*`, `angular.json`, `.eslintrc*`, `prettier.config.*`, `jest.config.*`, `vitest.config.*`, `playwright.config.*` | Język (JS vs TS — obecność `tsconfig.json`), framework, narzędzie budowania, runner testów, linter, formatter, menedżer pakietów (z pliku lock: `package-lock.json` → npm, `yarn.lock` → yarn, `pnpm-lock.yaml` → pnpm, `bun.lockb` → bun) |
-| Python | `pyproject.toml`, `setup.py`, `setup.cfg`, `requirements.txt`, `Pipfile`, `poetry.lock`, `uv.lock` | Framework (Django, FastAPI, Flask — z zależności), sprawdzanie typów (mypy/pyright w zależnościach lub konfiguracji), runner testów (pytest/unittest), menedżer pakietów |
-| Rust | `Cargo.toml` | Edycja, zależności dla frameworka webowego (Actix, Axum, Rocket), framework testowy |
-| Go | `go.mod` | Wersja Go, framework webowy (Gin, Echo, Fiber, Chi, stdlib), framework testowy |
-| Ruby | `Gemfile` | Framework (Rails, Sinatra), wersja Ruby, sprawdzanie typów (Sorbet/RBS), framework testowy (RSpec, Minitest) |
-| PHP | `composer.json` | Framework (Laravel, Symfony), wersja PHP, sprawdzanie typów (PHPStan/Psalm), framework testowy (PHPUnit, Pest) |
-| .NET | `*.csproj`, `*.sln` | Framework (wersja .NET, ASP.NET), język (C#/F#), framework testowy (xUnit, NUnit) |
-| Dart | `pubspec.yaml` | Framework (Flutter, serwer Dart), framework testowy |
+| Rodzina języków | Pliki znaczników                                                                                                                                                                                                                      | Co wyodrębnić                                                                                                                                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| JS/TS           | `package.json`, `tsconfig.json`, `next.config.*`, `astro.config.*`, `vite.config.*`, `svelte.config.*`, `nuxt.config.*`, `angular.json`, `.eslintrc*`, `prettier.config.*`, `jest.config.*`, `vitest.config.*`, `playwright.config.*` | Język (JS vs TS — obecność `tsconfig.json`), framework, narzędzie budowania, runner testów, linter, formatter, menedżer pakietów (z pliku lock: `package-lock.json` → npm, `yarn.lock` → yarn, `pnpm-lock.yaml` → pnpm, `bun.lockb` → bun) |
+| Python          | `pyproject.toml`, `setup.py`, `setup.cfg`, `requirements.txt`, `Pipfile`, `poetry.lock`, `uv.lock`                                                                                                                                    | Framework (Django, FastAPI, Flask — z zależności), sprawdzanie typów (mypy/pyright w zależnościach lub konfiguracji), runner testów (pytest/unittest), menedżer pakietów                                                                   |
+| Rust            | `Cargo.toml`                                                                                                                                                                                                                          | Edycja, zależności dla frameworka webowego (Actix, Axum, Rocket), framework testowy                                                                                                                                                        |
+| Go              | `go.mod`                                                                                                                                                                                                                              | Wersja Go, framework webowy (Gin, Echo, Fiber, Chi, stdlib), framework testowy                                                                                                                                                             |
+| Ruby            | `Gemfile`                                                                                                                                                                                                                             | Framework (Rails, Sinatra), wersja Ruby, sprawdzanie typów (Sorbet/RBS), framework testowy (RSpec, Minitest)                                                                                                                               |
+| PHP             | `composer.json`                                                                                                                                                                                                                       | Framework (Laravel, Symfony), wersja PHP, sprawdzanie typów (PHPStan/Psalm), framework testowy (PHPUnit, Pest)                                                                                                                             |
+| .NET            | `*.csproj`, `*.sln`                                                                                                                                                                                                                   | Framework (wersja .NET, ASP.NET), język (C#/F#), framework testowy (xUnit, NUnit)                                                                                                                                                          |
+| Dart            | `pubspec.yaml`                                                                                                                                                                                                                        | Framework (Flutter, serwer Dart), framework testowy                                                                                                                                                                                        |
 
 **Dodatkowe sygnały do sprawdzenia:**
 
@@ -167,24 +168,28 @@ Dla każdej niezaliczonej bramki utwórz konkretną strategię kompensacji. Komp
 **Szablony kompensacji według niepowodzenia bramki:**
 
 **Typowany: niezaliczone** →
+
 - Dodaj do pliku konfiguracji AI projektu (AGENTS.md) konwencję jawnych adnotacji typów („Cały nowy kod musi zawierać adnotacje typów na granicach funkcji”)
 - Dodaj regułę walidacji na granicach („Używaj Zod/Pydantic/JSON Schema na granicach API”)
 - Jeśli Python: dodaj rekomendację konfiguracji mypy
 - Jeśli JS: dodaj ścieżkę migracji do TypeScript lub podpowiedzi typów JSDoc
 
 **Oparty na konwencjach: niezaliczone** →
+
 - Udokumentuj konwencje struktury folderów w pliku konfiguracji AI projektu (AGENTS.md) („Trasy znajdują się w src/routes/, middleware w src/middleware/, ...”)
 - Udokumentuj konwencje nazewnictwa („Pliki: kebab-case, eksporty: PascalCase dla komponentów, camelCase dla funkcji”)
 - Udokumentuj kolejność rejestracji middleware/wtyczek
 - Udokumentuj wzorzec obsługi błędów
 
 **Popularny w danych treningowych: niezaliczone** →
+
 - Dodaj do pliku konfiguracji AI projektu (AGENTS.md) przykłady idiomów specyficznych dla frameworka
 - Podaj link do oficjalnej dokumentacji w pliku instrukcji
 - Dodaj reguły „preferuj wzorzec X zamiast Y” dla wyborów specyficznych dla frameworka
 - Zaznacz, że agent może potrzebować więcej wskazówek dla tego frameworka
 
 **Dobrze udokumentowany: niezaliczone** →
+
 - Przypnij wersję frameworka w pliku instrukcji
 - Dodaj linki do najlepszej dostępnej dokumentacji
 - Uwzględnij przykłady inline typowych wzorców

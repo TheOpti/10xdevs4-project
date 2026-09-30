@@ -2,6 +2,7 @@
 name: 10x-new
 description: Initialize a new change folder under context/changes/<change-id> with a change.md identity file
 ---
+
 # /10x-new — Rozpocznij nową zmianę
 
 Zainicjuj nowy folder zmiany w `context/changes/<change-id>/`. Tworzy niewielki plik tożsamości (`change.md`) i wskazuje użytkownikowi następną umiejętność.
@@ -31,7 +32,7 @@ The change-id must be:
 - unique across `context/changes/` and `context/archive/`
 ```
 
-   Następnie **poczekaj**, aż użytkownik poda argument.
+Następnie **poczekaj**, aż użytkownik poda argument.
 
 ## Analiza argumentu
 
@@ -46,13 +47,13 @@ Podziel surowy ciąg argumentu przy pierwszej sekwencji białych znaków:
 
 Przykłady:
 
-| Raw input | `<change-id>` | Intent |
-|-----------|---------------|--------|
-| `feature-x` | `feature-x` | (puste) |
-| `oauth-login add Google sign-in for faster onboarding` | `oauth-login` | `add Google sign-in for faster onboarding` |
-| `@context/changes/oauth-login/` | `oauth-login` | (puste) |
-| `@context/changes/oauth-login/ revisit the token-refresh edge case` | `oauth-login` | `revisit the token-refresh edge case` |
-| `My Feature add OAuth` | `My Feature` (nie przejdzie kontroli kebab-case) | `add OAuth` |
+| Raw input                                                           | `<change-id>`                                    | Intent                                     |
+| ------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------ |
+| `feature-x`                                                         | `feature-x`                                      | (puste)                                    |
+| `oauth-login add Google sign-in for faster onboarding`              | `oauth-login`                                    | `add Google sign-in for faster onboarding` |
+| `@context/changes/oauth-login/`                                     | `oauth-login`                                    | (puste)                                    |
+| `@context/changes/oauth-login/ revisit the token-refresh edge case` | `oauth-login`                                    | `revisit the token-refresh edge case`      |
+| `My Feature add OAuth`                                              | `My Feature` (nie przejdzie kontroli kebab-case) | `add OAuth`                                |
 
 ## Walidacja
 
@@ -71,7 +72,7 @@ Przed utworzeniem czegokolwiek:
 1. Utwórz katalog `context/changes/<change-id>/`.
 2. Wyprowadź `<title>`:
    - Jeśli ciąg intencji jest pusty, zamień identyfikator zmiany na formę przyjazną dla człowieka: zastąp łączniki spacjami i zapisz pierwszą literę wielką (np. `multi-course-access` → `Multi course access`).
-   - Jeśli ciąg intencji nie jest pusty, napisz zwięzły, czytelny dla człowieka tytuł (≤ 80 znaków, sentence case, bez końcowej kropki), który oddaje, czego dotyczy zmiana. Intencja jest *wskazówką*, a nie dosłownym tekstem — możesz ją swobodnie przeformułować. Nie wstawiaj akapitu do tytułu.
+   - Jeśli ciąg intencji nie jest pusty, napisz zwięzły, czytelny dla człowieka tytuł (≤ 80 znaków, sentence case, bez końcowej kropki), który oddaje, czego dotyczy zmiana. Intencja jest _wskazówką_, a nie dosłownym tekstem — możesz ją swobodnie przeformułować. Nie wstawiaj akapitu do tytułu.
 3. Wyprowadź treść `## Notes`:
    - Jeśli ciąg intencji jest pusty, umieść komentarz pomocniczy: `<!-- Free-form notes for this change: links, ad-hoc context, decisions that don't belong in research/frame/plan. -->`
    - Jeśli ciąg intencji nie jest pusty, umieść go dosłownie jako treść Notes — słowa użytkownika są zalążkiem. W takim przypadku nie umieszczaj również komentarza pomocniczego (użytkownik pokazał, że wie, do czego służą Notes).

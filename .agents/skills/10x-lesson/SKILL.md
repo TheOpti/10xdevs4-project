@@ -2,6 +2,7 @@
 name: 10x-lesson
 description: Capture a recurring rule or pattern into context/foundation/lessons.md. Use when you spot a class of bug or design pitfall worth surfacing for future reviews and implementations.
 ---
+
 # /10x-lesson — Uchwyć powtarzalną regułę
 
 Dodaj pojedynczy wpis do `context/foundation/lessons.md`, aby przyszłe uruchomienia `/10x-frame`, `/10x-research`, `/10x-plan`, `/10x-plan-review`, `/10x-implement` i `/10x-impl-review` ponownie odczytały go jako wcześniejszą wskazówkę. Jest to proaktywny odpowiednik opcji triage „Accept as recurring rule” w `/10x-impl-review` — wywołaj ją inline, gdy zauważysz wzorzec wart uwidocznienia, bez czekania na ustrukturyzowany przegląd.

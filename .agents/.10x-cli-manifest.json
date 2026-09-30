@@ -9,27 +9,20 @@
   "files": {
     "skills": {
       "10x-init": {
-        "files": [
-          "SKILL.md"
-        ],
+        "files": ["SKILL.md"],
         "contentHashes": {
           "SKILL.md": "b053958ce100eafcd6174d30c60a4cbddcc7c8547e8286172b8a2b8a0a3c63eb"
         }
       },
       "10x-shape": {
-        "files": [
-          "SKILL.md",
-          "references/prd-schema.md"
-        ],
+        "files": ["SKILL.md", "references/prd-schema.md"],
         "contentHashes": {
           "SKILL.md": "1e78298a61d06474270361806c304082fa83bb4976fb9241bd50b4db00e30e11",
           "references/prd-schema.md": "69e487a419e06fedd9d7761a6be1f375b5290839bdc58eaca1c1f64fe5f3516e"
         }
       },
       "10x-prd": {
-        "files": [
-          "SKILL.md"
-        ],
+        "files": ["SKILL.md"],
         "contentHashes": {
           "SKILL.md": "869a9bd9624d4e444da6bf3cd0ebb835a59577d5d990578719086e3f3f6222ee"
         }
@@ -113,64 +106,46 @@
         }
       },
       "10x-health-check": {
-        "files": [
-          "SKILL.md",
-          "references/health-check-schema.md"
-        ],
+        "files": ["SKILL.md", "references/health-check-schema.md"],
         "contentHashes": {
           "SKILL.md": "545baf562c8967a9965d8b1e19a136d5d7f7d7fb3292eb880576f1adcb13deda",
           "references/health-check-schema.md": "6c7115da83ef2a4a396a9b703d94395a0904748bb586a6e182f2018fcbfedfe6"
         }
       },
       "10x-agents-md": {
-        "files": [
-          "SKILL.md"
-        ],
+        "files": ["SKILL.md"],
         "contentHashes": {
           "SKILL.md": "1074ca498a1bcb362c00baa94a61c6aae7ac63b05cf45e40912fd6b462ba283f"
         }
       },
       "10x-rule-review": {
-        "files": [
-          "SKILL.md"
-        ],
+        "files": ["SKILL.md"],
         "contentHashes": {
           "SKILL.md": "32cb357b8f78bc08baa6d15a552db763c7465b6dc9cda9ba4e63c3828c6f34d7"
         }
       },
       "10x-lesson": {
-        "files": [
-          "SKILL.md"
-        ],
+        "files": ["SKILL.md"],
         "contentHashes": {
           "SKILL.md": "18eadf0f3578b060e5318192a426b996bb01660e6f53bc5c239e579d5fede14e"
         }
       },
       "10x-infra-research": {
-        "files": [
-          "SKILL.md",
-          "references/agent-friendly-criteria.md"
-        ],
+        "files": ["SKILL.md", "references/agent-friendly-criteria.md"],
         "contentHashes": {
           "SKILL.md": "81fb2eb175c084807b63830191fe574a2b93dd182268b325c787b4f8d6a21e45",
           "references/agent-friendly-criteria.md": "888b4b712107bf8d8600061e1d907bb1bc14081cb2c3a74be8c7da641a35ab72"
         }
       },
       "10x-roadmap": {
-        "files": [
-          "SKILL.md",
-          "references/milestone-state.md"
-        ],
+        "files": ["SKILL.md", "references/milestone-state.md"],
         "contentHashes": {
           "SKILL.md": "205221920201403f06486204f536e08fed534ed9ed3020b3fc6ab6f20cc29564",
           "references/milestone-state.md": "d9446372acbab5617de079c5ee1e1d4a17fb3329e7bcc1a0129d3ee894fe0a2b"
         }
       },
       "10x-new": {
-        "files": [
-          "SKILL.md",
-          "references/change-md.md"
-        ],
+        "files": ["SKILL.md", "references/change-md.md"],
         "contentHashes": {
           "SKILL.md": "05e924a5fbfd012ae7048b859da653132e202145fbbdd4a56fc721afc5016850",
           "references/change-md.md": "c3f2678136edaee584f555cdbe80de207dee467e840f3d66554dd90092e7fc52"
@@ -199,21 +174,14 @@
         }
       },
       "10x-plan-review": {
-        "files": [
-          "SKILL.md",
-          "references/progress-format.md"
-        ],
+        "files": ["SKILL.md", "references/progress-format.md"],
         "contentHashes": {
           "SKILL.md": "3503adc89b6ade4416602c5cf2d36f354f6e3482974ae2c66c0a1bdd3db1b72f",
           "references/progress-format.md": "01259753af620e2bfcaa04fb34d732d2efcb6fc172f8cf062f24870fe2248642"
         }
       },
       "10x-implement": {
-        "files": [
-          "SKILL.md",
-          "references/implementation-discipline.md",
-          "references/progress-format.md"
-        ],
+        "files": ["SKILL.md", "references/implementation-discipline.md", "references/progress-format.md"],
         "contentHashes": {
           "SKILL.md": "e7479b6e0df70fd7544b9dcffa98814bc809d843c2e134fa87be5e8ca0a8d5c4",
           "references/implementation-discipline.md": "c31109ad88464d8819aa36b226ddfc42aa3028247115fbdaad1144ab94dc3018",
@@ -221,39 +189,28 @@
         }
       },
       "10x-archive": {
-        "files": [
-          "SKILL.md",
-          "references/archive-sha.md"
-        ],
+        "files": ["SKILL.md", "references/archive-sha.md"],
         "contentHashes": {
           "SKILL.md": "d05121f8f279d61ec158c9a0faddd379e3fa04e7bc476624b6266b292cbf6fab",
           "references/archive-sha.md": "3f0f6bb319b1521fbe735ca84b1241b57e89074e93f35bbd77539bb0c31a8ca2"
         }
       },
       "10x-status": {
-        "files": [
-          "SKILL.md",
-          "references/progress-format.md"
-        ],
+        "files": ["SKILL.md", "references/progress-format.md"],
         "contentHashes": {
           "SKILL.md": "dcd276047246849c4e758b2003233896bc56dac94da7007bf00b9745c93ec65e",
           "references/progress-format.md": "01259753af620e2bfcaa04fb34d732d2efcb6fc172f8cf062f24870fe2248642"
         }
       },
       "10x-impl-review": {
-        "files": [
-          "SKILL.md",
-          "references/progress-format.md"
-        ],
+        "files": ["SKILL.md", "references/progress-format.md"],
         "contentHashes": {
           "SKILL.md": "731c35ab30550bba904406818b255801f48ea962880b329269eb6d7b9010c524",
           "references/progress-format.md": "01259753af620e2bfcaa04fb34d732d2efcb6fc172f8cf062f24870fe2248642"
         }
       },
       "10x-frame": {
-        "files": [
-          "SKILL.md"
-        ],
+        "files": ["SKILL.md"],
         "contentHashes": {
           "SKILL.md": "76309143ddb63500ac5e0b75c4a09956f73e9f7441ebab4c857fcb60bfa4f9b4"
         }
@@ -299,20 +256,13 @@
       "appliedAt": "2026-09-14T21:20:23.819Z",
       "skills": {
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-idea-check": {
           "files": [
@@ -348,20 +298,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -386,9 +329,7 @@
           ]
         }
       },
-      "prompts": [
-        "skill-explainer.md"
-      ],
+      "prompts": ["skill-explainer.md"],
       "configs": [],
       "representation": {
         "lang": "pl",
@@ -412,20 +353,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -462,15 +396,10 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         }
       },
-      "prompts": [
-        "skill-explainer.md"
-      ],
+      "prompts": ["skill-explainer.md"],
       "configs": [],
       "representation": {
         "lang": "pl",
@@ -494,20 +423,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -544,30 +466,19 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         },
         "10x-agents-md": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-rule-review": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-lesson": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         }
       },
-      "prompts": [
-        "skill-explainer.md"
-      ],
+      "prompts": ["skill-explainer.md"],
       "configs": [],
       "representation": {
         "lang": "pl",
@@ -591,20 +502,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -641,31 +545,19 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         },
         "10x-agents-md": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-rule-review": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-lesson": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-infra-research": {
-          "files": [
-            "SKILL.md",
-            "references/agent-friendly-criteria.md"
-          ]
+          "files": ["SKILL.md", "references/agent-friendly-criteria.md"]
         }
       },
       "prompts": [
@@ -698,20 +590,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -748,37 +633,22 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         },
         "10x-agents-md": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-rule-review": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-lesson": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-infra-research": {
-          "files": [
-            "SKILL.md",
-            "references/agent-friendly-criteria.md"
-          ]
+          "files": ["SKILL.md", "references/agent-friendly-criteria.md"]
         },
         "10x-roadmap": {
-          "files": [
-            "SKILL.md",
-            "references/milestone-state.md"
-          ]
+          "files": ["SKILL.md", "references/milestone-state.md"]
         }
       },
       "prompts": [
@@ -811,20 +681,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -861,43 +724,25 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         },
         "10x-agents-md": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-rule-review": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-lesson": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-infra-research": {
-          "files": [
-            "SKILL.md",
-            "references/agent-friendly-criteria.md"
-          ]
+          "files": ["SKILL.md", "references/agent-friendly-criteria.md"]
         },
         "10x-roadmap": {
-          "files": [
-            "SKILL.md",
-            "references/milestone-state.md"
-          ]
+          "files": ["SKILL.md", "references/milestone-state.md"]
         },
         "10x-new": {
-          "files": [
-            "SKILL.md",
-            "references/change-md.md"
-          ]
+          "files": ["SKILL.md", "references/change-md.md"]
         },
         "10x-plan": {
           "files": [
@@ -912,29 +757,16 @@
           ]
         },
         "10x-plan-review": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         },
         "10x-implement": {
-          "files": [
-            "SKILL.md",
-            "references/implementation-discipline.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/implementation-discipline.md", "references/progress-format.md"]
         },
         "10x-archive": {
-          "files": [
-            "SKILL.md",
-            "references/archive-sha.md"
-          ]
+          "files": ["SKILL.md", "references/archive-sha.md"]
         },
         "10x-status": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         }
       },
       "prompts": [
@@ -967,20 +799,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -1017,43 +842,25 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         },
         "10x-agents-md": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-rule-review": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-lesson": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-infra-research": {
-          "files": [
-            "SKILL.md",
-            "references/agent-friendly-criteria.md"
-          ]
+          "files": ["SKILL.md", "references/agent-friendly-criteria.md"]
         },
         "10x-roadmap": {
-          "files": [
-            "SKILL.md",
-            "references/milestone-state.md"
-          ]
+          "files": ["SKILL.md", "references/milestone-state.md"]
         },
         "10x-new": {
-          "files": [
-            "SKILL.md",
-            "references/change-md.md"
-          ]
+          "files": ["SKILL.md", "references/change-md.md"]
         },
         "10x-plan": {
           "files": [
@@ -1068,35 +875,19 @@
           ]
         },
         "10x-plan-review": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         },
         "10x-implement": {
-          "files": [
-            "SKILL.md",
-            "references/implementation-discipline.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/implementation-discipline.md", "references/progress-format.md"]
         },
         "10x-archive": {
-          "files": [
-            "SKILL.md",
-            "references/archive-sha.md"
-          ]
+          "files": ["SKILL.md", "references/archive-sha.md"]
         },
         "10x-status": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         },
         "10x-impl-review": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         }
       },
       "prompts": [
@@ -1129,20 +920,13 @@
           ]
         },
         "10x-init": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-shape": {
-          "files": [
-            "SKILL.md",
-            "references/prd-schema.md"
-          ]
+          "files": ["SKILL.md", "references/prd-schema.md"]
         },
         "10x-prd": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-tech-stack-selector": {
           "files": [
@@ -1179,43 +963,25 @@
           ]
         },
         "10x-health-check": {
-          "files": [
-            "SKILL.md",
-            "references/health-check-schema.md"
-          ]
+          "files": ["SKILL.md", "references/health-check-schema.md"]
         },
         "10x-agents-md": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-rule-review": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-lesson": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-infra-research": {
-          "files": [
-            "SKILL.md",
-            "references/agent-friendly-criteria.md"
-          ]
+          "files": ["SKILL.md", "references/agent-friendly-criteria.md"]
         },
         "10x-roadmap": {
-          "files": [
-            "SKILL.md",
-            "references/milestone-state.md"
-          ]
+          "files": ["SKILL.md", "references/milestone-state.md"]
         },
         "10x-new": {
-          "files": [
-            "SKILL.md",
-            "references/change-md.md"
-          ]
+          "files": ["SKILL.md", "references/change-md.md"]
         },
         "10x-plan": {
           "files": [
@@ -1230,40 +996,22 @@
           ]
         },
         "10x-plan-review": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         },
         "10x-implement": {
-          "files": [
-            "SKILL.md",
-            "references/implementation-discipline.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/implementation-discipline.md", "references/progress-format.md"]
         },
         "10x-archive": {
-          "files": [
-            "SKILL.md",
-            "references/archive-sha.md"
-          ]
+          "files": ["SKILL.md", "references/archive-sha.md"]
         },
         "10x-status": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         },
         "10x-impl-review": {
-          "files": [
-            "SKILL.md",
-            "references/progress-format.md"
-          ]
+          "files": ["SKILL.md", "references/progress-format.md"]
         },
         "10x-frame": {
-          "files": [
-            "SKILL.md"
-          ]
+          "files": ["SKILL.md"]
         },
         "10x-research": {
           "files": [
