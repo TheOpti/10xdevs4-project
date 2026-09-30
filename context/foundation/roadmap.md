@@ -39,25 +39,25 @@ Samodzielnie ucząca się osoba potrzebuje szybko zamieniać własne materiały 
 
 ## At a glance
 
-| ID | Change ID | Outcome (user can …) | Prerequisites | PRD refs | Status |
-| --- | --- | --- | --- | --- | --- |
-| F-01 | private-flashcard-data-access | (foundation) trwały dostęp do danych fiszek jest ograniczony do właściciela | — | FR-001, FR-002 | in-progress |
-| S-01 | pasted-text-proposals | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji | F-01 | US-01, FR-001, FR-002 | blocked |
-| S-02 | proposal-review-and-save | zaakceptować komplet propozycji albo edytować i usunąć propozycje przed zapisem zestawu | S-01 | US-01, FR-003 | proposed |
-| S-03 | saved-card-editing | edytować i usuwać wygenerowane fiszki w zapisanym zestawie | S-02 | FR-004 | proposed |
-| S-04 | tagged-set-catalog | przeglądać zapisane zestawy i filtrować je według tagów | S-02 | FR-005 | proposed |
-| S-05 | fixed-interval-review | rozpocząć sesję nauki zapisanego zestawu ze stałymi odstępami | S-02 | US-01, FR-007 | proposed |
+| ID   | Change ID                     | Outcome (user can …)                                                                    | Prerequisites | PRD refs              | Status      |
+| ---- | ----------------------------- | --------------------------------------------------------------------------------------- | ------------- | --------------------- | ----------- |
+| F-01 | private-flashcard-data-access | (foundation) trwały dostęp do danych fiszek jest ograniczony do właściciela             | —             | FR-001, FR-002        | in-progress |
+| S-01 | pasted-text-proposals         | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji                          | F-01          | US-01, FR-001, FR-002 | blocked     |
+| S-02 | proposal-review-and-save      | zaakceptować komplet propozycji albo edytować i usunąć propozycje przed zapisem zestawu | S-01          | US-01, FR-003         | proposed    |
+| S-03 | saved-card-editing            | edytować i usuwać wygenerowane fiszki w zapisanym zestawie                              | S-02          | FR-004                | proposed    |
+| S-04 | tagged-set-catalog            | przeglądać zapisane zestawy i filtrować je według tagów                                 | S-02          | FR-005                | proposed    |
+| S-05 | fixed-interval-review         | rozpocząć sesję nauki zapisanego zestawu ze stałymi odstępami                           | S-02          | US-01, FR-007         | proposed    |
 
 ## Streams
 
 Navigation aid — groups items that share a prerequisites chain. Canonical ordering still lives in the dependency graph below; this table is the proposed reading order across parallel tracks.
 
-| Stream | Theme | Chain | Note |
-| --- | --- | --- | --- |
-| A | Tworzenie i zatwierdzanie | `F-01` → `S-01` → `S-02` | Najkrótsza ścieżka do potwierdzenia podstawowej wartości produktu. |
-| B | Zarządzanie zapisanymi kartami | `S-03` | Rozgałęzia się po `S-02`; pozostaje prostą funkcją obsługi zapisanych kart. |
-| C | Katalog zestawów | `S-04` | Rozgałęzia się po `S-02`; wspiera porządkowanie małej kolekcji. |
-| D | Nauka | `S-05` | Rozgałęzia się po `S-02`; domyka obiecaną ścieżkę nauki. |
+| Stream | Theme                          | Chain                    | Note                                                                        |
+| ------ | ------------------------------ | ------------------------ | --------------------------------------------------------------------------- |
+| A      | Tworzenie i zatwierdzanie      | `F-01` → `S-01` → `S-02` | Najkrótsza ścieżka do potwierdzenia podstawowej wartości produktu.          |
+| B      | Zarządzanie zapisanymi kartami | `S-03`                   | Rozgałęzia się po `S-02`; pozostaje prostą funkcją obsługi zapisanych kart. |
+| C      | Katalog zestawów               | `S-04`                   | Rozgałęzia się po `S-02`; wspiera porządkowanie małej kolekcji.             |
+| D      | Nauka                          | `S-05`                   | Rozgałęzia się po `S-02`; domyka obiecaną ścieżkę nauki.                    |
 
 ## Baseline
 
@@ -124,7 +124,7 @@ What's already in place in the codebase as of `2026-09-22` (auto-researched + us
 - **Risk:** It is separated from proposal review so the first save path stays narrow, while users retain control over cards after saving.
 - **Status:** proposed
 
-### S-04: Katalog zestawów z tagami 
+### S-04: Katalog zestawów z tagami
 
 - **Outcome:** użytkownik może przeglądać zapisane zestawy fiszek i filtrować listę według tagów.
 - **Change ID:** tagged-set-catalog
@@ -150,14 +150,14 @@ What's already in place in the codebase as of `2026-09-22` (auto-researched + us
 
 ## Backlog Handoff
 
-| Roadmap ID | Change ID | Suggested issue title | Ready for `/10x-plan` | Notes |
-| --- | --- | --- | --- | --- |
-| F-01 | private-flashcard-data-access | Constrain private flashcard data access | yes | Unblocks the first user-facing flow. |
-| S-01 | pasted-text-proposals | Generate flashcard proposals from pasted text | no | Resolve the AI provider decision first. |
-| S-02 | proposal-review-and-save | Review and save generated flashcard proposals | no | Requires S-01. |
-| S-03 | saved-card-editing | Edit and delete saved flashcards | no | Requires S-02. |
-| S-04 | tagged-set-catalog | Browse and filter flashcard sets by tags | no | Requires S-02. |
-| S-05 | fixed-interval-review | Start fixed-interval flashcard reviews | no | Requires S-02. |
+| Roadmap ID | Change ID                     | Suggested issue title                         | Ready for `/10x-plan` | Notes                                   |
+| ---------- | ----------------------------- | --------------------------------------------- | --------------------- | --------------------------------------- |
+| F-01       | private-flashcard-data-access | Constrain private flashcard data access       | yes                   | Unblocks the first user-facing flow.    |
+| S-01       | pasted-text-proposals         | Generate flashcard proposals from pasted text | no                    | Resolve the AI provider decision first. |
+| S-02       | proposal-review-and-save      | Review and save generated flashcard proposals | no                    | Requires S-01.                          |
+| S-03       | saved-card-editing            | Edit and delete saved flashcards              | no                    | Requires S-02.                          |
+| S-04       | tagged-set-catalog            | Browse and filter flashcard sets by tags      | no                    | Requires S-02.                          |
+| S-05       | fixed-interval-review         | Start fixed-interval flashcard reviews        | no                    | Requires S-02.                          |
 
 ## Open Roadmap Questions
 

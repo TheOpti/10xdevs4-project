@@ -20,14 +20,14 @@ The repository already targets Workers: it uses `@astrojs/cloudflare` 14.3.1, `o
 
 Scores evaluate agent-operability; runtime/configuration migration is noted separately.
 
-| Platform | CLI-first | Managed / serverless | Agent-readable docs | Scriptable deployment | MCP / integration | Total | Outcome |
-|---|---|---|---|---|---|---|---|
-| Cloudflare Workers | Pass | Pass | Pass | Pass | Pass | 5/5 | Recommended |
-| Netlify | Pass | Pass | Pass | Pass | Pass | 5/5 | Runner-up |
-| Vercel | Pass | Pass | Pass | Pass | Partial — MCP is beta | 4.5/5 | Third |
-| Fly.io | Pass | Partial | Pass | Pass | Partial — MCP deployment material is beta | 3.5/5 | Not shortlisted |
-| Railway | Partial — arbitrary rollback needs dashboard | Partial | Pass | Partial | Pass | 3/5 | Not shortlisted |
-| Render | Partial — rollback is dashboard/API | Pass | Pass | Partial | Pass | 3.5/5 | Not shortlisted |
+| Platform           | CLI-first                                    | Managed / serverless | Agent-readable docs | Scriptable deployment | MCP / integration                         | Total | Outcome         |
+| ------------------ | -------------------------------------------- | -------------------- | ------------------- | --------------------- | ----------------------------------------- | ----- | --------------- |
+| Cloudflare Workers | Pass                                         | Pass                 | Pass                | Pass                  | Pass                                      | 5/5   | Recommended     |
+| Netlify            | Pass                                         | Pass                 | Pass                | Pass                  | Pass                                      | 5/5   | Runner-up       |
+| Vercel             | Pass                                         | Pass                 | Pass                | Pass                  | Partial — MCP is beta                     | 4.5/5 | Third           |
+| Fly.io             | Pass                                         | Partial              | Pass                | Pass                  | Partial — MCP deployment material is beta | 3.5/5 | Not shortlisted |
+| Railway            | Partial — arbitrary rollback needs dashboard | Partial              | Pass                | Partial               | Pass                                      | 3/5   | Not shortlisted |
+| Render             | Partial — rollback is dashboard/API          | Pass                 | Pass                | Partial               | Pass                                      | 3.5/5 | Not shortlisted |
 
 ### Assessment notes
 
@@ -84,15 +84,15 @@ Six months later the deployment decision is seen as a failure because compatibil
 
 ## Risk Register
 
-| Risk | Source | Likelihood | Impact | Mitigation |
-|---|---|---:|---:|---|
-| Unsupported Node API in an AI or auth dependency | Devil's advocate | M | H | Add a deployed smoke test for sign-in and generation before every release; review Workers compatibility when adding SDKs. |
-| CPU limit exceeded by request-path processing | Devil's advocate | M | M | Keep generation at the external provider, cap source size/card count, and measure Worker CPU before relying on the free plan. |
-| App rollback conflicts with Supabase schema | Devil's advocate | M | H | Use additive, backwards-compatible migrations and a documented forward-fix procedure. |
-| Preview accesses production data | Pre-mortem | M | H | Use separate preview credentials and never set production secrets on a preview Worker. |
-| Poor SSR-to-Supabase latency | Pre-mortem | L | M | Choose a Supabase region near the intended user region and measure authenticated route latency after first deployment. |
-| Excessive Cloudflare token scope | Unknown unknowns | M | H | Create a single-project, least-privilege token without DNS or billing access; rotate it if exposed. |
-| Legacy Pages command used for SSR deploy | Research finding | M | M | Treat `npx wrangler deploy` as the canonical deployment command and preserve the existing Workers configuration. |
+| Risk                                             | Source           | Likelihood | Impact | Mitigation                                                                                                                    |
+| ------------------------------------------------ | ---------------- | ---------: | -----: | ----------------------------------------------------------------------------------------------------------------------------- |
+| Unsupported Node API in an AI or auth dependency | Devil's advocate |          M |      H | Add a deployed smoke test for sign-in and generation before every release; review Workers compatibility when adding SDKs.     |
+| CPU limit exceeded by request-path processing    | Devil's advocate |          M |      M | Keep generation at the external provider, cap source size/card count, and measure Worker CPU before relying on the free plan. |
+| App rollback conflicts with Supabase schema      | Devil's advocate |          M |      H | Use additive, backwards-compatible migrations and a documented forward-fix procedure.                                         |
+| Preview accesses production data                 | Pre-mortem       |          M |      H | Use separate preview credentials and never set production secrets on a preview Worker.                                        |
+| Poor SSR-to-Supabase latency                     | Pre-mortem       |          L |      M | Choose a Supabase region near the intended user region and measure authenticated route latency after first deployment.        |
+| Excessive Cloudflare token scope                 | Unknown unknowns |          M |      H | Create a single-project, least-privilege token without DNS or billing access; rotate it if exposed.                           |
+| Legacy Pages command used for SSR deploy         | Research finding |          M |      M | Treat `npx wrangler deploy` as the canonical deployment command and preserve the existing Workers configuration.              |
 
 ## Getting Started
 

@@ -40,10 +40,10 @@ Memoro is a small TypeScript web MVP to be built in three after-hours weeks, wit
 
 ## Pre-scaffold verification
 
-| Signal | Value | Severity | Notes |
-| --- | --- | --- | --- |
-| npm package | not run | n/a | The selected command clones a Git repository, so no npm create-package applies. |
-| GitHub repo | not run | n/a | GitHub CLI (`gh`) is not installed locally. |
+| Signal      | Value   | Severity | Notes                                                                           |
+| ----------- | ------- | -------- | ------------------------------------------------------------------------------- |
+| npm package | not run | n/a      | The selected command clones a Git repository, so no npm create-package applies. |
+| GitHub repo | not run | n/a      | GitHub CLI (`gh`) is not installed locally.                                     |
 
 ## Scaffold log
 
@@ -67,21 +67,21 @@ No vulnerable packages were reported. Dependency metadata: 360 production, 269 d
 
 ## Hints recorded but not acted on
 
-| Hint | Value |
-| --- | --- |
-| bootstrapper_confidence | first-class |
-| quality_override | false |
-| path_taken | standard |
-| self_check_answers | null |
-| team_size | solo |
-| deployment_target | cloudflare-pages |
-| ci_provider | github-actions |
-| ci_default_flow | auto-deploy-on-merge |
-| has_auth | true |
-| has_payments | false |
-| has_realtime | false |
-| has_ai | true |
-| has_background_jobs | false |
+| Hint                    | Value                |
+| ----------------------- | -------------------- |
+| bootstrapper_confidence | first-class          |
+| quality_override        | false                |
+| path_taken              | standard             |
+| self_check_answers      | null                 |
+| team_size               | solo                 |
+| deployment_target       | cloudflare-pages     |
+| ci_provider             | github-actions       |
+| ci_default_flow         | auto-deploy-on-merge |
+| has_auth                | true                 |
+| has_payments            | false                |
+| has_realtime            | false                |
+| has_ai                  | true                 |
+| has_background_jobs     | false                |
 
 ## Next steps
 

@@ -16,15 +16,15 @@ The database contains owner-scoped sets, one private source record per set, and 
 
 ## Key Decisions Made
 
-| Decision | Choice | Why |
-| --- | --- | --- |
-| Foundation scope | Schema, RLS, and internal repository; no public API/UI | Keeps F-01 reusable while leaving the generation flow to S-01. |
-| Migration scope | Sources, sets, and cards only | Meets the current privacy guardrail without locking tags, proposals, or review state early. |
-| Source representation | Separate source record, one-to-one with a set | Separates sensitive material from set metadata and retains provenance. |
-| Source deletion | Cascade when its set is deleted | Avoids retaining private text that no MVP feature can display or reuse. |
-| Set/source creation | Authenticated transactional SQL function | Prevents a failed second write from leaving a source-less set. |
-| Authorization | RLS based on `auth.uid()` with request-bound anon/publishable client | Database policy remains effective even outside an application endpoint. |
-| Verification | pgTAP with two local authenticated users in CI | Tests real allow and deny behavior without creating an endpoint solely for testing. |
+| Decision              | Choice                                                               | Why                                                                                         |
+| --------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Foundation scope      | Schema, RLS, and internal repository; no public API/UI               | Keeps F-01 reusable while leaving the generation flow to S-01.                              |
+| Migration scope       | Sources, sets, and cards only                                        | Meets the current privacy guardrail without locking tags, proposals, or review state early. |
+| Source representation | Separate source record, one-to-one with a set                        | Separates sensitive material from set metadata and retains provenance.                      |
+| Source deletion       | Cascade when its set is deleted                                      | Avoids retaining private text that no MVP feature can display or reuse.                     |
+| Set/source creation   | Authenticated transactional SQL function                             | Prevents a failed second write from leaving a source-less set.                              |
+| Authorization         | RLS based on `auth.uid()` with request-bound anon/publishable client | Database policy remains effective even outside an application endpoint.                     |
+| Verification          | pgTAP with two local authenticated users in CI                       | Tests real allow and deny behavior without creating an endpoint solely for testing.         |
 
 ## Scope
 
@@ -47,11 +47,11 @@ Sets and sources store their owner directly. Cards inherit authorization through
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
+| Phase                     | What it delivers                                         | Key risk                                               |
+| ------------------------- | -------------------------------------------------------- | ------------------------------------------------------ |
 | 1. Private schema and RLS | Core tables, lifecycle constraints, grants, and policies | Cross-table policy checks must not allow reassignment. |
-| 2. Server-only repository | Reusable, request-bound access contract | Source text must never reach read models. |
-| 3. RLS proof and CI | Two-user policy tests and required CI execution | Tests must cover every allow and deny path. |
+| 2. Server-only repository | Reusable, request-bound access contract                  | Source text must never reach read models.              |
+| 3. RLS proof and CI       | Two-user policy tests and required CI execution          | Tests must cover every allow and deny path.            |
 
 **Prerequisites:** local Supabase CLI and Docker for database tests; existing auth configuration.
 
