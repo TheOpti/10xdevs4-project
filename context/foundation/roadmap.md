@@ -3,7 +3,7 @@ project: Memoro
 version: 1
 status: draft
 created: 2026-09-22
-updated: 2026-09-24
+updated: 2026-10-01
 prd_version: 1
 main_goal: low-complexity
 top_blocker: capacity
@@ -42,7 +42,7 @@ Samodzielnie ucząca się osoba potrzebuje szybko zamieniać własne materiały 
 | ID   | Change ID                     | Outcome (user can …)                                                                    | Prerequisites | PRD refs              | Status      |
 | ---- | ----------------------------- | --------------------------------------------------------------------------------------- | ------------- | --------------------- | ----------- |
 | F-01 | private-flashcard-data-access | (foundation) trwały dostęp do danych fiszek jest ograniczony do właściciela             | —             | FR-001, FR-002        | in-progress |
-| S-01 | pasted-text-proposals         | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji                          | F-01          | US-01, FR-001, FR-002 | blocked     |
+| S-01 | pasted-text-proposals         | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji                          | F-01          | US-01, FR-001, FR-002 | planning    |
 | S-02 | proposal-review-and-save      | zaakceptować komplet propozycji albo edytować i usunąć propozycje przed zapisem zestawu | S-01          | US-01, FR-003         | proposed    |
 | S-03 | saved-card-editing            | edytować i usuwać wygenerowane fiszki w zapisanym zestawie                              | S-02          | FR-004                | proposed    |
 | S-04 | tagged-set-catalog            | przeglądać zapisane zestawy i filtrować je według tagów                                 | S-02          | FR-005                | proposed    |
@@ -98,7 +98,7 @@ What's already in place in the codebase as of `2026-09-22` (auto-researched + us
 - **Unknowns:**
   - Which AI generation provider and server-side credentials will be approved for the MVP? — Owner: user. Block: yes.
 - **Risk:** The core flow is placed first after the privacy contract because provider fit and generated-output behaviour determine whether the product hypothesis can be validated.
-- **Status:** blocked
+- **Status:** planning
 
 ### S-02: Przegląd propozycji i zapis zestawu
 
