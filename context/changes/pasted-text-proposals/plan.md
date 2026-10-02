@@ -204,23 +204,23 @@ No migration is required. The plan reuses F-01's additive schema and atomic set/
 
 #### Automated
 
-- [x] 2.1 Pass Astro type checking for the route, island, and navigation contract
-- [x] 2.2 Pass linting for the form state and request handling
+- [x] 2.1 Pass Astro type checking for the route, island, and navigation contract — dcfedf9
+- [x] 2.2 Pass linting for the form state and request handling — dcfedf9
 
 #### Manual
 
-- [x] 2.3 Verify unauthenticated access redirects to sign-in
-- [x] 2.4 Verify dashboard navigation and successful demo-proposal display
-- [x] 2.5 Verify validation and server errors preserve the form state
-- [x] 2.6 Verify refresh clears the proposal and excludes S-02 controls
+- [x] 2.3 Verify unauthenticated access redirects to sign-in — dcfedf9
+- [x] 2.4 Verify dashboard navigation and successful demo-proposal display — dcfedf9
+- [x] 2.5 Verify validation and server errors preserve the form state — dcfedf9
+- [x] 2.6 Verify refresh clears the proposal and excludes S-02 controls — dcfedf9
 
 ### Phase 3: Regression Coverage and Delivery Validation
 
 #### Automated
 
-- [ ] 3.1 Pass the complete Vitest suite with proposal and endpoint coverage
-- [ ] 3.2 Pass linting, Astro type checking, and production build without AI credentials
+- [x] 3.1 Pass the complete Vitest suite with proposal and endpoint coverage
+- [x] 3.2 Pass linting, Astro type checking, and production build without AI credentials
 
 #### Manual
 
-- [ ] 3.3 Verify the local authenticated flow and owner-only private-data access
+- [x] 3.3 Verify the local authenticated flow and owner-only private-data access
