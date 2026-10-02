@@ -1,0 +1,13 @@
+---
+import AppShell from "@/components/AppShell";
+import NewFlashcardsForm from "@/components/flashcards/NewFlashcardsForm";
+import Layout from "@/layouts/Layout.astro";
+
+const { user } = Astro.locals;
+---
+
+<Layout title="New set">
+  <AppShell email={user?.email} newSetHref="/dashboard/new">
+    <NewFlashcardsForm client:load />
+  </AppShell>
+</Layout>

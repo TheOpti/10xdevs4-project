@@ -13,12 +13,9 @@ export interface FlashcardProposal {
 }
 
 export type FlashcardProposalValidationResult =
-  | { valid: true }
-  | { valid: false; error: "title-required" | "source-text-required" | "source-text-too-long" };
+  { valid: true } | { valid: false; error: "title-required" | "source-text-required" | "source-text-too-long" };
 
-export function validateFlashcardProposalInput(
-  input: FlashcardProposalInput,
-): FlashcardProposalValidationResult {
+export function validateFlashcardProposalInput(input: FlashcardProposalInput): FlashcardProposalValidationResult {
   if (input.title.trim().length === 0) {
     return { valid: false, error: "title-required" };
   }

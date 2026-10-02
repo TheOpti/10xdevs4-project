@@ -53,11 +53,11 @@ function StackedCardPreview({ title, count, due, progress, lastStudied }: Stacke
   return (
     <div className="group relative cursor-pointer">
       {/* stacked layers behind, visible on hover */}
-      <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-xl border bg-card transition-transform group-hover:translate-x-2 group-hover:translate-y-2" />
-      <Card className="relative rounded-xl bg-card shadow-sm transition-shadow group-hover:shadow-md">
+      <div className="bg-card absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-xl border transition-transform group-hover:translate-x-2 group-hover:translate-y-2" />
+      <Card className="bg-card relative rounded-xl shadow-sm transition-shadow group-hover:shadow-md">
         <CardContent className="p-5">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="text-lg font-medium leading-snug">{title}</h3>
+            <h3 className="text-lg leading-snug font-medium">{title}</h3>
             {due > 0 ? (
               <Badge variant="secondary" className="shrink-0 bg-orange-500/10 text-orange-600 hover:bg-orange-500/20">
                 {due} due
@@ -69,12 +69,12 @@ function StackedCardPreview({ title, count, due, progress, lastStudied }: Stacke
             )}
           </div>
 
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             {count} cards · studied {lastStudied}
           </p>
 
           <div className="mt-4">
-            <div className="mb-1.5 flex items-center justify-between text-xs text-muted-foreground">
+            <div className="text-muted-foreground mb-1.5 flex items-center justify-between text-xs">
               <span>Mastery</span>
               <span>{progress}%</span>
             </div>
@@ -88,10 +88,10 @@ function StackedCardPreview({ title, count, due, progress, lastStudied }: Stacke
 
 export default function Dashboard({ email }: { email?: string }) {
   return (
-    <AppShell email={email}>
+    <AppShell email={email} newSetHref="/dashboard/new">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="mt-1 text-sm text-muted-foreground">You&apos;ve got 37 cards due across 2 collections today.</p>
+        <p className="text-muted-foreground mt-1 text-sm">You&apos;ve got 37 cards due across 2 collections today.</p>
       </div>
 
       {/* Stats row */}
@@ -99,14 +99,12 @@ export default function Dashboard({ email }: { email?: string }) {
         {STATS.map(({ label, value, icon: Icon, tint, bgTint }) => (
           <Card key={label} className="shadow-sm">
             <CardContent className="flex items-center gap-4 p-5">
-              <div
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${bgTint}`}
-              >
+              <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${bgTint}`}>
                 <Icon className={`h-5 w-5 ${tint}`} strokeWidth={2} />
               </div>
               <div>
-                <p className="text-2xl font-bold leading-none">{value}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{label}</p>
+                <p className="text-2xl leading-none font-bold">{value}</p>
+                <p className="text-muted-foreground mt-1 text-xs">{label}</p>
               </div>
             </CardContent>
           </Card>
@@ -115,7 +113,7 @@ export default function Dashboard({ email }: { email?: string }) {
 
       {/* Collections */}
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-sm font-medium text-muted-foreground">Your collections</h2>
+        <h2 className="text-muted-foreground text-sm font-medium">Your collections</h2>
       </div>
       <div className="grid gap-6 sm:grid-cols-2">
         {COLLECTIONS.map((c) => (

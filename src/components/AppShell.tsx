@@ -13,10 +13,12 @@ const NAV_ITEMS = [
 export default function AppShell({
   children,
   onNewSet,
+  newSetHref,
   email,
 }: {
   children: React.ReactNode;
   onNewSet?: () => void;
+  newSetHref?: string;
   email?: string;
 }) {
   const displayEmail = email ?? "user@email.com";
@@ -87,10 +89,19 @@ export default function AppShell({
                 />
               </div>
               <div className="flex-1" />
-              <Button onClick={onNewSet} className="gap-2">
-                <Plus className="h-4 w-4" />
-                New set
-              </Button>
+              {newSetHref ? (
+                <Button asChild className="gap-2">
+                  <a href={newSetHref}>
+                    <Plus className="h-4 w-4" />
+                    New set
+                  </a>
+                </Button>
+              ) : (
+                <Button onClick={onNewSet} className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  New set
+                </Button>
+              )}
             </div>
           </header>
 

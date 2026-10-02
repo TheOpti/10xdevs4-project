@@ -192,27 +192,27 @@ No migration is required. The plan reuses F-01's additive schema and atomic set/
 
 #### Automated
 
-- [x] 1.1 Test proposal input validation and the Unicode source limit
-- [x] 1.2 Test deterministic demo-proposal output
-- [x] 1.3 Test authenticated generation endpoint success and safe error responses
+- [x] 1.1 Test proposal input validation and the Unicode source limit — 7ab4119
+- [x] 1.2 Test deterministic demo-proposal output — 7ab4119
+- [x] 1.3 Test authenticated generation endpoint success and safe error responses — 7ab4119
 
 #### Manual
 
-- [x] 1.4 Confirm the server contract introduces no AI or sensitive-data exposure
+- [x] 1.4 Confirm the server contract introduces no AI or sensitive-data exposure — 7ab4119
 
 ### Phase 2: Protected Creation Experience
 
 #### Automated
 
-- [ ] 2.1 Pass Astro type checking for the route, island, and navigation contract
-- [ ] 2.2 Pass linting for the form state and request handling
+- [x] 2.1 Pass Astro type checking for the route, island, and navigation contract
+- [x] 2.2 Pass linting for the form state and request handling
 
 #### Manual
 
-- [ ] 2.3 Verify unauthenticated access redirects to sign-in
-- [ ] 2.4 Verify dashboard navigation and successful demo-proposal display
-- [ ] 2.5 Verify validation and server errors preserve the form state
-- [ ] 2.6 Verify refresh clears the proposal and excludes S-02 controls
+- [x] 2.3 Verify unauthenticated access redirects to sign-in
+- [x] 2.4 Verify dashboard navigation and successful demo-proposal display
+- [x] 2.5 Verify validation and server errors preserve the form state
+- [x] 2.6 Verify refresh clears the proposal and excludes S-02 controls
 
 ### Phase 3: Regression Coverage and Delivery Validation
 
