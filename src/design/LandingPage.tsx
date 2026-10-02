@@ -1,4 +1,3 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Layers, Brain, Clock, RefreshCw } from "lucide-react";
@@ -74,7 +73,7 @@ export default function LandingPage() {
       <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 pt-20 pb-24 md:grid-cols-2">
         <div>
           <h1 className="text-5xl leading-[1.05] tracking-tight md:text-6xl">
-            Turn what you're reading into what you'll remember.
+            Turn what you’re reading into what you’ll remember.
           </h1>
           <p className="mt-6 max-w-md text-lg text-[#1C2321]/70">
             Paste in any block of text and Stax builds a deck of flashcards from it — then reviews them with you until
@@ -98,7 +97,7 @@ export default function LandingPage() {
               <div className="absolute inset-0 translate-x-3 -translate-y-2 rotate-3 rounded-lg border border-[#E4E2D6] bg-white shadow-sm" />
               <div className="absolute inset-0 flex flex-col justify-between rounded-lg border border-[#E4E2D6] bg-white p-5 shadow-md">
                 <span className="text-xs tracking-wide text-[#1C2321]/40 uppercase">Cell biology</span>
-                <p className="text-lg leading-snug">What organelle produces most of a cell's ATP?</p>
+                <p className="text-lg leading-snug">What organelle produces most of a cell&apos;s ATP?</p>
                 <span className="text-xs text-[#1C2321]/40">Tap to reveal</span>
               </div>
             </div>

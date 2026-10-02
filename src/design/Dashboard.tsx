@@ -1,5 +1,4 @@
-import React from "react";
-import AppShell from "@/components/layout/AppShell";
+import AppShell from "@/components/AppShell";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
@@ -42,7 +41,15 @@ const COLLECTIONS = [
   },
 ];
 
-function StackedCardPreview({ title, count, due, progress, lastStudied }) {
+interface StackedCardPreviewProps {
+  title: string;
+  count: number;
+  due: number;
+  progress: number;
+  lastStudied: string;
+}
+
+function StackedCardPreview({ title, count, due, progress, lastStudied }: StackedCardPreviewProps) {
   return (
     <div className="group relative cursor-pointer">
       {/* stacked layers behind, visible on hover */}
@@ -84,7 +91,7 @@ export default function Dashboard() {
     <AppShell>
       <div className="mb-8">
         <h1 className="text-3xl">Good afternoon, Jordan</h1>
-        <p className="mt-1 text-sm text-[#1C2321]/50">You've got 37 cards due across 2 collections today.</p>
+        <p className="mt-1 text-sm text-[#1C2321]/50">You’ve got 37 cards due across 2 collections today.</p>
       </div>
 
       {/* Stats row */}

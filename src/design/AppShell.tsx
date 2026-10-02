@@ -1,8 +1,8 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
+import type { ReactNode } from "react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Layers, LayoutGrid, BarChart3, Settings, Plus, Search } from "lucide-react";
+import { BarChart3, Layers, LayoutGrid, Plus, Search, Settings } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "Collections", icon: LayoutGrid, active: true },
@@ -10,11 +10,15 @@ const NAV_ITEMS = [
   { label: "Settings", icon: Settings, active: false },
 ];
 
-export default function AppShell({ children, onNewSet }) {
+interface AppShellProps {
+  children: ReactNode;
+  onNewSet: () => void;
+}
+
+export default function AppShell({ children, onNewSet }: AppShellProps) {
   return (
     <div className="min-h-screen bg-[#F5F6F2] font-sans text-[#1C2321]">
       <div className="flex">
-        {/* Sidebar */}
         <aside className="hidden border-r border-[#E4E2D6] bg-[#F5F6F2] md:fixed md:inset-y-0 md:flex md:w-60 md:flex-col">
           <div className="flex h-16 items-center gap-2 px-6">
             <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-[#3D5A80]">
@@ -22,7 +26,6 @@ export default function AppShell({ children, onNewSet }) {
             </div>
             <span className="text-lg tracking-tight">Stax</span>
           </div>
-
           <nav className="flex-1 space-y-1 px-3 py-4">
             {NAV_ITEMS.map(({ label, icon: Icon, active }) => (
               <button
@@ -38,7 +41,6 @@ export default function AppShell({ children, onNewSet }) {
               </button>
             ))}
           </nav>
-
           <div className="p-3">
             <Separator className="mb-3 bg-[#E4E2D6]" />
             <div className="flex items-center gap-3 px-2 py-1.5">
@@ -52,16 +54,13 @@ export default function AppShell({ children, onNewSet }) {
             </div>
           </div>
         </aside>
-
-        {/* Main column */}
         <div className="flex-1 md:ml-60">
-          {/* Topbar */}
           <header className="sticky top-0 z-10 border-b border-[#E4E2D6] bg-[#F5F6F2]/90 backdrop-blur">
             <div className="flex h-16 items-center gap-4 px-6">
               <div className="relative max-w-sm flex-1">
                 <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#1C2321]/40" />
                 <input
-                  placeholder="Search collections…"
+                  placeholder="Search collectionsâ€¦"
                   className="h-9 w-full rounded-md border border-[#E4E2D6] bg-white pr-3 pl-9 text-sm placeholder:text-[#1C2321]/40 focus:ring-2 focus:ring-[#3D5A80]/30 focus:outline-none"
                 />
               </div>
@@ -72,7 +71,6 @@ export default function AppShell({ children, onNewSet }) {
               </Button>
             </div>
           </header>
-
           <main className="max-w-6xl px-6 py-8">{children}</main>
         </div>
       </div>
