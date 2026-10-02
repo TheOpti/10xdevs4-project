@@ -12,6 +12,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "verify": "npm run lint && npx astro check && npm test && npm run build",
     "format": "prettier --write .",
     "smoke": "node scripts/smoke.mjs",
     "seed": "node scripts/seed.mjs",

@@ -21,6 +21,7 @@ This is an Astro 7 application deployed to Cloudflare, with React islands, Tailw
 - `npm run dev` starts the Astro development server.
 - `npm run lint` runs ESLint across the repository; run it after TypeScript, React, or Astro edits.
 - `npx astro check` validates Astro and TypeScript types, as required by CI.
+- `npm run verify` runs the required completion gate: lint, Astro/type checks, the Vitest suite, and a production build. Run it after every feature or bug-fix change before declaring the work complete. Do not claim validation passed if any stage was skipped or blocked; report the exact blocker instead.
 - `npm run build` creates the Cloudflare server build; set the Supabase variables when exercising configured auth locally.
 - `npm run smoke` checks a running preview. CI builds then runs it against local Supabase; see @.github/workflows/ci.yml.
 
@@ -30,4 +31,4 @@ Prettier enforces two-space indentation, double quotes, semicolons, 120-column w
 
 ## Commits and pull requests
 
-Recent commits use short imperative subjects, for example `Create skeleton of the project`; follow that style. Before opening a PR, run the CI-equivalent lint, type check, and build commands. Describe user-visible route or authentication changes and identify any required Supabase configuration.
+Recent commits use short imperative subjects, for example `Create skeleton of the project`; follow that style. Before opening a PR, run `npm run verify`. Describe user-visible route or authentication changes and identify any required Supabase configuration.

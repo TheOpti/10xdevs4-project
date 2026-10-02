@@ -218,9 +218,9 @@ No migration is required. The plan reuses F-01's additive schema and atomic set/
 
 #### Automated
 
-- [x] 3.1 Pass the complete Vitest suite with proposal and endpoint coverage
-- [x] 3.2 Pass linting, Astro type checking, and production build without AI credentials
+- [x] 3.1 Pass the complete Vitest suite with proposal and endpoint coverage — 7186d0a
+- [x] 3.2 Pass linting, Astro type checking, and production build without AI credentials — 7186d0a
 
 #### Manual
 
-- [x] 3.3 Verify the local authenticated flow and owner-only private-data access
+- [x] 3.3 Verify the local authenticated flow and owner-only private-data access — 7186d0a
