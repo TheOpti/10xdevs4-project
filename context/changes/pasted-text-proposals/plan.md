@@ -192,13 +192,13 @@ No migration is required. The plan reuses F-01's additive schema and atomic set/
 
 #### Automated
 
-- [ ] 1.1 Test proposal input validation and the Unicode source limit
-- [ ] 1.2 Test deterministic demo-proposal output
-- [ ] 1.3 Test authenticated generation endpoint success and safe error responses
+- [x] 1.1 Test proposal input validation and the Unicode source limit
+- [x] 1.2 Test deterministic demo-proposal output
+- [x] 1.3 Test authenticated generation endpoint success and safe error responses
 
 #### Manual
 
-- [ ] 1.4 Confirm the server contract introduces no AI or sensitive-data exposure
+- [x] 1.4 Confirm the server contract introduces no AI or sensitive-data exposure
 
 ### Phase 2: Protected Creation Experience
 
