@@ -71,12 +71,12 @@ Cover valid save, replay, bad count/UUID/fields, unauthenticated access, and mal
 
 #### Automated Verification
 
-- [x] 1.1 Migration and Supabase SQL tests prove owner batch save/replay and reject another user’s set or operation.
-- [x] 1.2 Repository and endpoint tests cover first save, replay, authentication, and invalid or oversized requests.
+- [ ] 1.1 Migration and Supabase SQL tests prove owner batch save/replay and reject another user’s set or operation.
+- [ ] 1.2 Repository and endpoint tests cover first save, replay, authentication, and invalid or oversized requests.
 
 #### Manual Verification
 
-- [x] 1.3 Repeating one authenticated API payload with the same request ID returns the same card IDs and does not increase card count.
+- [ ] 1.3 Repeating one authenticated API payload with the same request ID returns the same card IDs and does not increase card count.
 
 ### Pause Point
 
@@ -189,9 +189,9 @@ Review validation output and Supabase migration notes before committing implemen
 
 ### Phase 1: Private, Idempotent Batch-Save Contract
 
-- [ ] 1.1 Migration and Supabase SQL tests prove owner batch save/replay and reject another user’s set or operation.
-- [ ] 1.2 Repository and endpoint tests cover first save, replay, authentication, and invalid or oversized requests.
-- [ ] 1.3 Repeating one authenticated API payload with the same request ID returns the same card IDs and does not increase card count.
+- [x] 1.1 Migration and Supabase SQL tests prove owner batch save/replay and reject another user’s set or operation. — 4f987ac
+- [x] 1.2 Repository and endpoint tests cover first save, replay, authentication, and invalid or oversized requests. — 4f987ac
+- [x] 1.3 Repeating one authenticated API payload with the same request ID returns the same card IDs and does not increase card count. — 4f987ac
 
 ### Phase 2: Ephemeral Review and In-Place Completion
 
