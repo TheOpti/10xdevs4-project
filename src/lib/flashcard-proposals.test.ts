@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   generateDemoFlashcardProposal,
   MAX_SOURCE_TEXT_CODE_POINTS,
+  MAX_TITLE_CODE_POINTS,
   validateFlashcardProposalInput,
 } from "@/lib/flashcard-proposals";
 
@@ -15,6 +16,15 @@ describe("validateFlashcardProposalInput", () => {
       valid: false,
       error: "source-text-required",
     });
+  });
+
+  it("rejects a title over the Unicode code-point limit", () => {
+    expect(
+      validateFlashcardProposalInput({
+        title: "😀".repeat(MAX_TITLE_CODE_POINTS + 1),
+        sourceText: "Source",
+      }),
+    ).toEqual({ valid: false, error: "title-too-long" });
   });
 
   it("counts Unicode code points when enforcing the source limit", () => {

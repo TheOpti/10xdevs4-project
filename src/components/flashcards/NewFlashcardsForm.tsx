@@ -1,5 +1,6 @@
 import { useState, type SubmitEvent } from "react";
 import {
+  MAX_TITLE_CODE_POINTS,
   MAX_SOURCE_TEXT_CODE_POINTS,
   type FlashcardProposal,
   validateFlashcardProposalInput,
@@ -11,6 +12,8 @@ function validationMessage(
   switch (error) {
     case "title-required":
       return "Enter a title for this set.";
+    case "title-too-long":
+      return `Set title must be ${MAX_TITLE_CODE_POINTS.toLocaleString()} characters or fewer.`;
     case "source-text-required":
       return "Paste source text to generate a proposal.";
     case "source-text-too-long":
@@ -57,13 +60,17 @@ export default function NewFlashcardsForm() {
       const responsePayload = responseBody as Record<string, unknown> | null;
 
       if (!response.ok || responsePayload === null || !isProposal(responsePayload.proposal)) {
-        setError("We could not generate a proposal. Your text is still here, so you can try again.");
+        setError(
+          "We could not confirm whether a proposal was created. Your text is still here. Check your sets before submitting again.",
+        );
         return;
       }
 
       setProposal(responsePayload.proposal);
     } catch {
-      setError("We could not generate a proposal. Your text is still here, so you can try again.");
+      setError(
+        "We could not confirm whether a proposal was created. Your text is still here. Check your sets before submitting again.",
+      );
     } finally {
       setIsPending(false);
     }

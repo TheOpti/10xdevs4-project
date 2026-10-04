@@ -1,3 +1,4 @@
+export const MAX_TITLE_CODE_POINTS = 255;
 export const MAX_SOURCE_TEXT_CODE_POINTS = 10_000;
 
 export interface FlashcardProposalInput {
@@ -13,11 +14,19 @@ export interface FlashcardProposal {
 }
 
 export type FlashcardProposalValidationResult =
-  { valid: true } | { valid: false; error: "title-required" | "source-text-required" | "source-text-too-long" };
+  | { valid: true }
+  | {
+      valid: false;
+      error: "title-required" | "title-too-long" | "source-text-required" | "source-text-too-long";
+    };
 
 export function validateFlashcardProposalInput(input: FlashcardProposalInput): FlashcardProposalValidationResult {
   if (input.title.trim().length === 0) {
     return { valid: false, error: "title-required" };
+  }
+
+  if (Array.from(input.title).length > MAX_TITLE_CODE_POINTS) {
+    return { valid: false, error: "title-too-long" };
   }
 
   if (input.sourceText.trim().length === 0) {

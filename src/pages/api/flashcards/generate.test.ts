@@ -11,9 +11,9 @@ const mockedCreateClient = vi.mocked(createClient);
 const mockedCreateFlashcardRepository = vi.mocked(createFlashcardRepository);
 const cookies = {} as AstroCookies;
 
-function createContext(body: string) {
+function createContext(body: string, headers?: HeadersInit) {
   return {
-    request: new Request("http://localhost/api/flashcards/generate", { method: "POST", body }),
+    request: new Request("http://localhost/api/flashcards/generate", { method: "POST", body, headers }),
     cookies,
   } as Parameters<typeof POST>[0];
 }
@@ -62,6 +62,15 @@ describe("POST /api/flashcards/generate", () => {
     await expect(invalidJson.json()).resolves.toEqual({ error: "Invalid request" });
     expect(invalidInput.status).toBe(400);
     await expect(invalidInput.json()).resolves.toEqual({ error: "Invalid request" });
+    expect(mockedCreateFlashcardRepository).not.toHaveBeenCalled();
+  });
+
+  it("rejects an oversized request before parsing or writing", async () => {
+    configuredSupabase();
+    const oversized = await POST(createContext("{}", { "content-length": String(48 * 1024 + 1) }));
+
+    expect(oversized.status).toBe(400);
+    await expect(oversized.json()).resolves.toEqual({ error: "Invalid request" });
     expect(mockedCreateFlashcardRepository).not.toHaveBeenCalled();
   });
 
