@@ -1,6 +1,6 @@
 begin;
 
-select plan(21);
+select plan(26);
 
 select tests.create_supabase_user('flashcard_owner', 'flashcard-owner@example.com');
 select tests.create_supabase_user('flashcard_intruder', 'flashcard-intruder@example.com');
@@ -47,6 +47,30 @@ select lives_ok(
 select lives_ok(
   $$insert into public.flashcard_sets (id, title) values ('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'Attachment target')$$,
   'Owner can create a set that the second user cannot attach records to'
+);
+
+select results_eq(
+  $$select count(*) from public.save_reviewed_flashcards((select id from public.flashcard_sets where title = 'Updated owner set'), 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '[{"question":"Reviewed question","answer":"Reviewed answer"},{"question":"Second question","answer":"Second answer"}]'::jsonb)$$,
+  array[2::bigint],
+  'Owner can atomically save a reviewed batch'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcards where save_operation_id is not null$$,
+  array[2::bigint],
+  'Reviewed cards retain a durable save-operation relation'
+);
+
+select results_eq(
+  $$select bool_and(not was_created) from public.save_reviewed_flashcards((select id from public.flashcard_sets where title = 'Updated owner set'), 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '[{"question":"Different retry question","answer":"Different retry answer"}]'::jsonb)$$,
+  array[true],
+  'Replaying a request key returns the original batch'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcards where save_operation_id is not null$$,
+  array[2::bigint],
+  'Replay does not duplicate reviewed cards'
 );
 
 select throws_ok(
@@ -100,6 +124,13 @@ select throws_ok(
   '42501',
   'new row violates row-level security policy for table "flashcards"',
   'Second user cannot attach a card to the owner set'
+);
+
+select throws_ok(
+  $$select * from public.save_reviewed_flashcards('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'cccccccc-cccc-4ccc-8ccc-cccccccccccc', '[{"question":"Attached question","answer":"Attached answer"}]'::jsonb)$$,
+  'P0002',
+  'Flashcard set not found',
+  'Second user cannot save a batch into the owner set'
 );
 
 select tests.clear_authentication();

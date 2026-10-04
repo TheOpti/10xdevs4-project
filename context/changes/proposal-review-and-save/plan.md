@@ -71,12 +71,12 @@ Cover valid save, replay, bad count/UUID/fields, unauthenticated access, and mal
 
 #### Automated Verification
 
-- [ ] 1.1 Migration and Supabase SQL tests prove owner batch save/replay and reject another user’s set or operation.
-- [ ] 1.2 Repository and endpoint tests cover first save, replay, authentication, and invalid or oversized requests.
+- [x] 1.1 Migration and Supabase SQL tests prove owner batch save/replay and reject another user’s set or operation.
+- [x] 1.2 Repository and endpoint tests cover first save, replay, authentication, and invalid or oversized requests.
 
 #### Manual Verification
 
-- [ ] 1.3 Repeating one authenticated API payload with the same request ID returns the same card IDs and does not increase card count.
+- [x] 1.3 Repeating one authenticated API payload with the same request ID returns the same card IDs and does not increase card count.
 
 ### Pause Point
 

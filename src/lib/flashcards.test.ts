@@ -58,6 +58,59 @@ describe("createFlashcardRepository", () => {
     });
   });
 
+  it("saves a reviewed batch through the idempotent RPC without accepting an owner ID", async () => {
+    const rpc = vi.fn().mockResolvedValue({
+      data: [
+        {
+          was_created: true,
+          id: "card-id",
+          question: "What is a cell?",
+          answer: "The smallest unit of life.",
+          created_at: "2026-10-04T12:00:00.000Z",
+        },
+      ],
+      error: null,
+    });
+    const repository = createRepository({ rpc });
+    const input = {
+      setId: "set-id",
+      requestId: "request-id",
+      cards: [{ question: "What is a cell?", answer: "The smallest unit of life." }],
+    };
+
+    await expect(repository.saveCards(input)).resolves.toEqual({
+      ok: true,
+      data: {
+        setId: "set-id",
+        created: true,
+        cards: [
+          {
+            id: "card-id",
+            question: "What is a cell?",
+            answer: "The smallest unit of life.",
+            createdAt: "2026-10-04T12:00:00.000Z",
+          },
+        ],
+      },
+    });
+    expect(rpc).toHaveBeenCalledWith("save_reviewed_flashcards", {
+      set_id: input.setId,
+      request_id: input.requestId,
+      cards: input.cards,
+    });
+  });
+
+  it("rejects an empty reviewed batch before issuing a database request", async () => {
+    const rpc = vi.fn();
+    const repository = createRepository({ rpc });
+
+    await expect(repository.saveCards({ setId: "set-id", requestId: "request-id", cards: [] })).resolves.toEqual({
+      ok: false,
+      error: "invalid-input",
+    });
+    expect(rpc).not.toHaveBeenCalled();
+  });
+
   it("returns cards without selecting or exposing stored source text", async () => {
     const overrideTypes = vi.fn().mockResolvedValue({
       data: {

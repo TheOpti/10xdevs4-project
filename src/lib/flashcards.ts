@@ -32,12 +32,25 @@ export interface CreatedFlashcardSet {
   id: string;
 }
 
+export interface SaveFlashcardsInput {
+  setId: string;
+  requestId: string;
+  cards: FlashcardInput[];
+}
+
+export interface SavedFlashcards {
+  setId: string;
+  cards: Flashcard[];
+  created: boolean;
+}
+
 export type FlashcardRepositoryError = "invalid-input" | "not-found" | "request-failed";
 
 export type FlashcardRepositoryResult<T> = { ok: true; data: T } | { ok: false; error: FlashcardRepositoryError };
 
 export interface FlashcardRepository {
   createSet(input: CreateFlashcardSetInput): Promise<FlashcardRepositoryResult<CreatedFlashcardSet>>;
+  saveCards(input: SaveFlashcardsInput): Promise<FlashcardRepositoryResult<SavedFlashcards>>;
   listSets(): Promise<FlashcardRepositoryResult<FlashcardSetSummary[]>>;
   getSetWithCards(setId: string): Promise<FlashcardRepositoryResult<FlashcardSetWithCards>>;
   addCard(setId: string, input: FlashcardInput): Promise<FlashcardRepositoryResult<Flashcard>>;
@@ -57,6 +70,10 @@ interface FlashcardRow {
   question: string;
   answer: string;
   created_at: string;
+}
+
+interface SavedFlashcardRow extends FlashcardRow {
+  was_created: boolean;
 }
 
 interface FlashcardSetWithCardsRow extends FlashcardSetRow {
@@ -104,6 +121,37 @@ export function createFlashcardRepository(requestHeaders: Headers, cookies: Astr
       }
 
       return { ok: true, data: { id: data } };
+    },
+
+    async saveCards(input) {
+      if (
+        !isNonEmpty(input.setId) ||
+        !isNonEmpty(input.requestId) ||
+        input.cards.length === 0 ||
+        input.cards.some((card) => !isNonEmpty(card.question) || !isNonEmpty(card.answer))
+      ) {
+        return invalidInput();
+      }
+
+      const response = (await supabase.rpc("save_reviewed_flashcards", {
+        set_id: input.setId,
+        request_id: input.requestId,
+        cards: input.cards,
+      })) as { data: unknown; error: unknown };
+      const savedCards = response.data as SavedFlashcardRow[] | null;
+
+      if (response.error || !savedCards || savedCards.length === 0) {
+        return requestFailed();
+      }
+
+      return {
+        ok: true,
+        data: {
+          setId: input.setId,
+          cards: savedCards.map(toFlashcard),
+          created: savedCards[0].was_created,
+        },
+      };
     },
 
     async listSets() {

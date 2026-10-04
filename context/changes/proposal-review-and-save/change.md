@@ -1,7 +1,7 @@
 ---
 change_id: proposal-review-and-save
 title: Proposal review and save
-status: planned
+status: implementing
 created: 2026-10-04
 updated: 2026-10-04
 archived_at: null
