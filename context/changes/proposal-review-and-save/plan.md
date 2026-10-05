@@ -116,13 +116,13 @@ Update response expectations and assert the UI-facing generation and save payloa
 
 #### Automated Verification
 
-- [x] 2.1 Proposal tests prove exactly three deterministic, individually valid proposals.
-- [x] 2.2 Route tests match the proposals response and the `setId`/`requestId`/cards save payload.
+- [ ] 2.1 Proposal tests prove exactly three deterministic, individually valid proposals.
+- [ ] 2.2 Route tests match the proposals response and the `setId`/`requestId`/cards save payload.
 
 #### Manual Verification
 
-- [x] 2.3 A signed-in user can edit/delete rows, cannot save after deleting all rows, and saves all remaining rows in one action.
-- [x] 2.4 Success is in-place with dashboard/new-set links; refresh before saving discards only the local draft.
+- [ ] 2.3 A signed-in user can edit/delete rows, cannot save after deleting all rows, and saves all remaining rows in one action.
+- [ ] 2.4 Success is in-place with dashboard/new-set links; refresh before saving discards only the local draft.
 
 ### Pause Point
 
@@ -157,7 +157,7 @@ Generate, edit, delete, save, and replay a batch as the owner; verify private ow
 
 #### Manual Verification
 
-- [ ] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion.
+- [x] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion.
 
 ### Pause Point
 
@@ -195,13 +195,13 @@ Review validation output and Supabase migration notes before committing implemen
 
 ### Phase 2: Ephemeral Review and In-Place Completion
 
-- [ ] 2.1 Proposal tests prove exactly three deterministic, individually valid proposals.
-- [ ] 2.2 Route tests match the proposals response and the `setId`/`requestId`/cards save payload.
-- [ ] 2.3 A signed-in user can edit/delete rows, cannot save after deleting all rows, and saves all remaining rows in one action.
-- [ ] 2.4 Success is in-place with dashboard/new-set links; refresh before saving discards only the local draft.
+- [x] 2.1 Proposal tests prove exactly three deterministic, individually valid proposals. — 9b06465
+- [x] 2.2 Route tests match the proposals response and the `setId`/`requestId`/cards save payload. — 9b06465
+- [x] 2.3 A signed-in user can edit/delete rows, cannot save after deleting all rows, and saves all remaining rows in one action. — 9b06465
+- [x] 2.4 Success is in-place with dashboard/new-set links; refresh before saving discards only the local draft. — 9b06465
 
 ### Phase 3: Regression, Security, and Delivery Validation
 
-- [ ] 3.1 `npx supabase db reset --local` and `npx supabase test db` apply the migration and pass RLS coverage.
-- [ ] 3.2 `npm run verify` passes lint, Astro/type checks, Vitest, and production build.
+- [x] 3.1 `npx supabase db reset --local` and `npx supabase test db` apply the migration and pass RLS coverage.
+- [x] 3.2 `npm run verify` passes lint, Astro/type checks, Vitest, and production build.
 - [ ] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion.
