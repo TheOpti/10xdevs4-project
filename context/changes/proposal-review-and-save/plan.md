@@ -116,13 +116,13 @@ Update response expectations and assert the UI-facing generation and save payloa
 
 #### Automated Verification
 
-- [ ] 2.1 Proposal tests prove exactly three deterministic, individually valid proposals.
-- [ ] 2.2 Route tests match the proposals response and the `setId`/`requestId`/cards save payload.
+- [x] 2.1 Proposal tests prove exactly three deterministic, individually valid proposals.
+- [x] 2.2 Route tests match the proposals response and the `setId`/`requestId`/cards save payload.
 
 #### Manual Verification
 
-- [ ] 2.3 A signed-in user can edit/delete rows, cannot save after deleting all rows, and saves all remaining rows in one action.
-- [ ] 2.4 Success is in-place with dashboard/new-set links; refresh before saving discards only the local draft.
+- [x] 2.3 A signed-in user can edit/delete rows, cannot save after deleting all rows, and saves all remaining rows in one action.
+- [x] 2.4 Success is in-place with dashboard/new-set links; refresh before saving discards only the local draft.
 
 ### Pause Point
 

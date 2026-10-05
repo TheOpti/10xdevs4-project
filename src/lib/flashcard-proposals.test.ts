@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  generateDemoFlashcardProposal,
+  generateDemoFlashcardProposals,
   MAX_SOURCE_TEXT_CODE_POINTS,
   MAX_TITLE_CODE_POINTS,
   validateFlashcardProposalInput,
@@ -43,13 +43,31 @@ describe("validateFlashcardProposalInput", () => {
   });
 });
 
-describe("generateDemoFlashcardProposal", () => {
-  it("always returns the fixed, clearly marked demo proposal", () => {
-    expect(generateDemoFlashcardProposal()).toEqual({
-      question: "What is a flashcard?",
-      answer: "A small prompt-and-answer study aid used for active recall.",
-      isDemo: true,
-      qualityFlags: [],
-    });
+describe("generateDemoFlashcardProposals", () => {
+  it("always returns three fixed, individually valid demo proposals", () => {
+    const proposals = generateDemoFlashcardProposals();
+
+    expect(proposals).toEqual([
+      {
+        question: "What is a flashcard?",
+        answer: "A small prompt-and-answer study aid used for active recall.",
+        isDemo: true,
+        qualityFlags: [],
+      },
+      {
+        question: "What does active recall mean?",
+        answer: "Trying to retrieve an answer from memory before checking it.",
+        isDemo: true,
+        qualityFlags: [],
+      },
+      {
+        question: "Why use short flashcards?",
+        answer: "They make each recall prompt focused and easier to review.",
+        isDemo: true,
+        qualityFlags: [],
+      },
+    ]);
+    expect(proposals).toHaveLength(3);
+    expect(proposals.every((proposal) => proposal.question.trim() && proposal.answer.trim())).toBe(true);
   });
 });

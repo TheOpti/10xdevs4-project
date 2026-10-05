@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { generateDemoFlashcardProposal, validateFlashcardProposalInput } from "@/lib/flashcard-proposals";
+import { generateDemoFlashcardProposals, validateFlashcardProposalInput } from "@/lib/flashcard-proposals";
 import { createFlashcardRepository } from "@/lib/flashcards";
 import { parseJsonRequestBody } from "@/lib/request-body";
 import { createClient } from "@/lib/supabase";
@@ -56,7 +56,7 @@ export const POST: APIRoute = async (context) => {
   return Response.json(
     {
       setId: result.data.id,
-      proposal: generateDemoFlashcardProposal(),
+      proposals: generateDemoFlashcardProposals(),
     },
     { status: 201 },
   );

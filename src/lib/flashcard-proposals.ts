@@ -40,11 +40,25 @@ export function validateFlashcardProposalInput(input: FlashcardProposalInput): F
   return { valid: true };
 }
 
-export function generateDemoFlashcardProposal(): FlashcardProposal {
-  return {
-    question: "What is a flashcard?",
-    answer: "A small prompt-and-answer study aid used for active recall.",
-    isDemo: true,
-    qualityFlags: [],
-  };
+export function generateDemoFlashcardProposals(): FlashcardProposal[] {
+  return [
+    {
+      question: "What is a flashcard?",
+      answer: "A small prompt-and-answer study aid used for active recall.",
+      isDemo: true,
+      qualityFlags: [],
+    },
+    {
+      question: "What does active recall mean?",
+      answer: "Trying to retrieve an answer from memory before checking it.",
+      isDemo: true,
+      qualityFlags: [],
+    },
+    {
+      question: "Why use short flashcards?",
+      answer: "They make each recall prompt focused and easier to review.",
+      isDemo: true,
+      qualityFlags: [],
+    },
+  ];
 }

@@ -29,7 +29,7 @@ describe("POST /api/flashcards/generate", () => {
     vi.clearAllMocks();
   });
 
-  it("creates the private set before returning the demo proposal", async () => {
+  it("creates the private set before returning three deterministic demo proposals", async () => {
     configuredSupabase();
     const sourceText = "Private cell-biology notes.";
     const createSet = vi.fn().mockResolvedValue({ ok: true, data: { id: "set-id" } });
@@ -41,12 +41,26 @@ describe("POST /api/flashcards/generate", () => {
     const payload: unknown = await response.json();
     expect(payload).toEqual({
       setId: "set-id",
-      proposal: {
-        question: "What is a flashcard?",
-        answer: "A small prompt-and-answer study aid used for active recall.",
-        isDemo: true,
-        qualityFlags: [],
-      },
+      proposals: [
+        {
+          question: "What is a flashcard?",
+          answer: "A small prompt-and-answer study aid used for active recall.",
+          isDemo: true,
+          qualityFlags: [],
+        },
+        {
+          question: "What does active recall mean?",
+          answer: "Trying to retrieve an answer from memory before checking it.",
+          isDemo: true,
+          qualityFlags: [],
+        },
+        {
+          question: "Why use short flashcards?",
+          answer: "They make each recall prompt focused and easier to review.",
+          isDemo: true,
+          qualityFlags: [],
+        },
+      ],
     });
     expect(JSON.stringify(payload)).not.toContain(sourceText);
     expect(createSet).toHaveBeenCalledWith({ title: "Biology", sourceText });
