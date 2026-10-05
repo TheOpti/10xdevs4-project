@@ -5,6 +5,7 @@ import {
   type FlashcardProposal,
   validateFlashcardProposalInput,
 } from "@/lib/flashcard-proposals";
+import { cardBatchesMatch, type ReviewSaveCard } from "@/lib/flashcard-save-reconciliation";
 
 function validationMessage(
   error: Exclude<ReturnType<typeof validateFlashcardProposalInput>, { valid: true }>["error"],
@@ -43,16 +44,37 @@ function isGenerationResponse(value: unknown): value is { setId: string; proposa
   return typeof setId === "string" && Array.isArray(proposals) && proposals.length === 3 && proposals.every(isProposal);
 }
 
+function isSaveResponse(value: unknown): value is { setId: string; cards: ReviewSaveCard[] } {
+  if (typeof value !== "object" || value === null) {
+    return false;
+  }
+
+  const { setId, cards } = value as Record<string, unknown>;
+  return (
+    typeof setId === "string" &&
+    Array.isArray(cards) &&
+    cards.every(
+      (card) =>
+        typeof card === "object" &&
+        card !== null &&
+        typeof (card as Record<string, unknown>).question === "string" &&
+        typeof (card as Record<string, unknown>).answer === "string",
+    )
+  );
+}
+
 export default function NewFlashcardsForm() {
   const [title, setTitle] = useState("");
   const [sourceText, setSourceText] = useState("");
   const [setId, setSetId] = useState<string | null>(null);
   const [draft, setDraft] = useState<ReviewRow[]>([]);
   const [requestId, setRequestId] = useState<string | null>(null);
+  const [submittedCards, setSubmittedCards] = useState<ReviewSaveCard[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
+  const [hasSaveConflict, setHasSaveConflict] = useState(false);
   const sourceTextLength = Array.from(sourceText).length;
 
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
@@ -84,6 +106,8 @@ export default function NewFlashcardsForm() {
       setSetId(responseBody.setId);
       setDraft(responseBody.proposals.map((proposal) => ({ ...proposal, id: crypto.randomUUID() })));
       setRequestId(null);
+      setSubmittedCards(null);
+      setHasSaveConflict(false);
       setIsComplete(false);
     } catch {
       setError(
@@ -96,12 +120,16 @@ export default function NewFlashcardsForm() {
 
   function updateDraftRow(id: string, field: "question" | "answer", value: string) {
     setDraft((rows) => rows.map((row) => (row.id === id ? { ...row, [field]: value } : row)));
-    setError(null);
+    if (!hasSaveConflict) {
+      setError(null);
+    }
   }
 
   function deleteDraftRow(id: string) {
     setDraft((rows) => rows.filter((row) => row.id !== id));
-    setError(null);
+    if (!hasSaveConflict) {
+      setError(null);
+    }
   }
 
   async function handleSave(event: SubmitEvent<HTMLFormElement>) {
@@ -113,8 +141,11 @@ export default function NewFlashcardsForm() {
       return;
     }
 
+    const cards = draft.map(({ question, answer }) => ({ question, answer }));
+    const savedDraft = submittedCards ?? cards;
     const saveRequestId = requestId ?? crypto.randomUUID();
     setRequestId(saveRequestId);
+    setSubmittedCards(savedDraft);
     setIsSaving(true);
     try {
       const response = await fetch("/api/flashcards/save", {
@@ -123,12 +154,26 @@ export default function NewFlashcardsForm() {
         body: JSON.stringify({
           setId,
           requestId: saveRequestId,
-          cards: draft.map(({ question, answer }) => ({ question, answer })),
+          cards: savedDraft,
         }),
       });
+      const responseBody: unknown = await response.json().catch(() => null);
 
-      if (!response.ok) {
+      if (!response.ok || !isSaveResponse(responseBody) || responseBody.setId !== setId) {
         setError("We could not save these flashcards. You can edit the draft and retry.");
+        return;
+      }
+
+      if (!cardBatchesMatch(responseBody.cards, savedDraft)) {
+        setError("We could not confirm which flashcards were saved. Your draft is still available.");
+        return;
+      }
+
+      if (!cardBatchesMatch(cards, savedDraft)) {
+        setError(
+          "Your original flashcards were saved, but later edits were not. Your edited draft is still available; generate a new set before saving it.",
+        );
+        setHasSaveConflict(true);
         return;
       }
 
@@ -250,7 +295,7 @@ export default function NewFlashcardsForm() {
 
           <button
             type="submit"
-            disabled={draft.length === 0 || isSaving}
+            disabled={draft.length === 0 || isSaving || hasSaveConflict}
             className="bg-primary text-primary-foreground hover:bg-primary/80 h-9 rounded-md px-4 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSaving ? "Saving..." : "Accept all & save"}
@@ -268,7 +313,7 @@ export default function NewFlashcardsForm() {
             <a className="text-primary hover:underline" href="/dashboard">
               Go to dashboard
             </a>
-            <a className="text-primary hover:underline" href="/flashcards/new">
+            <a className="text-primary hover:underline" href="/dashboard/new">
               Create another set
             </a>
           </div>

@@ -1,6 +1,6 @@
 begin;
 
-select plan(26);
+select plan(28);
 
 select tests.create_supabase_user('flashcard_owner', 'flashcard-owner@example.com');
 select tests.create_supabase_user('flashcard_intruder', 'flashcard-intruder@example.com');
@@ -71,6 +71,20 @@ select results_eq(
   $$select count(*) from public.flashcards where save_operation_id is not null$$,
   array[2::bigint],
   'Replay does not duplicate reviewed cards'
+);
+
+select throws_ok(
+  $$select * from public.save_reviewed_flashcards('aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb', '[{"question":"Different set retry question","answer":"Different set retry answer"}]'::jsonb)$$,
+  '22023',
+  'Request key belongs to a different flashcard set',
+  'Owner cannot replay a request key against a different owned set'
+);
+
+select throws_ok(
+  $$insert into public.flashcards (set_id, save_operation_id, question, answer) select 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', id, 'Mismatched operation question', 'Mismatched operation answer' from public.flashcard_save_operations where request_id = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb'$$,
+  '23503',
+  null,
+  'Owner cannot attach a save operation to a card in another set'
 );
 
 select throws_ok(
