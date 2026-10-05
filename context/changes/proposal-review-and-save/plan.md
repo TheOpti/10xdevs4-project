@@ -157,7 +157,7 @@ Generate, edit, delete, save, and replay a batch as the owner; verify private ow
 
 #### Manual Verification
 
-- [x] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion.
+- [ ] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion.
 
 ### Pause Point
 
@@ -202,6 +202,6 @@ Review validation output and Supabase migration notes before committing implemen
 
 ### Phase 3: Regression, Security, and Delivery Validation
 
-- [x] 3.1 `npx supabase db reset --local` and `npx supabase test db` apply the migration and pass RLS coverage.
-- [x] 3.2 `npm run verify` passes lint, Astro/type checks, Vitest, and production build.
-- [ ] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion.
+- [x] 3.1 `npx supabase db reset --local` and `npx supabase test db` apply the migration and pass RLS coverage. — 7ec5bfa
+- [x] 3.2 `npm run verify` passes lint, Astro/type checks, Vitest, and production build. — 7ec5bfa
+- [x] 3.3 A signed-in browser flow confirms three demos, edit/delete-before-save, replay-safe retry, private ownership, and in-place completion. — 7ec5bfa
