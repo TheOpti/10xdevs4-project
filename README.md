@@ -103,6 +103,84 @@ npm run build
 workflow runs the same lint, type-check, build, and local-Supabase smoke-test
 flow on `master` pull requests and pushes.
 
+## End-to-end tests (Playwright)
+
+E2E tests require Docker Desktop and the local Supabase stack. Start it with
+`npx supabase start`, then configure `.env` with its local API URL and anon key
+as described above. Install the browser once:
+
+```sh
+npx playwright install chromium
+```
+
+Create a Git-ignored `.env.e2e` in the project root:
+
+```dotenv
+E2E_USERNAME=e2e-test@local.test
+E2E_PASSWORD=<choose-a-local-test-password>
+```
+
+Run the suite or open the interactive test runner:
+
+```sh
+npx playwright test
+npx playwright test --ui
+```
+
+Playwright builds and starts the app preview at `http://localhost:4321`, or
+reuses an existing server locally. Set `E2E_PORT` to use another port. Any
+reused server must also point to the local Supabase stack. `npm test` runs
+Vitest; Playwright is run separately.
+
+### Local test user and saved session
+
+Before tests run, `tests/e2e/global-setup.ts` calls
+`scripts/seed-e2e-user.mjs`. This is a global setup hook, so user creation does
+not appear as a separate test in the UI. To run it manually, use
+`npm run seed:e2e-user`.
+
+The script uses `E2E_USERNAME` and `E2E_PASSWORD` to prepare a confirmed local
+Supabase account. If the email already exists, it preserves the user's ID and
+data, updates the password, and ensures email confirmation. Otherwise, it
+creates the account. Repeated runs reuse the account rather than creating
+duplicates; they do not clear its application data. The current lookup checks
+the first 1,000 users. The script refuses non-local Supabase URLs and obtains
+the local service-role key from the Supabase CLI; do not add it to `.env`.
+
+Next, the `setup` project runs `tests/e2e/auth.setup.ts`, signs in through the
+app, and saves the browser session to `playwright/.auth/user.json`. The
+`chromium` project depends on this setup and loads that storage state into
+each test's browser context, so new `*.spec.ts` tests start signed in without
+repeating the login flow. Browser contexts are isolated, but the account and
+its database records are shared; tests must clean up data they create.
+
+For a test that needs a signed-out visitor, override the saved state, as in
+`tests/e2e/seed.spec.ts`:
+
+```ts
+test.use({ storageState: { cookies: [], origins: [] } });
+```
+
+In UI mode, enable both `setup` and `chromium` in the Projects filter. Run
+**sign in once and save the session** before the browser tests, and rerun it
+when the session expires: UI mode does not automatically run project
+dependencies. Keep `.env.e2e` and `playwright/.auth/` out of Git; both are
+already ignored.
+
+### Production and staging
+
+The E2E global setup runs only when Playwright is launched. Building,
+deploying, or starting the production app does not run it or create the E2E
+user. Production users use the app's normal signup and sign-in flow.
+
+The current Playwright configuration targets localhost, and the user seed
+rejects non-local Supabase URLs. Running Playwright with `SUPABASE_URL`
+pointing to production therefore fails during setup.
+
+Testing a deployed app requires additional configuration. Use a separate
+staging environment with a dedicated test account; the current E2E setup
+supports local testing only.
+
 ## Deploy to Cloudflare Workers
 
 The Worker configuration is in `wrangler.jsonc`; its deployed name is `memoro`.
