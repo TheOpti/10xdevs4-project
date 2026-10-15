@@ -17,19 +17,20 @@ An authenticated user pastes text, the server-side API securely queries Google's
 
 ## Key Decisions Made
 
-| Decision | Choice | Why (1 sentence) | Source |
-| --- | --- | --- | --- |
-| Provider & Model | Google Gemini API (`gemini-2.5-flash-lite`) | Free tier for development and $5 prepaid for production eliminate OpenRouter gateway overhead while providing fast inference and low cost. | Research |
-| Database Lifecycle | Generate before create (`generate-before-create`) | Prevents empty, orphaned flashcard sets in the database during network or LLM failures. | Plan |
-| Card Count | Adaptive (3–15 flashcards) | Scales the number of cards to the volume and density of facts in the source text without bloating short notes. | Plan |
-| Insufficient Content | Explicit refusal with HTTP 422 | The system prompt returns an empty array when facts are absent, the API returns 422, and the form preserves entered text. | Plan |
-| Quality Flags in UI | Advisory warning badges in review cards | Displays quality warnings to the user per PRD requirements without blocking valid cards. | Plan |
-| Target Language | Match source text language | The model preserves the input language, supporting Polish, English, and foreign-language study. | Plan |
-| Missing API Key in Env | Explicit HTTP 503 + Vitest mocks | Clear error boundary without silent fallback to demo cards, enabling reliable CI runs without keys. | Plan |
+| Decision               | Choice                                            | Why (1 sentence)                                                                                                                           | Source   |
+| ---------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| Provider & Model       | Google Gemini API (`gemini-2.5-flash-lite`)       | Free tier for development and $5 prepaid for production eliminate OpenRouter gateway overhead while providing fast inference and low cost. | Research |
+| Database Lifecycle     | Generate before create (`generate-before-create`) | Prevents empty, orphaned flashcard sets in the database during network or LLM failures.                                                    | Plan     |
+| Card Count             | Adaptive (3–15 flashcards)                        | Scales the number of cards to the volume and density of facts in the source text without bloating short notes.                             | Plan     |
+| Insufficient Content   | Explicit refusal with HTTP 422                    | The system prompt returns an empty array when facts are absent, the API returns 422, and the form preserves entered text.                  | Plan     |
+| Quality Flags in UI    | Advisory warning badges in review cards           | Displays quality warnings to the user per PRD requirements without blocking valid cards.                                                   | Plan     |
+| Target Language        | Match source text language                        | The model preserves the input language, supporting Polish, English, and foreign-language study.                                            | Plan     |
+| Missing API Key in Env | Explicit HTTP 503 + Vitest mocks                  | Clear error boundary without silent fallback to demo cards, enabling reliable CI runs without keys.                                        | Plan     |
 
 ## Scope
 
 **In scope:**
+
 - Server-side integration with Google Gemini API (`gemini-2.5-flash-lite` / `gemini-3.5-flash-lite`) using native `fetch`.
 - Environment variable configuration for `GEMINI_API_KEY` in `astro.config.mjs` (`astro:env/server`).
 - New set-creation lifecycle in `src/pages/api/flashcards/generate.ts`.
@@ -38,6 +39,7 @@ An authenticated user pastes text, the server-side API securely queries Google's
 - Comprehensive Vitest unit and integration test coverage.
 
 **Out of scope:**
+
 - Multi-provider gateways (OpenRouter, Cloudflare Workers AI).
 - Changes to Supabase table schemas or stored procedures.
 - Streaming responses (SSE / WebSockets).
@@ -65,13 +67,13 @@ An authenticated user pastes text, the server-side API securely queries Google's
 
 ## Phases at a Glance
 
-| Phase | What it delivers | Key risk |
-| --- | --- | --- |
-| 1. Contracts, Quality Flags & Env | `GEMINI_API_KEY` env schema, `computeQualityFlags` helper, unit tests | Env schema mismatch in Astro |
-| 2. Gemini API Client Adapter | `src/lib/gemini.ts` module, injection-resistant prompt, mocked tests | JSON Schema formatting in REST API |
-| 3. Proposal Generation Endpoint | Generate-before-create flow in `generate.ts`, 422 and 503 handling, integration tests | Timeout handling and error statuses |
-| 4. Review UI & Quality Badges | Flexible `NewFlashcardsForm.tsx`, quality warning badges, 422 preservation | UI state handling with dynamic card counts |
-| 5. End-to-End Verification | CI compliance, `npm run verify` gate passing, manual user flow validation | Regressions in existing card flows |
+| Phase                             | What it delivers                                                                      | Key risk                                   |
+| --------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------ |
+| 1. Contracts, Quality Flags & Env | `GEMINI_API_KEY` env schema, `computeQualityFlags` helper, unit tests                 | Env schema mismatch in Astro               |
+| 2. Gemini API Client Adapter      | `src/lib/gemini.ts` module, injection-resistant prompt, mocked tests                  | JSON Schema formatting in REST API         |
+| 3. Proposal Generation Endpoint   | Generate-before-create flow in `generate.ts`, 422 and 503 handling, integration tests | Timeout handling and error statuses        |
+| 4. Review UI & Quality Badges     | Flexible `NewFlashcardsForm.tsx`, quality warning badges, 422 preservation            | UI state handling with dynamic card counts |
+| 5. End-to-End Verification        | CI compliance, `npm run verify` gate passing, manual user flow validation             | Regressions in existing card flows         |
 
 **Prerequisites:** Google AI Studio API key access (or mock client in test environments).  
 **Estimated effort:** ~1–2 working sessions across 5 structured phases.

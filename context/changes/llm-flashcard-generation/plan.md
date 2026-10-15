@@ -7,7 +7,7 @@ Replace the static 3-card demo flashcard proposal generator with actual LLM-powe
 ## Current State Analysis
 
 - **Demo Proposal Generator:** `src/lib/flashcard-proposals.ts:43–63` returns three hardcoded static cards with `isDemo: true` and `qualityFlags: []`.
-- **API Endpoint Ordering:** `src/pages/api/flashcards/generate.ts:51–63` calls `repository.createSet({ title, sourceText })` *before* generating proposals. If generation fails after set creation, an empty flashcard set is orphaned in Supabase.
+- **API Endpoint Ordering:** `src/pages/api/flashcards/generate.ts:51–63` calls `repository.createSet({ title, sourceText })` _before_ generating proposals. If generation fails after set creation, an empty flashcard set is orphaned in Supabase.
 - **Client Contract Tight Coupling:** `src/components/flashcards/NewFlashcardsForm.tsx:25–45` asserts `isDemo === true` and exactly `proposals.length === 3`. The review list (`:255–293`) does not render `qualityFlags`, and copy references "demo flashcard proposals".
 - **Environment Configuration:** `astro.config.mjs:18–22` manages secrets via `astro:env/server`, currently only defining `SUPABASE_URL` and `SUPABASE_KEY`. `GEMINI_API_KEY` is not defined.
 - **Roadmap Position:** Foundation `F-01` (private data access) is in progress; slice `S-01` (`pasted-text-proposals`) was blocked on AI provider selection. This change fulfills the LLM generation requirement for `S-01`.
@@ -60,18 +60,22 @@ Extend Astro server environment configuration and update flashcard proposal type
 ### Changes Required:
 
 #### 1. Environment Configuration
+
 **File**: `astro.config.mjs`
 **Intent**: Register server-side environment variables for Gemini API key and optional model.
 **Contract**: Add `GEMINI_API_KEY` (secret, server context, optional: true) and `GEMINI_MODEL` (secret, server context, optional: true) to `env.schema`.
 
 #### 2. Proposal Types & Quality Flags Helper
+
 **File**: `src/lib/flashcard-proposals.ts`
 **Intent**: Update `FlashcardProposal` contract and implement `computeQualityFlags` checking answer > 300 characters, identical question/answer, and duplicates in set.
 **Contract**:
+
 - `FlashcardProposal`: `isDemo?: boolean; qualityFlags: string[];`
 - `export function computeQualityFlags(question: string, answer: string, existingCards: { question: string; answer: string }[]): string[]`
 
 #### 3. Quality Flags Unit Tests
+
 **File**: `src/lib/flashcard-proposals.test.ts`
 **Intent**: Test `computeQualityFlags` across all PRD quality criteria (length, identical question/answer, duplicates).
 **Contract**: Vitest test suite covering: answers >300 characters (`long-answer`), identical question/answer (`identical-qa`), and normalized duplicates in batch or set (`duplicate-question`, `duplicate-answer`).
@@ -79,11 +83,13 @@ Extend Astro server environment configuration and update flashcard proposal type
 ### Success Criteria:
 
 #### Automated Verification:
+
 - Extend envField with GEMINI_API_KEY and optional GEMINI_MODEL
 - Update FlashcardProposal type and implement computeQualityFlags
 - Unit tests for validation and quality flags in flashcard-proposals.test.ts
 
 #### Manual Verification:
+
 - Verify typecheck passes via astro check
 
 **Implementation Note**: After completing this phase and passing automated verification, pause for human manual verification before proceeding to Phase 2.
@@ -99,14 +105,17 @@ Implement a server-side Gemini API adapter module using native `fetch`, JSON sch
 ### Changes Required:
 
 #### 1. Gemini API Adapter
+
 **File**: `src/lib/gemini.ts`
 **Intent**: Direct communication with Google AI Studio REST API supporting structured schemas, injection-resistant prompt, and error mapping.
 **Contract**:
+
 - `export interface GenerateProposalsOptions { apiKey: string; model?: string; sourceText: string; signal?: AbortSignal; }`
 - `export type GeminiGenerationResult = { ok: true; proposals: Array<{ question: string; answer: string }> } | { ok: false; error: "insufficient-content" | "rate-limited" | "invalid-response" | "service-error" }`
 - Request `https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={apiKey}` with `responseMimeType: "application/json"` and `responseSchema`.
 
 #### 2. Gemini Adapter Tests
+
 **File**: `src/lib/gemini.test.ts`
 **Intent**: Unit test Gemini adapter using mocked `fetch` covering: success (3–15 cards), empty array (insufficient-content), 429 rate limit, 500 server error, and invalid JSON.
 **Contract**: Vitest test suite isolated from external network calls.
@@ -114,10 +123,12 @@ Implement a server-side Gemini API adapter module using native `fetch`, JSON sch
 ### Success Criteria:
 
 #### Automated Verification:
+
 - Implement Gemini API client in src/lib/gemini.ts with system prompt and JSON schema
 - Unit tests for Gemini client with mocked fetch in src/lib/gemini.test.ts
 
 #### Manual Verification:
+
 - Check prompt resilience against common prompt-injection patterns
 
 **Implementation Note**: After completing this phase and passing automated verification, pause for human manual verification before proceeding to Phase 3.
@@ -133,14 +144,17 @@ Rebuild `/api/flashcards/generate` with the generate-before-create lifecycle, in
 ### Changes Required:
 
 #### 1. Generation Endpoint
+
 **File**: `src/pages/api/flashcards/generate.ts`
 **Intent**: Reverse execution order: authenticate and validate input, check `GEMINI_API_KEY` (503 if missing), query Gemini API, compute `qualityFlags`, handle empty proposals (422), and only call `repository.createSet` upon success.
 **Contract**:
+
 - Return HTTP 201 with `{ setId: string, proposals: FlashcardProposal[] }`.
 - Return HTTP 422 with `{ error: string }` when text does not allow flashcard generation.
 - Return HTTP 503 with `{ error: string }` when API key is missing.
 
 #### 2. Endpoint Tests
+
 **File**: `src/pages/api/flashcards/generate.test.ts`
 **Intent**: Update and expand endpoint integration tests for new flows and error codes.
 **Contract**: Vitest tests covering: missing `GEMINI_API_KEY` -> 503; empty proposals -> 422 without calling `createSet`; LLM failure -> 500/503 without calling `createSet`; success -> `createSet` called after receiving proposals, status 201.
@@ -148,11 +162,13 @@ Rebuild `/api/flashcards/generate` with the generate-before-create lifecycle, in
 ### Success Criteria:
 
 #### Automated Verification:
+
 - Rebuild generate.ts endpoint with generate-before-create lifecycle
 - Handle HTTP 422 for insufficient facts and 503 for missing API key
 - Unit and integration tests in generate.test.ts covering all status codes and no orphaned sets
 
 #### Manual Verification:
+
 - Verify no orphaned sets in Supabase database after simulated LLM failure
 
 **Implementation Note**: After completing this phase and passing automated verification, pause for human manual verification before proceeding to Phase 4.
@@ -168,22 +184,26 @@ Update `NewFlashcardsForm.tsx` to remove demo constraints, render advisory quali
 ### Changes Required:
 
 #### 1. NewFlashcardsForm Component
+
 **File**: `src/components/flashcards/NewFlashcardsForm.tsx`
 **Intent**:
+
 - Remove `isDemo === true` and `proposals.length === 3` requirements in response validation (allow 1–15 proposals).
 - Render visual warning badges for `qualityFlags` in review cards (e.g. "Answer > 300 characters", "Question and answer identical").
 - Handle specific API error responses (422: insufficient factual content; 503: service unavailable) without wiping the form.
 - Update UI copy from "demo flashcard proposals" to "flashcard proposals".
-**Contract**: React UI rendering dynamic proposals with visible quality warning badges.
+  **Contract**: React UI rendering dynamic proposals with visible quality warning badges.
 
 ### Success Criteria:
 
 #### Automated Verification:
+
 - Remove isDemo === true and proposals.length === 3 constraints in NewFlashcardsForm.tsx
 - Handle HTTP 422 error status while preserving source text in the form
 - Render qualityFlags warnings as advisory badges in review cards
 
 #### Manual Verification:
+
 - Manual test of proposal review with visible quality flags and set save
 
 **Implementation Note**: After completing this phase and passing automated verification, pause for human manual verification before proceeding to Phase 5.
@@ -199,6 +219,7 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 ### Changes Required:
 
 #### 1. Roadmap Sync
+
 **File**: `context/foundation/roadmap.md`
 **Intent**: Update roadmap notes related to slice `pasted-text-proposals`.
 **Contract**: Documentation update.
@@ -206,10 +227,12 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 ### Success Criteria:
 
 #### Automated Verification:
+
 - Run full test suite via npm test
 - Run npm run verify gate (lint, astro check, build)
 
 #### Manual Verification:
+
 - Test full flow in browser: paste text, generate, edit, and save
 
 **Implementation Note**: After completing this phase, the change is ready for review and deployment.
@@ -219,11 +242,13 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 ## Testing Strategy
 
 ### Unit Tests:
+
 - `src/lib/flashcard-proposals.test.ts`: Input validation, quality flag rules (>300 characters, identical question/answer, duplicates).
 - `src/lib/gemini.test.ts`: Prompt formatting, structured JSON parsing, network & HTTP error handling (429, 500, empty array).
 - `src/pages/api/flashcards/generate.test.ts`: Full endpoint lifecycle, authentication, mocked Gemini and Supabase repository, HTTP status codes 400, 401, 422, 503, 500.
 
 ### Integration Tests:
+
 - Call `/api/flashcards/generate` with mocked `GEMINI_API_KEY` confirming `repository.createSet` is invoked strictly after LLM success.
 - Test saving generated proposals through existing `/api/flashcards/save` endpoint.
 
@@ -271,12 +296,12 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 
 #### Automated
 
-- [ ] 2.1 Implement Gemini API client in src/lib/gemini.ts with system prompt and JSON schema
-- [ ] 2.2 Unit tests for Gemini client with mocked fetch in src/lib/gemini.test.ts
+- [x] 2.1 Implement Gemini API client in src/lib/gemini.ts with system prompt and JSON schema
+- [x] 2.2 Unit tests for Gemini client with mocked fetch in src/lib/gemini.test.ts
 
 #### Manual
 
-- [ ] 2.3 Check prompt resilience against common prompt-injection patterns
+- [x] 2.3 Check prompt resilience against common prompt-injection patterns
 
 ### Phase 3: Flashcard Generation Endpoint
 
