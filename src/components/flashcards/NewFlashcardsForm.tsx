@@ -1,4 +1,5 @@
 import { useState, type SubmitEvent } from "react";
+import { Badge } from "@/components/ui/badge";
 import {
   MAX_TITLE_CODE_POINTS,
   MAX_SOURCE_TEXT_CODE_POINTS,
@@ -22,13 +23,28 @@ function validationMessage(
   }
 }
 
+function formatQualityFlag(flag: string): string {
+  switch (flag) {
+    case "long-answer":
+      return "Answer > 300 characters";
+    case "identical-qa":
+      return "Question and answer identical";
+    case "duplicate-question":
+      return "Duplicate question";
+    case "duplicate-answer":
+      return "Duplicate answer";
+    default:
+      return flag;
+  }
+}
+
 function isProposal(value: unknown): value is FlashcardProposal {
   if (typeof value !== "object" || value === null) {
     return false;
   }
 
-  const { question, answer, isDemo, qualityFlags } = value as Record<string, unknown>;
-  return typeof question === "string" && typeof answer === "string" && isDemo === true && Array.isArray(qualityFlags);
+  const { question, answer, qualityFlags } = value as Record<string, unknown>;
+  return typeof question === "string" && typeof answer === "string" && Array.isArray(qualityFlags);
 }
 
 interface ReviewRow extends FlashcardProposal {
@@ -41,7 +57,13 @@ function isGenerationResponse(value: unknown): value is { setId: string; proposa
   }
 
   const { setId, proposals } = value as Record<string, unknown>;
-  return typeof setId === "string" && Array.isArray(proposals) && proposals.length === 3 && proposals.every(isProposal);
+  return (
+    typeof setId === "string" &&
+    Array.isArray(proposals) &&
+    proposals.length >= 1 &&
+    proposals.length <= 15 &&
+    proposals.every(isProposal)
+  );
 }
 
 function isSaveResponse(value: unknown): value is { setId: string; cards: ReviewSaveCard[] } {
@@ -96,7 +118,27 @@ export default function NewFlashcardsForm() {
       });
       const responseBody: unknown = await response.json().catch(() => null);
 
-      if (!response.ok || !isGenerationResponse(responseBody)) {
+      if (!response.ok) {
+        if (
+          typeof responseBody === "object" &&
+          responseBody !== null &&
+          "error" in responseBody &&
+          typeof (responseBody as Record<string, unknown>).error === "string"
+        ) {
+          setError((responseBody as Record<string, unknown>).error as string);
+        } else if (response.status === 422) {
+          setError("The provided text does not contain enough factual information to generate flashcards.");
+        } else if (response.status === 503) {
+          setError("AI generation service unavailable. Please try again later.");
+        } else {
+          setError(
+            "We could not confirm whether a proposal was created. Your text is still here. Check your sets before submitting again.",
+          );
+        }
+        return;
+      }
+
+      if (!isGenerationResponse(responseBody)) {
         setError(
           "We could not confirm whether a proposal was created. Your text is still here. Check your sets before submitting again.",
         );
@@ -191,7 +233,7 @@ export default function NewFlashcardsForm() {
     <div className="max-w-3xl">
       <div className="mb-8">
         <h1 className="text-3xl font-semibold tracking-tight">New set</h1>
-        <p className="text-muted-foreground mt-1 text-sm">Paste text to receive demo flashcard proposals.</p>
+        <p className="text-muted-foreground mt-1 text-sm">Paste text to receive flashcard proposals.</p>
       </div>
 
       <form className="space-y-6" onSubmit={handleSubmit} noValidate>
@@ -254,7 +296,22 @@ export default function NewFlashcardsForm() {
 
           {draft.map((row, index) => (
             <fieldset key={row.id} className="space-y-3 rounded-lg border p-4">
-              <legend className="px-1 text-sm font-medium">Flashcard {index + 1}</legend>
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <legend className="px-1 text-sm font-medium">Flashcard {index + 1}</legend>
+                {row.qualityFlags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5" data-testid="quality-flags">
+                    {row.qualityFlags.map((flag) => (
+                      <Badge
+                        key={flag}
+                        variant="secondary"
+                        className="border border-amber-200 bg-amber-50 text-xs text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
+                      >
+                        ⚠️ {formatQualityFlag(flag)}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+              </div>
               <div>
                 <label htmlFor={`${row.id}-question`} className="text-sm font-medium">
                   Question

@@ -319,13 +319,13 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 
 #### Automated
 
-- [ ] 4.1 Remove isDemo === true and proposals.length === 3 constraints in NewFlashcardsForm.tsx
-- [ ] 4.2 Handle HTTP 422 error status while preserving source text in the form
-- [ ] 4.3 Render qualityFlags warnings as advisory badges in review cards
+- [x] 4.1 Remove isDemo === true and proposals.length === 3 constraints in NewFlashcardsForm.tsx
+- [x] 4.2 Handle HTTP 422 error status while preserving source text in the form
+- [x] 4.3 Render qualityFlags warnings as advisory badges in review cards
 
 #### Manual
 
-- [ ] 4.4 Manual test of proposal review with visible quality flags and set save
+- [x] 4.4 Manual test of proposal review with visible quality flags and set save
 
 ### Phase 5: End-to-End Verification and Roadmap Sync
 
