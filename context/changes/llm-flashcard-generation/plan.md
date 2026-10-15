@@ -331,9 +331,9 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 
 #### Automated
 
-- [ ] 5.1 Run full test suite via npm test
-- [ ] 5.2 Run npm run verify gate (lint, astro check, build)
+- [x] 5.1 Run full test suite via npm test
+- [x] 5.2 Run npm run verify gate (lint, astro check, build)
 
 #### Manual
 
-- [ ] 5.3 Test full flow in browser: paste text, generate, edit, and save
+- [x] 5.3 Test full flow in browser: paste text, generate, edit, and save

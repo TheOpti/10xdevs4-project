@@ -42,7 +42,7 @@ Samodzielnie ucząca się osoba potrzebuje szybko zamieniać własne materiały 
 | ID   | Change ID                     | Outcome (user can …)                                                                    | Prerequisites | PRD refs              | Status      |
 | ---- | ----------------------------- | --------------------------------------------------------------------------------------- | ------------- | --------------------- | ----------- |
 | F-01 | private-flashcard-data-access | (foundation) trwały dostęp do danych fiszek jest ograniczony do właściciela             | —             | FR-001, FR-002        | in-progress |
-| S-01 | pasted-text-proposals         | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji                          | F-01          | US-01, FR-001, FR-002 | in-progress |
+| S-01 | pasted-text-proposals         | wkleić tekst i otrzymać oznaczone propozycje fiszek do decyzji                          | F-01          | US-01, FR-001, FR-002 | done        |
 | S-02 | proposal-review-and-save      | zaakceptować komplet propozycji albo edytować i usunąć propozycje przed zapisem zestawu | S-01          | US-01, FR-003         | in-progress |
 | S-03 | saved-card-editing            | edytować i usuwać wygenerowane fiszki w zapisanym zestawie                              | S-02          | FR-004                | proposed    |
 | S-04 | tagged-set-catalog            | przeglądać zapisane zestawy i filtrować je według tagów                                 | S-02          | FR-005                | proposed    |
@@ -96,9 +96,9 @@ What's already in place in the codebase as of `2026-09-22` (auto-researched + us
 - **Parallel with:** —
 - **Blockers:** —
 - **Unknowns:**
-  - Which AI generation provider and server-side credentials will be approved for the MVP? — Owner: user. Block: yes.
+  - Which AI generation provider and server-side credentials will be approved for the MVP? — Resolved: direct Gemini API (gemini-2.5-flash-lite) with server-side GEMINI_API_KEY via astro:env/server.
 - **Risk:** The core flow is placed first after the privacy contract because provider fit and generated-output behaviour determine whether the product hypothesis can be validated.
-- **Status:** in-progress
+- **Status:** done
 
 ### S-02: Przegląd propozycji i zapis zestawu
 
