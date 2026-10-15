@@ -1,6 +1,8 @@
 export const MAX_TITLE_CODE_POINTS = 255;
 export const MAX_SOURCE_TEXT_CODE_POINTS = 10_000;
 
+export const MAX_ANSWER_QUALITY_CODE_POINTS = 300;
+
 export interface FlashcardProposalInput {
   title: string;
   sourceText: string;
@@ -9,8 +11,41 @@ export interface FlashcardProposalInput {
 export interface FlashcardProposal {
   question: string;
   answer: string;
-  isDemo: true;
+  isDemo?: boolean;
   qualityFlags: string[];
+}
+
+export function normalizeFlashcardText(text: string): string {
+  return text.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+export function computeQualityFlags(
+  question: string,
+  answer: string,
+  existingCards: { question: string; answer: string }[] = [],
+): string[] {
+  const flags: string[] = [];
+
+  if (Array.from(answer.trim()).length > MAX_ANSWER_QUALITY_CODE_POINTS) {
+    flags.push("long-answer");
+  }
+
+  const normQ = normalizeFlashcardText(question);
+  const normA = normalizeFlashcardText(answer);
+
+  if (normQ.length > 0 && normQ === normA) {
+    flags.push("identical-qa");
+  }
+
+  if (normQ.length > 0 && existingCards.some((card) => normalizeFlashcardText(card.question) === normQ)) {
+    flags.push("duplicate-question");
+  }
+
+  if (normA.length > 0 && existingCards.some((card) => normalizeFlashcardText(card.answer) === normA)) {
+    flags.push("duplicate-answer");
+  }
+
+  return flags;
 }
 
 export type FlashcardProposalValidationResult =

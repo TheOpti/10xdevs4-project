@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  computeQualityFlags,
   generateDemoFlashcardProposals,
   MAX_SOURCE_TEXT_CODE_POINTS,
   MAX_TITLE_CODE_POINTS,
@@ -69,5 +70,46 @@ describe("generateDemoFlashcardProposals", () => {
     ]);
     expect(proposals).toHaveLength(3);
     expect(proposals.every((proposal) => proposal.question.trim() && proposal.answer.trim())).toBe(true);
+  });
+});
+
+describe("computeQualityFlags", () => {
+  it("returns no flags for concise, non-duplicate cards", () => {
+    const flags = computeQualityFlags("What is photosynthesis?", "The process by which plants make food.", []);
+    expect(flags).toEqual([]);
+  });
+
+  it("flags answers exceeding 300 Unicode code points", () => {
+    const shortAnswer = "a".repeat(300);
+    expect(computeQualityFlags("Question?", shortAnswer, [])).toEqual([]);
+
+    const longAnswer = "a".repeat(301);
+    expect(computeQualityFlags("Question?", longAnswer, [])).toContain("long-answer");
+
+    const emojiAnswer = "🌟".repeat(301);
+    expect(computeQualityFlags("Question?", emojiAnswer, [])).toContain("long-answer");
+  });
+
+  it("flags identical question and answer (case-insensitive, whitespace normalized)", () => {
+    expect(computeQualityFlags("Mitochondria", "mitochondria", [])).toContain("identical-qa");
+    expect(computeQualityFlags("  Cell Wall  ", "cell wall", [])).toContain("identical-qa");
+  });
+
+  it("flags duplicate questions and duplicate answers against existing cards", () => {
+    const existing = [
+      { question: "What is DNA?", answer: "Deoxyribonucleic acid." },
+      { question: "What is RNA?", answer: "Ribonucleic acid." },
+    ];
+
+    expect(computeQualityFlags("what is dna?", "Unique answer.", existing)).toContain("duplicate-question");
+    expect(computeQualityFlags("Unique question?", "deoxyribonucleic acid.", existing)).toContain("duplicate-answer");
+  });
+
+  it("can return multiple quality flags simultaneously", () => {
+    const existing = [{ question: "Duplicate Question?", answer: "Other answer." }];
+    const flags = computeQualityFlags("Duplicate question?", "x".repeat(305), existing);
+
+    expect(flags).toContain("long-answer");
+    expect(flags).toContain("duplicate-question");
   });
 });
