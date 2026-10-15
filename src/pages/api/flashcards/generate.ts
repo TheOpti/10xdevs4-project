@@ -1,6 +1,8 @@
 import type { APIRoute } from "astro";
-import { generateDemoFlashcardProposals, validateFlashcardProposalInput } from "@/lib/flashcard-proposals";
+import { GEMINI_API_KEY, GEMINI_MODEL } from "astro:env/server";
+import { computeQualityFlags, type FlashcardProposal, validateFlashcardProposalInput } from "@/lib/flashcard-proposals";
 import { createFlashcardRepository } from "@/lib/flashcards";
+import { generateProposalsWithGemini } from "@/lib/gemini";
 import { parseJsonRequestBody } from "@/lib/request-body";
 import { createClient } from "@/lib/supabase";
 
@@ -43,6 +45,31 @@ export const POST: APIRoute = async (context) => {
     return jsonError("Invalid request", 400);
   }
 
+  if (!GEMINI_API_KEY) {
+    return jsonError("AI generation service unavailable", 503);
+  }
+
+  const generationResult = await generateProposalsWithGemini({
+    apiKey: GEMINI_API_KEY,
+    model: GEMINI_MODEL,
+    sourceText: body.sourceText,
+    signal: context.request.signal,
+  });
+
+  if (!generationResult.ok) {
+    if (generationResult.error === "insufficient-content") {
+      return jsonError("The provided text does not contain enough factual information to generate flashcards.", 422);
+    }
+    if (generationResult.error === "rate-limited" || generationResult.error === "service-error") {
+      return jsonError("AI generation service unavailable", 503);
+    }
+    return jsonError("Failed to generate flashcards", 500);
+  }
+
+  if (generationResult.proposals.length === 0) {
+    return jsonError("The provided text does not contain enough factual information to generate flashcards.", 422);
+  }
+
   const repository = createFlashcardRepository(context.request.headers, context.cookies);
   if (!repository) {
     return jsonError("Service unavailable", 503);
@@ -53,10 +80,19 @@ export const POST: APIRoute = async (context) => {
     return jsonError("Unable to create flashcard set", 500);
   }
 
+  const proposals: FlashcardProposal[] = generationResult.proposals.map((proposal, index) => {
+    const otherProposals = generationResult.proposals.filter((_, idx) => idx !== index);
+    return {
+      question: proposal.question,
+      answer: proposal.answer,
+      qualityFlags: computeQualityFlags(proposal.question, proposal.answer, otherProposals),
+    };
+  });
+
   return Response.json(
     {
       setId: result.data.id,
-      proposals: generateDemoFlashcardProposals(),
+      proposals,
     },
     { status: 201 },
   );

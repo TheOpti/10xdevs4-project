@@ -307,13 +307,13 @@ Run full repository test suites, pass `npm run verify` completion gate, and vali
 
 #### Automated
 
-- [ ] 3.1 Rebuild generate.ts endpoint with generate-before-create lifecycle
-- [ ] 3.2 Handle HTTP 422 for insufficient facts and 503 for missing API key
-- [ ] 3.3 Unit and integration tests in generate.test.ts covering all status codes and no orphaned sets
+- [x] 3.1 Rebuild generate.ts endpoint with generate-before-create lifecycle
+- [x] 3.2 Handle HTTP 422 for insufficient facts and 503 for missing API key
+- [x] 3.3 Unit and integration tests in generate.test.ts covering all status codes and no orphaned sets
 
 #### Manual
 
-- [ ] 3.4 Verify no orphaned sets in Supabase database after simulated LLM failure
+- [x] 3.4 Verify no orphaned sets in Supabase database after simulated LLM failure
 
 ### Phase 4: Review UI and Quality Flags Badges
 
