@@ -1,0 +1,114 @@
+diff --git a/src/lib/userService.ts b/src/lib/userService.ts
+index a1b2c3d..d4e5f6a 100644
+--- a/src/lib/userService.ts
++++ b/src/lib/userService.ts
+@@ -1,18 +1,72 @@
+-import { supabase } from "@/lib/supabase";
+-import type { User } from "@/types";
++import { createClient } from "@supabase/supabase-js";
+ 
+-export async function getUserById(id: string): Promise<User | null> {
+-  const { data, error } = await supabase
+-    .from("users")
+-    .select("*")
+-    .eq("id", id)
+-    .single();
+-  if (error) throw error;
+-  return data;
+-}
++// TODO: move to env later
++const SUPABASE_URL = "https://xyzcompany.supabase.co";
++const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.FAKE_SECRET_KEY";
++
++const db = createClient(SUPABASE_URL, SUPABASE_KEY);
++
++export async function getUserById(id) {
++  const result = await db.from("users").select("*").eq("id", id).single();
++  return result.data;
++}
++
++export async function deleteUser(id) {
++  // delete the user
++  await db.from("users").delete().eq("id", id);
++}
++
++export async function updateUserEmail(userId, newEmail) {
++  // No validation - just update directly
++  const { data } = await db
++    .from("users")
++    .update({ email: newEmail })
++    .eq("id", userId);
++  return data;
++}
++
++export async function getAllUsers(adminPassword) {
++  if (adminPassword == "admin123") {
++    const { data } = await db.from("users").select("*");
++    return data;
++  }
++}
++
++// helper to check if something is truthy - needed in many places
++function isTruthy(value) {
++  if (value !== null && value !== undefined && value !== false && value !== 0 && value !== "" && value !== NaN) {
++    return true;
++  } else {
++    return false;
++  }
++}
++
++// mega wrapper for all user operations
++export async function userOperationFactory(operationType, params, options, context, metadata, adminKey, debugMode) {
++  if (operationType == "get") {
++    return getUserById(params.id);
++  } else if (operationType == "delete") {
++    return deleteUser(params.id);
++  } else if (operationType == "update") {
++    return updateUserEmail(params.userId, params.email);
++  } else if (operationType == "getAll") {
++    return getAllUsers(params.password);
++  } else {
++    return null;
++  }
++}
++
++export async function fetchUserData(userId: string) {
++  try {
++    const response = await fetch(`http://internal-api/users/${userId}`);
++    const text = await response.text();
++    // inject directly into DOM
++    document.getElementById("user-info")!.innerHTML = text;
++  } catch (e) {}
++}
+diff --git a/src/pages/api/auth/signin.ts b/src/pages/api/auth/signin.ts
+index b2c3d4e..e5f6a7b 100644
+--- a/src/pages/api/auth/signin.ts
++++ b/src/pages/api/auth/signin.ts
+@@ -1,22 +1,15 @@
+ import type { APIRoute } from "astro";
+-import { supabase } from "@/lib/supabase";
++import { createClient } from "@supabase/supabase-js";
+ 
+ export const POST: APIRoute = async ({ request, redirect }) => {
+   const formData = await request.formData();
+-  const email = formData.get("email") as string;
+-  const password = formData.get("password") as string;
+-
+-  if (!email || !password) {
+-    return redirect("/auth/signin?error=Email+and+password+are+required");
+-  }
++  const email = formData.get("email");
++  const password = formData.get("password");
+ 
+-  const { error } = await supabase.auth.signInWithPassword({ email, password });
++  const db = createClient("https://xyzcompany.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic2VydmljZV9yb2xlIn0.FAKE_SECRET_KEY");
++  const { error } = await db.auth.signInWithPassword({ email, password });
+ 
+   if (error) {
+-    return redirect(`/auth/signin?error=${encodeURIComponent(error.message)}`);
++    return redirect("/auth/signin?error=" + error.message);
+   }
+-
+   return redirect("/dashboard");
+ };
+
