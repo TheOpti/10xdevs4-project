@@ -9,6 +9,6 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts", ".codex/hooks/**/*.test.mjs"],
+    include: ["src/**/*.test.ts", ".codex/hooks/**/*.test.mjs", "scripts/ai-code-review/**/*.test.mjs"],
   },
 });

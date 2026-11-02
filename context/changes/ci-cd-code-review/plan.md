@@ -269,8 +269,8 @@ The original research remains a historical baseline: this plan resolves its open
 
 #### Automated
 
-- [ ] 1.1 Contract and input fixtures pass: `npm test -- scripts/ai-code-review/contract.test.mjs scripts/ai-code-review/input.test.mjs`.
-- [ ] 1.2 Repository completion gate passes with the new test discovery: `npm run verify`.
+- [x] 1.1 Contract and input fixtures pass: `npm test -- scripts/ai-code-review/contract.test.mjs scripts/ai-code-review/input.test.mjs`. — 211f4d4
+- [x] 1.2 Repository completion gate passes with the new test discovery: `npm run verify`. — 211f4d4
 
 ### Phase 2: OpenRouter review action
 
