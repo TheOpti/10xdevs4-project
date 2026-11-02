@@ -35,6 +35,7 @@ async function review(diff: string): Promise<ReviewResult> {
     });
 
     // Token usage goes to stderr so stdout stays clean JSON
+    // eslint-disable-next-line no-console
     if (turn.usage) console.error("usage:", JSON.stringify(turn.usage));
 
     const parsed = ReviewResult.safeParse(JSON.parse(turn.finalResponse));
@@ -49,10 +50,12 @@ async function review(diff: string): Promise<ReviewResult> {
 
 const diff = await readDiff();
 if (!diff.trim()) {
+  // eslint-disable-next-line no-console
   console.error("No diff on stdin. Usage: git diff | npm run review");
   process.exit(2);
 }
 
 const result = await review(diff);
+// eslint-disable-next-line no-console
 console.log(JSON.stringify(result, null, 2));
 process.exitCode = result.verdict === "fail" ? 1 : 0; // useful in CI (M5L3)
