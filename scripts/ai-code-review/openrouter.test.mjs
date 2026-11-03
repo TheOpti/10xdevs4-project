@@ -368,7 +368,7 @@ describe("composite action scaffold", () => {
     expect(operation).toHaveBeenCalledWith(config());
   });
 
-  it("fails safely until phase 3 wires GitHub input, with bounded outputs and logs", async () => {
+  it("fails safely without a GitHub event file, with bounded outputs and logs", async () => {
     const directory = await mkdtemp(join(tmpdir(), "ai-review-"));
     const output = join(directory, "outputs");
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);

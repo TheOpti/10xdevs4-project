@@ -276,16 +276,16 @@ The original research remains a historical baseline: this plan resolves its open
 
 #### Automated
 
-- [x] 2.1 Mocked provider tests pass for valid JSON, HTTP-200 errors, invalid schema, refusal, output/body limits, timeout, and bounded retry: `npm test -- scripts/ai-code-review/openrouter.test.mjs`.
-- [x] 2.2 Repository completion gate passes with provider transport and composite scaffolding: `npm run verify`.
+- [x] 2.1 Mocked provider tests pass for valid JSON, HTTP-200 errors, invalid schema, refusal, output/body limits, timeout, and bounded retry: `npm test -- scripts/ai-code-review/openrouter.test.mjs`. — 87d4a2c
+- [x] 2.2 Repository completion gate passes with provider transport and composite scaffolding: `npm run verify`. — 87d4a2c
 
 ### Phase 3: GitHub workflow and publication
 
 #### Automated
 
-- [ ] 3.1 Review integration tests pass without network calls: `npm test -- scripts/ai-code-review`.
-- [ ] 3.2 Workflow syntax and action references pass `actionlint .github/workflows/ai-code-review.yml`; the composite metadata passes `npx prettier --check .github/actions/ai-code-review/action.yml`.
-- [ ] 3.3 Repository completion gate passes with workflow integration: `npm run verify`.
+- [x] 3.1 Review integration tests pass without network calls: `npm test -- scripts/ai-code-review`.
+- [x] 3.2 Workflow syntax and action references pass `actionlint .github/workflows/ai-code-review.yml`; the composite metadata passes `npx prettier --check .github/actions/ai-code-review/action.yml`.
+- [x] 3.3 Repository completion gate passes with workflow integration: `npm run verify`.
 
 ### Phase 4: Verification and setup guide
 
