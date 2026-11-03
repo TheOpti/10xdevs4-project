@@ -276,8 +276,8 @@ The original research remains a historical baseline: this plan resolves its open
 
 #### Automated
 
-- [ ] 2.1 Mocked provider tests pass for valid JSON, HTTP-200 errors, invalid schema, refusal, output/body limits, timeout, and bounded retry: `npm test -- scripts/ai-code-review/openrouter.test.mjs`.
-- [ ] 2.2 Repository completion gate passes with provider transport and composite scaffolding: `npm run verify`.
+- [x] 2.1 Mocked provider tests pass for valid JSON, HTTP-200 errors, invalid schema, refusal, output/body limits, timeout, and bounded retry: `npm test -- scripts/ai-code-review/openrouter.test.mjs`.
+- [x] 2.2 Repository completion gate passes with provider transport and composite scaffolding: `npm run verify`.
 
 ### Phase 3: GitHub workflow and publication
 

@@ -1,0 +1,31 @@
+name: AI code review
+description: Review bounded PR evidence with an explicitly configured OpenRouter model
+inputs:
+  github-token:
+    description: GitHub token for PR reads and publication
+    required: true
+  openrouter-api-key:
+    description: Dedicated spending-capped OpenRouter key
+    required: true
+  model:
+    description: Concrete structured-output-compatible OpenRouter model ID
+    required: true
+outputs:
+  status:
+    description: Bounded review outcome status
+    value: ${{ steps.review.outputs.status }}
+  reviewed-head-sha:
+    description: Reviewed immutable head SHA, or empty when unavailable
+    value: ${{ steps.review.outputs.reviewed-head-sha }}
+runs:
+  using: composite
+  steps:
+    # Caller provides Node 24 and a trusted checkout; no package installation.
+    - id: review
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        OPENROUTER_API_KEY: ${{ inputs.openrouter-api-key }}
+        AI_REVIEW_MODEL: ${{ inputs.model }}
+        AI_REVIEW_ACTION_PATH: ${{ github.action_path }}
+      run: node "$AI_REVIEW_ACTION_PATH/../../../scripts/ai-code-review/run.mjs"
