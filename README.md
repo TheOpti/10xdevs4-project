@@ -103,6 +103,46 @@ npm run build
 workflow runs the same lint, type-check, build, and local-Supabase smoke-test
 flow on `master` pull requests and pushes.
 
+## Automated PR code reviews
+
+The repository includes an advisory AI review workflow (`.github/workflows/ai-code-review.yml`)
+powered by a local composite action (`.github/actions/ai-code-review/`).
+
+It runs on non-draft pull requests targeting `main` from the same repository and uses an
+owner-configured OpenRouter model to evaluate code against six quality criteria: implementation
+correctness, idiomaticity, complexity, test risk coverage, documentation, and security safety.
+
+### Setup and configuration
+
+1. **Actions Secret**: Configure `OPENROUTER_API_KEY` with a dedicated OpenRouter key. Set a hard
+   cumulative spending cap on OpenRouter to protect against unexpected usage.
+2. **Repository Variable**: Configure `AI_REVIEW_MODEL` with a concrete, structured-output-compatible
+   model ID (e.g., `openai/gpt-4o`, `anthropic/claude-3.5-sonnet`). Do not use fallback lists or routing
+   aliases. Calibrate review quality on representative PRs when selecting or changing models; selecting
+   a cheap model does not guarantee acceptable review quality. Note that reasoning models consume reasoning
+   tokens against the fixed 4,000 output token limit.
+3. **GitHub Permissions and Trigger**: The workflow uses `pull_request_target` with `contents: read` and
+   `pull-requests: write`. The workflow must exist on the default branch (`main`) before production events
+   can exercise it. Verify that repository Actions policy permits `pull_request_target` triggers.
+4. **Advisory Semantics**: AI review is advisory and must **not** be configured as a required merge check
+   in branch protection. A code quality failure sets the `ai-cr:failed` label and posts details in the PR
+   summary, but the Actions job succeeds. Operational errors or unsupported diffs fail the optional job.
+
+### Operational behavior
+
+- **Event triggers**: Reviews run on `opened`, `synchronize`, `reopened`, `ready_for_review`, or when
+  a human adds the `ai-cr:review` label. Drafts and fork PRs are skipped.
+- **Diff and description limits**: Supports textual diffs up to 102,400 bytes (100 KiB) and 3,000 files,
+  with description excerpts up to 8,000 Unicode code points. Unsupported inputs (binary files, oversized diffs)
+  are reported as "review unavailable" without guessing.
+- **Labels and summary**: The workflow maintains a single bot-owned comment marked with `<!-- ai-cr:summary:v1 -->`
+  and sets either `ai-cr:passed` or `ai-cr:failed`. Retrying after title/body updates is done by adding `ai-cr:review`.
+- **Diagnostics and rollback**: Sensitive tokens and raw diffs are never logged. To rollback, disable the workflow
+  in the Actions tab and remove the outcome labels from open PRs; application CI remains completely unaffected.
+
+For detailed architecture, schema rules, and operational limits, see the
+[AI Code Review Action documentation](.github/actions/ai-code-review/README.md).
+
 ## End-to-end tests (Playwright)
 
 E2E tests require Docker Desktop and the local Supabase stack. Start it with
