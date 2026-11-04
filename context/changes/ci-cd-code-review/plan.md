@@ -283,16 +283,16 @@ The original research remains a historical baseline: this plan resolves its open
 
 #### Automated
 
-- [x] 3.1 Review integration tests pass without network calls: `npm test -- scripts/ai-code-review`.
-- [x] 3.2 Workflow syntax and action references pass `actionlint .github/workflows/ai-code-review.yml`; the composite metadata passes `npx prettier --check .github/actions/ai-code-review/action.yml`.
-- [x] 3.3 Repository completion gate passes with workflow integration: `npm run verify`.
+- [x] 3.1 Review integration tests pass without network calls: `npm test -- scripts/ai-code-review`. — 7873c4d
+- [x] 3.2 Workflow syntax and action references pass `actionlint .github/workflows/ai-code-review.yml`; the composite metadata passes `npx prettier --check .github/actions/ai-code-review/action.yml`. — 7873c4d
+- [x] 3.3 Repository completion gate passes with workflow integration: `npm run verify`. — 7873c4d
 
 ### Phase 4: Verification and setup guide
 
 #### Automated
 
-- [ ] 4.1 Final repository completion gate passes: `npm run verify`.
-- [ ] 4.2 Final workflow and document checks pass: `actionlint .github/workflows/ai-code-review.yml` and `npx prettier --check .github/actions/ai-code-review README.md context/changes/ci-cd-code-review/verification.md`.
+- [x] 4.1 Final repository completion gate passes: `npm run verify`. — e472bcd
+- [x] 4.2 Final workflow and document checks pass: `actionlint .github/workflows/ai-code-review.yml` and `npx prettier --check .github/actions/ai-code-review README.md context/changes/ci-cd-code-review/verification.md`. — e472bcd
 
 #### Manual
 
