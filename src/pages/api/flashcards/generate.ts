@@ -1,10 +1,10 @@
-import type { APIRoute } from "astro";
-import { GEMINI_API_KEY, GEMINI_MODEL } from "astro:env/server";
 import { computeQualityFlags, type FlashcardProposal, validateFlashcardProposalInput } from "@/lib/flashcard-proposals";
 import { createFlashcardRepository } from "@/lib/flashcards";
-import { generateProposalsWithGemini } from "@/lib/gemini";
+import { generateProposalsWithOpenRouter } from "@/lib/openrouter";
 import { parseJsonRequestBody } from "@/lib/request-body";
 import { createClient } from "@/lib/supabase";
+import type { APIRoute } from "astro";
+import { OPENROUTER_API_KEY, OPENROUTER_MODEL } from "astro:env/server";
 
 const jsonError = (message: string, status: number) => Response.json({ error: message }, { status });
 
@@ -45,13 +45,13 @@ export const POST: APIRoute = async (context) => {
     return jsonError("Invalid request", 400);
   }
 
-  if (!GEMINI_API_KEY) {
+  if (!OPENROUTER_API_KEY) {
     return jsonError("AI generation service unavailable", 503);
   }
 
-  const generationResult = await generateProposalsWithGemini({
-    apiKey: GEMINI_API_KEY,
-    model: GEMINI_MODEL,
+  const generationResult = await generateProposalsWithOpenRouter({
+    apiKey: OPENROUTER_API_KEY as string,
+    model: OPENROUTER_MODEL as string,
     sourceText: body.sourceText,
     signal: context.request.signal,
   });

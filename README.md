@@ -46,6 +46,24 @@ npm run dev
 
 The app runs at `http://localhost:4321` by default.
 
+### Flashcard generation (OpenRouter)
+
+Set these server-only variables in your ignored `.env` file and restart the dev server:
+
+```dotenv
+OPENROUTER_API_KEY=<your-openrouter-api-key>
+OPENROUTER_MODEL=deepseek/deepseek-v3.2
+```
+
+Create a key at [OpenRouter](https://openrouter.ai/settings/keys) and add credits.
+The model setting is optional; DeepSeek V3.2 is the default. Generation uses
+structured JSON output with reasoning disabled and a 4,096 output-token limit.
+A custom model must support structured outputs. The old Gemini variables are no longer used.
+For deployment, configure the Worker secret with
+`npx wrangler secret put OPENROUTER_API_KEY --name memoro`.
+You can similarly set `OPENROUTER_MODEL` to override the default in production.
+The GitHub Actions review key is separate from the application's runtime configuration.
+
 ### Local Supabase (optional)
 
 With Docker Desktop running, start the checked-in local Supabase stack:

@@ -1,12 +1,12 @@
-import { useState, type SubmitEvent } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
-  MAX_TITLE_CODE_POINTS,
   MAX_SOURCE_TEXT_CODE_POINTS,
-  type FlashcardProposal,
+  MAX_TITLE_CODE_POINTS,
   validateFlashcardProposalInput,
+  type FlashcardProposal,
 } from "@/lib/flashcard-proposals";
 import { cardBatchesMatch, type ReviewSaveCard } from "@/lib/flashcard-save-reconciliation";
+import { useState, type SubmitEvent } from "react";
 
 function validationMessage(
   error: Exclude<ReturnType<typeof validateFlashcardProposalInput>, { valid: true }>["error"],
@@ -102,6 +102,7 @@ export default function NewFlashcardsForm() {
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setDraft([]);
 
     const validation = validateFlashcardProposalInput({ title, sourceText });
     if (!validation.valid) {

@@ -1,29 +1,29 @@
 import type { AstroCookies } from "astro";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createFlashcardRepository } from "@/lib/flashcards";
-import { generateProposalsWithGemini } from "@/lib/gemini";
+import { generateProposalsWithOpenRouter } from "@/lib/openrouter";
 import { createClient } from "@/lib/supabase";
 import { POST } from "./generate";
 
-let mockGeminiApiKey: string | undefined = "test-gemini-key";
-let mockGeminiModel: string | undefined;
+let mockOpenRouterApiKey: string | undefined = "test-openrouter-key";
+let mockOpenRouterModel: string | undefined;
 
 vi.mock("astro:env/server", () => ({
-  get GEMINI_API_KEY() {
-    return mockGeminiApiKey;
+  get OPENROUTER_API_KEY() {
+    return mockOpenRouterApiKey;
   },
-  get GEMINI_MODEL() {
-    return mockGeminiModel;
+  get OPENROUTER_MODEL() {
+    return mockOpenRouterModel;
   },
 }));
 
 vi.mock("@/lib/flashcards", () => ({ createFlashcardRepository: vi.fn() }));
 vi.mock("@/lib/supabase", () => ({ createClient: vi.fn() }));
-vi.mock("@/lib/gemini", () => ({ generateProposalsWithGemini: vi.fn() }));
+vi.mock("@/lib/openrouter", () => ({ generateProposalsWithOpenRouter: vi.fn() }));
 
 const mockedCreateClient = vi.mocked(createClient);
 const mockedCreateFlashcardRepository = vi.mocked(createFlashcardRepository);
-const mockedGenerateProposals = vi.mocked(generateProposalsWithGemini);
+const mockedGenerateProposals = vi.mocked(generateProposalsWithOpenRouter);
 const cookies = {} as AstroCookies;
 
 function createContext(body: string, headers?: HeadersInit) {
@@ -42,11 +42,11 @@ function configuredSupabase(user: object | null = { id: "user-id" }) {
 describe("POST /api/flashcards/generate", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    mockGeminiApiKey = "test-gemini-key";
-    mockGeminiModel = undefined;
+    mockOpenRouterApiKey = "test-openrouter-key";
+    mockOpenRouterModel = undefined;
   });
 
-  it("calls Gemini first and creates set only after successful proposal generation", async () => {
+  it("calls OpenRouter first and creates set only after successful proposal generation", async () => {
     configuredSupabase();
     const sourceText = "Cell biology lecture notes on mitochondria.";
 
@@ -84,7 +84,7 @@ describe("POST /api/flashcards/generate", () => {
 
     expect(mockedGenerateProposals).toHaveBeenCalledWith(
       expect.objectContaining({
-        apiKey: "test-gemini-key",
+        apiKey: "test-openrouter-key",
         sourceText,
       }),
     );
@@ -119,9 +119,9 @@ describe("POST /api/flashcards/generate", () => {
     expect(payload.proposals[1]?.qualityFlags).toContain("long-answer");
   });
 
-  it("returns 503 when GEMINI_API_KEY is missing without calling LLM or repository", async () => {
+  it("returns 503 when OPENROUTER_API_KEY is missing without calling LLM or repository", async () => {
     configuredSupabase();
-    mockGeminiApiKey = undefined;
+    mockOpenRouterApiKey = undefined;
 
     const response = await POST(createContext(JSON.stringify({ title: "Title", sourceText: "Text" })));
 
@@ -152,7 +152,7 @@ describe("POST /api/flashcards/generate", () => {
     expect(createSet).not.toHaveBeenCalled();
   });
 
-  it("returns 422 when Gemini returns 0 proposals without creating a database set", async () => {
+  it("returns 422 when OpenRouter returns 0 proposals without creating a database set", async () => {
     configuredSupabase();
     const createSet = vi.fn();
     mockedCreateFlashcardRepository.mockReturnValue({ createSet } as never);
@@ -171,7 +171,7 @@ describe("POST /api/flashcards/generate", () => {
     expect(createSet).not.toHaveBeenCalled();
   });
 
-  it("returns 503 when Gemini service is rate-limited or fails without creating a set", async () => {
+  it("returns 503 when OpenRouter service is rate-limited or fails without creating a set", async () => {
     configuredSupabase();
     const createSet = vi.fn();
     mockedCreateFlashcardRepository.mockReturnValue({ createSet } as never);
