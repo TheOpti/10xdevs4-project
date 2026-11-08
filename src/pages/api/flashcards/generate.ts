@@ -50,8 +50,8 @@ export const POST: APIRoute = async (context) => {
   }
 
   const generationResult = await generateProposalsWithOpenRouter({
-    apiKey: OPENROUTER_API_KEY as string,
-    model: OPENROUTER_MODEL as string,
+    apiKey: OPENROUTER_API_KEY,
+    model: OPENROUTER_MODEL,
     sourceText: body.sourceText,
     signal: context.request.signal,
   });

@@ -1,6 +1,6 @@
 begin;
 
-select plan(28);
+select plan(36);
 
 select tests.create_supabase_user('flashcard_owner', 'flashcard-owner@example.com');
 select tests.create_supabase_user('flashcard_intruder', 'flashcard-intruder@example.com');
@@ -35,7 +35,7 @@ select lives_ok(
 );
 
 select lives_ok(
-  $$insert into public.flashcards (set_id, question, answer) select id, 'Owner question', 'Owner answer' from public.flashcard_sets where title = 'Updated owner set'$$,
+  $$insert into public.flashcards (id, set_id, question, answer) select 'dddddddd-dddd-4ddd-8ddd-dddddddddddd', id, 'Owner question', 'Owner answer' from public.flashcard_sets where title = 'Updated owner set'$$,
   'Owner can create a card'
 );
 
@@ -94,7 +94,25 @@ select throws_ok(
   'Owner cannot delete a source directly'
 );
 
+select results_eq(
+  $$select answer from public.flashcards where id = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd'$$,
+  array['Updated owner answer'::text],
+  'Owner update persists the new answer'
+);
+
 select tests.authenticate_as('flashcard_intruder');
+
+select results_eq(
+  $$update public.flashcards set question = 'Stolen question', answer = 'Stolen answer' where id = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd' returning 1$$,
+  array[]::integer[],
+  'Second user cannot update a card even with its exact ID'
+);
+
+select results_eq(
+  $$delete from public.flashcards where id = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd' returning 1$$,
+  array[]::integer[],
+  'Second user cannot delete a card even with its exact ID'
+);
 
 select results_eq(
   $$select count(*) from public.flashcard_sets where title = 'Updated owner set'$$,
@@ -165,6 +183,36 @@ select throws_ok(
 
 select tests.authenticate_as('flashcard_owner');
 
+select results_eq(
+  $$select answer from public.flashcards where id = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd'$$,
+  array['Updated owner answer'::text],
+  'Intruder mutations leave the owner card unchanged'
+);
+
+select results_eq(
+  $$delete from public.flashcards where id = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd' returning 1$$,
+  array[1],
+  'Owner can delete its card'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcards where id = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd'$$,
+  array[0::bigint],
+  'Owner deletion persists'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcard_sets where title = 'Updated owner set'$$,
+  array[1::bigint],
+  'Deleting a card preserves its set'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcard_sources where source_text = 'Updated private source'$$,
+  array[1::bigint],
+  'Deleting a card preserves the private source'
+);
+
 select lives_ok(
   $$delete from public.flashcard_sets where title = 'Updated owner set'$$,
   'Owner can delete its set'
@@ -177,7 +225,7 @@ select results_eq(
 );
 
 select results_eq(
-  $$select count(*) from public.flashcards where question = 'Owner question'$$,
+  $$select count(*) from public.flashcards where question = 'Reviewed question'$$,
   array[0::bigint],
   'Deleting a set cascades to its cards'
 );

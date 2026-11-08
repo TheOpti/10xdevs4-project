@@ -186,7 +186,7 @@ No migration, new secrets, or feature flag is needed. Release through the existi
 
 #### Automated
 
-- [ ] 1.1 Vitest tests verify validation, normalization, API responses, and update/delete results.
+- [x] 1.1 Vitest tests verify validation, normalization, API responses, and update/delete results.
 - [ ] 1.2 SQL tests verify owner operations and prevent updates or deletion of another user's card.
 
 ### Phase 2: Editor and Navigation

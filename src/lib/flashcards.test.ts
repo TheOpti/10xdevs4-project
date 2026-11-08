@@ -154,3 +154,47 @@ describe("createFlashcardRepository", () => {
     expect(select).toHaveBeenCalledWith("id, title, created_at, flashcards(id, question, answer, created_at)");
   });
 });
+
+describe("card mutations", () => {
+  function setup(data: unknown, error: unknown = null) {
+    const query = {
+      update: vi.fn().mockReturnThis(),
+      delete: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      select: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockReturnThis(),
+      overrideTypes: vi.fn().mockResolvedValue({ data, error }),
+    };
+    const from = vi.fn().mockReturnValue(query);
+    return { repository: createRepository({ from }), query, from };
+  }
+
+  it("updates text on the addressed card and maps its persisted result", async () => {
+    const { repository, query, from } = setup({ id: "card-id", question: "Q", answer: "A", created_at: "timestamp" });
+    await expect(repository.updateCard("card-id", { question: "Q", answer: "A" })).resolves.toEqual({
+      ok: true,
+      data: { id: "card-id", question: "Q", answer: "A", createdAt: "timestamp" },
+    });
+    expect(from).toHaveBeenCalledWith("flashcards");
+    expect(query.update).toHaveBeenCalledExactlyOnceWith({ question: "Q", answer: "A" });
+    expect(query.eq).toHaveBeenCalledWith("id", "card-id");
+  });
+
+  it("deletes a single addressed card", async () => {
+    const { repository, query, from } = setup({ id: "card-id" });
+    await expect(repository.deleteCard("card-id")).resolves.toEqual({ ok: true, data: undefined });
+    expect(from).toHaveBeenCalledExactlyOnceWith("flashcards");
+    expect(query.delete).toHaveBeenCalledOnce();
+    expect(query.eq).toHaveBeenCalledWith("id", "card-id");
+  });
+
+  it.each(["updateCard", "deleteCard"] as const)("distinguishes missing data from failures in %s", async (method) => {
+    for (const error of [null, { message: "private database detail" }]) {
+      const { repository } = setup(null, error);
+      await expect(repository[method]("card-id", { question: "Q", answer: "A" })).resolves.toEqual({
+        ok: false,
+        error: error ? "request-failed" : "not-found",
+      });
+    }
+  });
+});
