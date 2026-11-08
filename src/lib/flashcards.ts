@@ -159,6 +159,7 @@ export function createFlashcardRepository(requestHeaders: Headers, cookies: Astr
         .from("flashcard_sets")
         .select("id, title, created_at")
         .order("created_at", { ascending: false })
+        .order("id", { ascending: true })
         .overrideTypes<FlashcardSetRow[], { merge: false }>();
 
       if (error) {
@@ -191,7 +192,9 @@ export function createFlashcardRepository(requestHeaders: Headers, cookies: Astr
         ok: true,
         data: {
           ...toSetSummary(data),
-          cards: (data.flashcards ?? []).map(toFlashcard),
+          cards: (data.flashcards ?? [])
+            .map(toFlashcard)
+            .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt) || a.id.localeCompare(b.id)),
         },
       };
     },

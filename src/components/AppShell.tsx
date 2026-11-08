@@ -1,13 +1,13 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { BarChart3, Layers, LayoutGrid, LogOut, Plus, Search, Settings } from "lucide-react";
+import { BarChart3, Layers, LayoutGrid, LogOut, Plus, Settings } from "lucide-react";
 import React from "react";
 
 const NAV_ITEMS = [
-  { label: "Collections", icon: LayoutGrid, active: true },
-  { label: "Stats", icon: BarChart3, active: false },
-  { label: "Settings", icon: Settings, active: false },
+  { label: "Collections", icon: LayoutGrid, active: true, href: "/dashboard" },
+  { label: "Stats", icon: BarChart3, active: false, href: undefined },
+  { label: "Settings", icon: Settings, active: false, href: undefined },
 ];
 
 export default function AppShell({
@@ -37,8 +37,10 @@ export default function AppShell({
           </div>
 
           <nav className="flex-1 space-y-1 px-3 py-4">
-            {NAV_ITEMS.map(({ label, icon: Icon, active }) => (
-              <button
+            {NAV_ITEMS.map(({ label, icon: Icon, active, href }) => (
+              <a
+                href={href}
+                aria-disabled={!href || undefined}
                 key={label}
                 className={`flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors ${
                   active
@@ -48,7 +50,7 @@ export default function AppShell({
               >
                 <Icon className="h-4 w-4" strokeWidth={2} />
                 {label}
-              </button>
+              </a>
             ))}
           </nav>
 
@@ -77,17 +79,13 @@ export default function AppShell({
         </aside>
 
         {/* Main column */}
-        <div className="flex-1 md:ml-60">
+        <div className="min-w-0 flex-1 md:ml-60">
           {/* Topbar */}
           <header className="bg-background/90 sticky top-0 z-10 border-b backdrop-blur">
             <div className="flex h-16 items-center gap-4 px-6">
-              <div className="relative max-w-sm flex-1">
-                <Search className="text-muted-foreground absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2" />
-                <input
-                  placeholder="Search collections…"
-                  className="bg-background placeholder:text-muted-foreground focus:ring-primary/30 h-9 w-full rounded-md border pr-3 pl-9 text-sm focus:ring-2 focus:outline-none"
-                />
-              </div>
+              <a href="/dashboard" className="text-primary text-sm font-medium md:hidden">
+                Collections
+              </a>
               <div className="flex-1" />
               {newSetHref ? (
                 <Button asChild className="gap-2">

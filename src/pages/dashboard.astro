@@ -1,10 +1,13 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import DashboardComponent from "@/components/Dashboard";
+import { createFlashcardRepository } from "@/lib/flashcards";
+import { loadSetListView } from "@/lib/flashcard-views";
 
 const { user } = Astro.locals;
+const view = await loadSetListView(createFlashcardRepository(Astro.request.headers, Astro.cookies));
 ---
 
 <Layout title="Dashboard">
-  <DashboardComponent email={user?.email} client:load />
+  <DashboardComponent email={user?.email} view={view} />
 </Layout>

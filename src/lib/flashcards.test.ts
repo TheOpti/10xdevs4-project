@@ -198,3 +198,62 @@ describe("card mutations", () => {
     }
   });
 });
+
+describe("set reads", () => {
+  function setup(data: unknown, error: unknown = null) {
+    const query = {
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockReturnThis(),
+      overrideTypes: vi.fn().mockResolvedValue({ data, error }),
+    };
+    return { repository: createRepository({ from: vi.fn().mockReturnValue(query) }), query };
+  }
+
+  it("orders sets newest first with an ID tie-breaker and includes empty sets", async () => {
+    const { repository, query } = setup([{ id: "empty-set", title: "Empty", created_at: "2026-11-08" }]);
+    await expect(repository.listSets()).resolves.toEqual({
+      ok: true,
+      data: [{ id: "empty-set", title: "Empty", createdAt: "2026-11-08" }],
+    });
+    expect(query.order.mock.calls).toEqual([
+      ["created_at", { ascending: false }],
+      ["id", { ascending: true }],
+    ]);
+    expect(query.select).toHaveBeenCalledWith("id, title, created_at");
+  });
+
+  it("sorts cards by creation time then ID, regardless of text changes", async () => {
+    const row = (id: string, created_at: string) => ({ id, created_at, question: "Q", answer: "A" });
+    const data = {
+      id: "set",
+      title: "Title",
+      created_at: "2026-11-08",
+      flashcards: [
+        row("c", "2026-11-08T12:00:00Z"),
+        row("b", "2026-11-08T10:00:00Z"),
+        row("a", "2026-11-08T10:00:00Z"),
+      ],
+    };
+    const { repository, query } = setup(data);
+    const before = await repository.getSetWithCards("set");
+    expect(before.ok && before.data.cards.map((card) => card.id)).toEqual(["a", "b", "c"]);
+    data.flashcards[2].question = "Changed question";
+    query.overrideTypes.mockResolvedValue({ data, error: null });
+    const after = await repository.getSetWithCards("set");
+    expect(after.ok && after.data.cards.map((card) => card.id)).toEqual(["a", "b", "c"]);
+  });
+
+  it("distinguishes an empty set, an invisible set, and a database error", async () => {
+    const empty = setup({ id: "set", title: "Empty", created_at: "2026-11-08", flashcards: null });
+    await expect(empty.repository.getSetWithCards("set")).resolves.toEqual({
+      ok: true,
+      data: { id: "set", title: "Empty", createdAt: "2026-11-08", cards: [] },
+    });
+    await expect(setup(null).repository.getSetWithCards("missing")).resolves.toEqual({ ok: false, error: "not-found" });
+    const failed = setup(null, { message: "private error" }).repository;
+    await expect(failed.getSetWithCards("set")).resolves.toEqual({ ok: false, error: "request-failed" });
+    await expect(failed.listSets()).resolves.toEqual({ ok: false, error: "request-failed" });
+  });
+});
