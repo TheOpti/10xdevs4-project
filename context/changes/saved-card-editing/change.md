@@ -1,9 +1,9 @@
 ---
 change_id: saved-card-editing
 title: Saved card editing
-status: implementing
+status: impl_reviewed
 created: 2026-11-05
-updated: 2026-11-08
+updated: 2026-11-10
 archived_at: null
 ---
 

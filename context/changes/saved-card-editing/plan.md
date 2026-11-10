@@ -1,4 +1,4 @@
-﻿# Saved Card Editing — Implementation Plan
+# Saved Card Editing — Implementation Plan
 
 ## Overview
 
