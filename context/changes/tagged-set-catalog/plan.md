@@ -160,12 +160,12 @@ For application rollback, retain the tags column and its data. No new credential
 
 #### Automated
 
-- [ ] 2.1 Catalog tests verify single-tag and untagged filtering, owner-derived choices, URL handling, stable ordering, and distinct empty/error states.
-- [ ] 2.2 Editor tests verify save, cancellation, pending controls, normalized server responses, and draft retention on failure.
+- [x] 2.1 Catalog tests verify single-tag and untagged filtering, owner-derived choices, URL handling, stable ordering, and distinct empty/error states.
+- [x] 2.2 Editor tests verify save, cancellation, pending controls, normalized server responses, and draft retention on failure.
 
 #### Manual
 
-- [ ] 2.3 Tag editing and filters work with a keyboard and on a narrow screen without disrupting card drafts.
+- [x] 2.3 Tag editing and filters work with a keyboard and on a narrow screen without disrupting card drafts.
 
 ### Phase 3: Integration and Verification
 

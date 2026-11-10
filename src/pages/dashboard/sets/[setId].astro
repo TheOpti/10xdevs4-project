@@ -2,8 +2,12 @@
 import Layout from "@/layouts/Layout.astro";
 import AppShell from "@/components/AppShell";
 import SavedFlashcardSet from "@/components/flashcards/SavedFlashcardSet";
+import SetTagEditor from "@/components/flashcards/SetTagEditor";
 import { createFlashcardRepository } from "@/lib/flashcards";
-import { loadSetView } from "@/lib/flashcard-views";
+import { formatCatalogHref, loadSetView, parseCatalogFilter } from "@/lib/flashcard-views";
+
+const filter = parseCatalogFilter(Astro.url.searchParams);
+const backHref = formatCatalogHref(filter);
 
 const view = await loadSetView(createFlashcardRepository(Astro.request.headers, Astro.cookies), Astro.params.setId);
 if (view.status === "not-found") Astro.response.status = 404;
@@ -12,11 +16,14 @@ if (view.status === "unavailable") Astro.response.status = 503;
 
 <Layout title={view.status === "ready" ? view.set.title : "Set unavailable"}>
   <AppShell email={Astro.locals.user?.email} newSetHref="/dashboard/new">
-    <a href="/dashboard" class="text-primary mb-6 inline-block text-sm hover:underline">
+    <a href={backHref} class="text-primary mb-6 inline-block text-sm hover:underline">
       Back to collections
     </a>
     {view.status === "ready" ? (
-      <SavedFlashcardSet title={view.set.title} cards={view.set.cards} client:load />
+      <div class="space-y-6">
+        <SetTagEditor setId={view.set.id} initialTags={view.set.tags} client:load />
+        <SavedFlashcardSet title={view.set.title} cards={view.set.cards} client:load />
+      </div>
     ) : (
       <section>
         <h1 class="text-2xl font-semibold">

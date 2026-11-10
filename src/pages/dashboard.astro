@@ -5,9 +5,12 @@ import { createFlashcardRepository } from "@/lib/flashcards";
 import { loadSetListView } from "@/lib/flashcard-views";
 
 const { user } = Astro.locals;
-const view = await loadSetListView(createFlashcardRepository(Astro.request.headers, Astro.cookies));
+const view = await loadSetListView(
+  createFlashcardRepository(Astro.request.headers, Astro.cookies),
+  Astro.url.searchParams,
+);
 ---
 
 <Layout title="Dashboard">
-  <DashboardComponent email={user?.email} view={view} />
+  <DashboardComponent email={user?.email} view={view} client:load />
 </Layout>
