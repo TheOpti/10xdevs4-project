@@ -1,10 +1,10 @@
 ---
 change_id: saved-card-editing
 title: Saved card editing
-status: impl_reviewed
+status: archived
 created: 2026-11-05
 updated: 2026-11-10
-archived_at: null
+archived_at: 2026-11-10T21:19:00Z
 ---
 
 ## Notes
