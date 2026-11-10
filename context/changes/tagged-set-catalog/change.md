@@ -1,9 +1,9 @@
 ---
 change_id: tagged-set-catalog
 title: Tagged set catalog
-status: implementing
+status: implemented
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-11
 archived_at: null
 ---
 

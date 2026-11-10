@@ -171,9 +171,9 @@ For application rollback, retain the tags column and its data. No new credential
 
 #### Automated
 
-- [x] 3.1 Playwright verifies tag persistence, filtering, navigation, empty-set retention, and failed-save draft retention.
-- [x] 3.2 `npx supabase test db`, catalog and saved-card-editing Playwright tests, and `npm run verify` pass.
+- [x] 3.1 Playwright verifies tag persistence, filtering, navigation, empty-set retention, and failed-save draft retention. — 8d1284e
+- [x] 3.2 `npx supabase test db`, catalog and saved-card-editing Playwright tests, and `npm run verify` pass. — 8d1284e
 
 #### Manual
 
-- [x] 3.3 Two tabs demonstrate last-successful-write-wins behavior; an obsolete tag URL shows a recoverable no-results state.
+- [x] 3.3 Two tabs demonstrate last-successful-write-wins behavior; an obsolete tag URL shows a recoverable no-results state. — 8d1284e
