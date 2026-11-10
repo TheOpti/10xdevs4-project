@@ -19,7 +19,7 @@ setup("sign in once and save the session", async ({ page }) => {
     await page.getByRole("button", { name: "Sign in" }).click();
     await page.waitForURL((url) => url.pathname === "/dashboard", { timeout: 5_000 });
   }).toPass();
-  await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your collections" })).toBeVisible();
 
   await page.context().storageState({ path: authFile });
 });

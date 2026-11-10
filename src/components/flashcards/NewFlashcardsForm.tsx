@@ -5,7 +5,7 @@ import {
   validateFlashcardProposalInput,
   type FlashcardProposal,
 } from "@/lib/flashcard-proposals";
-import { cardBatchesMatch, type ReviewSaveCard } from "@/lib/flashcard-save-reconciliation";
+import { reconcileSavedDraft, type ReviewSaveCard } from "@/lib/flashcard-save-reconciliation";
 import { useState, type SubmitEvent } from "react";
 
 function validationMessage(
@@ -102,7 +102,6 @@ export default function NewFlashcardsForm() {
   async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
-    setDraft([]);
 
     const validation = validateFlashcardProposalInput({ title, sourceText });
     if (!validation.valid) {
@@ -203,28 +202,29 @@ export default function NewFlashcardsForm() {
       const responseBody: unknown = await response.json().catch(() => null);
 
       if (!response.ok || !isSaveResponse(responseBody) || responseBody.setId !== setId) {
-        setError("We could not save these flashcards. You can edit the draft and retry.");
+        setError("We could not confirm the save. Your draft is still here. Check the saved set before retrying.");
         return;
       }
 
-      if (!cardBatchesMatch(responseBody.cards, savedDraft)) {
+      const reconciliation = reconcileSavedDraft(responseBody.cards, savedDraft, cards);
+      if (reconciliation === "saved-data-changed") {
         setError("We could not confirm which flashcards were saved. Your draft is still available.");
+        setHasSaveConflict(true);
         return;
       }
 
-      if (!cardBatchesMatch(cards, savedDraft)) {
+      if (reconciliation === "draft-changed") {
         setError(
-          "Your original flashcards were saved, but later edits were not. Your edited draft is still available; generate a new set before saving it.",
+          "Your original flashcards were saved, but later edits were not. Your draft is still here. Open the saved set to make corrections.",
         );
         setHasSaveConflict(true);
         return;
       }
 
       setDraft([]);
-      setSetId(null);
       setIsComplete(true);
     } catch {
-      setError("We could not save these flashcards. You can edit the draft and retry.");
+      setError("We could not confirm the save. Your draft is still here. Check the saved set before retrying.");
     } finally {
       setIsSaving(false);
     }
@@ -281,7 +281,7 @@ export default function NewFlashcardsForm() {
 
         <button
           type="submit"
-          disabled={isGenerating}
+          disabled={isGenerating || isSaving}
           className="bg-primary text-primary-foreground hover:bg-primary/80 h-9 rounded-md px-4 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isGenerating ? "Generating..." : "Generate flashcards"}
@@ -296,7 +296,7 @@ export default function NewFlashcardsForm() {
           </div>
 
           {draft.map((row, index) => (
-            <fieldset key={row.id} className="space-y-3 rounded-lg border p-4">
+            <fieldset key={row.id} disabled={isSaving || isGenerating} className="space-y-3 rounded-lg border p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <legend className="px-1 text-sm font-medium">Flashcard {index + 1}</legend>
                 {row.qualityFlags.length > 0 && (
@@ -353,7 +353,7 @@ export default function NewFlashcardsForm() {
 
           <button
             type="submit"
-            disabled={draft.length === 0 || isSaving || hasSaveConflict}
+            disabled={draft.length === 0 || isSaving || isGenerating || hasSaveConflict}
             className="bg-primary text-primary-foreground hover:bg-primary/80 h-9 rounded-md px-4 text-sm font-medium disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSaving ? "Saving..." : "Accept all & save"}
@@ -361,13 +361,30 @@ export default function NewFlashcardsForm() {
         </form>
       )}
 
-      {isComplete && (
+      {setId && requestId && !isComplete && !isSaving && (
+        <p className="mt-4 text-sm">
+          <a
+            className="text-primary hover:underline"
+            href={`/dashboard/sets/${setId}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Check saved set
+          </a>{" "}
+          <span className="text-muted-foreground">(opens in a new tab; your draft stays here)</span>
+        </p>
+      )}
+
+      {isComplete && setId && (
         <section className="mt-10 rounded-xl border p-6" aria-labelledby="save-complete-heading">
           <p className="text-primary text-sm font-medium">Saved</p>
           <h2 id="save-complete-heading" className="mt-2 text-lg font-medium">
             Your flashcards are ready.
           </h2>
           <div className="mt-5 flex gap-4 text-sm font-medium">
+            <a className="text-primary hover:underline" href={`/dashboard/sets/${setId}`}>
+              Open saved set
+            </a>
             <a className="text-primary hover:underline" href="/dashboard">
               Go to dashboard
             </a>

@@ -187,13 +187,13 @@ No migration, new secrets, or feature flag is needed. Release through the existi
 #### Automated
 
 - [x] 1.1 Vitest tests verify validation, normalization, API responses, and update/delete results. — 3e6acb2
-- [ ] 1.2 SQL tests verify owner operations and prevent updates or deletion of another user's card.
+- [x] 1.2 SQL tests verify owner operations and prevent updates or deletion of another user's card.
 
 ### Phase 2: Editor and Navigation
 
 #### Automated
 
-- [x] 2.1 Read and view-state tests distinguish empty sets, unavailable sets, and service failures, and verify stable ordering.
+- [x] 2.1 Read and view-state tests distinguish empty sets, unavailable sets, and service failures, and verify stable ordering. — abed928
 
 #### Manual
 
@@ -204,9 +204,9 @@ No migration, new secrets, or feature flag is needed. Release through the existi
 
 #### Automated
 
-- [ ] 3.1 Regression tests verify that retrying the initial save after editing or deletion neither restores cards nor falsely confirms the draft.
-- [ ] 3.2 A Playwright test verifies navigation, persistent editing, cancellation, and deletion of the last card.
-- [ ] 3.3 `npx supabase test db` and `npm run verify` pass.
+- [x] 3.1 Regression tests verify that retrying the initial save after editing or deletion neither restores cards nor falsely confirms the draft.
+- [x] 3.2 A Playwright test verifies navigation, persistent editing, cancellation, and deletion of the last card.
+- [x] 3.3 `npx supabase test db` and `npm run verify` pass.
 
 #### Manual
 

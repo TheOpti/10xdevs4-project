@@ -1,6 +1,6 @@
 begin;
 
-select plan(36);
+select plan(47);
 
 select tests.create_supabase_user('flashcard_owner', 'flashcard-owner@example.com');
 select tests.create_supabase_user('flashcard_intruder', 'flashcard-intruder@example.com');
@@ -228,6 +228,71 @@ select results_eq(
   $$select count(*) from public.flashcards where question = 'Reviewed question'$$,
   array[0::bigint],
   'Deleting a set cascades to its cards'
+);
+
+select lives_ok(
+  $$select public.create_flashcard_set_with_source('Replay set', 'Replay private source')$$,
+  'Owner creates a separate set for editing and deletion replay'
+);
+
+select results_eq(
+  $$select count(*) from public.save_reviewed_flashcards((select id from public.flashcard_sets where title = 'Replay set'), 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', '[{"question":"Original replay question","answer":"Original replay answer"}]'::jsonb)$$,
+  array[1::bigint],
+  'Owner saves the original replay card'
+);
+
+select results_eq(
+  $$update public.flashcards set answer = 'Edited replay answer' where set_id = (select id from public.flashcard_sets where title = 'Replay set') returning 1$$,
+  array[1],
+  'Owner edits the saved replay card'
+);
+
+select results_eq(
+  $$select answer from public.save_reviewed_flashcards((select id from public.flashcard_sets where title = 'Replay set'), 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', '[{"question":"Original replay question","answer":"Original replay answer"}]'::jsonb)$$,
+  array['Edited replay answer'::text],
+  'Retry returns the edited card instead of overwriting it with the old draft'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcards where set_id = (select id from public.flashcard_sets where title = 'Replay set')$$,
+  array[1::bigint],
+  'Retry after editing creates no duplicate cards'
+);
+
+select results_eq(
+  $$delete from public.flashcards where set_id = (select id from public.flashcard_sets where title = 'Replay set') returning 1$$,
+  array[1],
+  'Owner deletes the last saved card'
+);
+
+select results_eq(
+  $$select count(*) from public.save_reviewed_flashcards((select id from public.flashcard_sets where title = 'Replay set'), 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee', '[{"question":"Original replay question","answer":"Original replay answer"}]'::jsonb)$$,
+  array[0::bigint],
+  'Retry after deletion returns an empty batch'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcards where set_id = (select id from public.flashcard_sets where title = 'Replay set')$$,
+  array[0::bigint],
+  'Retry does not restore deleted cards'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcard_sets where title = 'Replay set'$$,
+  array[1::bigint],
+  'Deleting the last card preserves the empty set'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcard_sources where source_text = 'Replay private source'$$,
+  array[1::bigint],
+  'Deleting the last card preserves its private source'
+);
+
+select results_eq(
+  $$select count(*) from public.flashcard_save_operations where request_id = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee'$$,
+  array[1::bigint],
+  'Deleting the last card preserves the durable save operation'
 );
 
 select * from finish();

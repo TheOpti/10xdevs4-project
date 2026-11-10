@@ -28,3 +28,9 @@ export function cardBatchesMatch(first: ReviewSaveCard[], second: ReviewSaveCard
     (card, index) => card.question === sortedSecond[index]?.question && card.answer === sortedSecond[index]?.answer,
   );
 }
+
+export function reconcileSavedDraft(saved: ReviewSaveCard[], submitted: ReviewSaveCard[], draft: ReviewSaveCard[]) {
+  if (!cardBatchesMatch(saved, submitted)) return "saved-data-changed";
+  if (!cardBatchesMatch(draft, submitted)) return "draft-changed";
+  return "confirmed";
+}
