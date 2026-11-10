@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { loadSetListView, loadSetView } from "./flashcard-views";
 
 const id = "123e4567-e89b-42d3-a456-426614174000";
-const set = { id, title: "Empty set", createdAt: "2026-11-08", cards: [] };
+const set = { id, title: "Empty set", createdAt: "2026-11-08", tags: [], cards: [] };
 function repository(result: unknown) {
   return {
     getSetWithCards: vi.fn().mockResolvedValue(result),

@@ -1,7 +1,8 @@
 import { defineMiddleware } from "astro:middleware";
 import { createClient } from "@/lib/supabase";
 
-const PROTECTED_ROUTES = ["/dashboard", "/api/flashcards/cards/"];
+const PROTECTED_API_ROUTES = ["/api/flashcards/cards/", "/api/flashcards/sets/"];
+const PROTECTED_ROUTES = ["/dashboard", ...PROTECTED_API_ROUTES];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const supabase = createClient(context.request.headers, context.cookies);
@@ -17,7 +18,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   if (PROTECTED_ROUTES.some((route) => context.url.pathname.startsWith(route))) {
     if (!context.locals.user) {
-      if (context.url.pathname.startsWith("/api/flashcards/cards/")) {
+      if (PROTECTED_API_ROUTES.some((route) => context.url.pathname.startsWith(route))) {
         return Response.json(
           { error: supabase ? "Authentication required" : "Service unavailable" },
           { status: supabase ? 401 : 503 },

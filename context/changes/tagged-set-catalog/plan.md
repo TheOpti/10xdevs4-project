@@ -153,8 +153,8 @@ For application rollback, retain the tags column and its data. No new credential
 
 #### Automated
 
-- [ ] 1.1 Migration and SQL tests verify defaults, bounds, owner updates, and isolation from other users and anonymous callers.
-- [ ] 1.2 Unit and API tests verify normalization, deduplication, limits, replacement semantics, response shapes, and error handling.
+- [x] 1.1 Migration and SQL tests verify defaults, bounds, owner updates, and isolation from other users and anonymous callers.
+- [x] 1.2 Unit and API tests verify normalization, deduplication, limits, replacement semantics, response shapes, and error handling.
 
 ### Phase 2: Tag Editing and Catalog Filtering
 

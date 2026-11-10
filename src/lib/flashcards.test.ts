@@ -116,6 +116,7 @@ describe("createFlashcardRepository", () => {
       data: {
         id: "set-id",
         title: "Biology",
+        tags: ["biology"],
         created_at: "2026-09-24T12:00:00.000Z",
         flashcards: [
           {
@@ -139,6 +140,7 @@ describe("createFlashcardRepository", () => {
       data: {
         id: "set-id",
         title: "Biology",
+        tags: ["biology"],
         createdAt: "2026-09-24T12:00:00.000Z",
         cards: [
           {
@@ -151,7 +153,7 @@ describe("createFlashcardRepository", () => {
       },
     });
     expect(from).toHaveBeenCalledWith("flashcard_sets");
-    expect(select).toHaveBeenCalledWith("id, title, created_at, flashcards(id, question, answer, created_at)");
+    expect(select).toHaveBeenCalledWith("id, title, created_at, tags, flashcards(id, question, answer, created_at)");
   });
 });
 
@@ -199,6 +201,56 @@ describe("card mutations", () => {
   });
 });
 
+describe("set tag mutations", () => {
+  const setId = "123e4567-e89b-42d3-a456-426614174000";
+  function setup(data: unknown, error: unknown = null) {
+    const query = {
+      update: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      select: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockReturnThis(),
+      overrideTypes: vi.fn().mockResolvedValue({ data, error }),
+    };
+    const from = vi.fn().mockReturnValue(query);
+    return { repository: createRepository({ from }), query, from };
+  }
+
+  it("replaces only tags for the addressed set and returns the persisted values", async () => {
+    const { repository, query, from } = setup({ tags: ["confirmed"] });
+    await expect(repository.updateSetTags(setId, [" React ", "react"])).resolves.toEqual({
+      ok: true,
+      data: ["confirmed"],
+    });
+    expect(from).toHaveBeenCalledExactlyOnceWith("flashcard_sets");
+    expect(query.update).toHaveBeenCalledExactlyOnceWith({ tags: ["react"] });
+    expect(query.eq).toHaveBeenCalledExactlyOnceWith("id", setId);
+    expect(query.select).toHaveBeenCalledExactlyOnceWith("tags");
+  });
+
+  it("supports clearing and retrying the same replacement", async () => {
+    const { repository, query } = setup({ tags: [] });
+    for (let attempt = 0; attempt < 2; attempt++) {
+      await expect(repository.updateSetTags(setId, [])).resolves.toEqual({ ok: true, data: [] });
+    }
+    expect(query.update.mock.calls).toEqual([[{ tags: [] }], [{ tags: [] }]]);
+  });
+
+  it("rejects invalid input before making a query", async () => {
+    const { repository, from } = setup(null);
+    await expect(repository.updateSetTags("bad-id", [])).resolves.toEqual({ ok: false, error: "invalid-input" });
+    await expect(repository.updateSetTags(setId, [" "])).resolves.toEqual({ ok: false, error: "invalid-input" });
+    expect(from).not.toHaveBeenCalled();
+  });
+
+  it("distinguishes missing or hidden sets from database failures", async () => {
+    await expect(setup(null).repository.updateSetTags(setId, [])).resolves.toEqual({ ok: false, error: "not-found" });
+    await expect(setup(null, { message: "private" }).repository.updateSetTags(setId, [])).resolves.toEqual({
+      ok: false,
+      error: "request-failed",
+    });
+  });
+});
+
 describe("set reads", () => {
   function setup(data: unknown, error: unknown = null) {
     const query = {
@@ -212,16 +264,18 @@ describe("set reads", () => {
   }
 
   it("orders sets newest first with an ID tie-breaker and includes empty sets", async () => {
-    const { repository, query } = setup([{ id: "empty-set", title: "Empty", created_at: "2026-11-08" }]);
+    const { repository, query } = setup([
+      { id: "empty-set", title: "Empty", created_at: "2026-11-08", tags: ["empty"] },
+    ]);
     await expect(repository.listSets()).resolves.toEqual({
       ok: true,
-      data: [{ id: "empty-set", title: "Empty", createdAt: "2026-11-08" }],
+      data: [{ id: "empty-set", title: "Empty", createdAt: "2026-11-08", tags: ["empty"] }],
     });
     expect(query.order.mock.calls).toEqual([
       ["created_at", { ascending: false }],
       ["id", { ascending: true }],
     ]);
-    expect(query.select).toHaveBeenCalledWith("id, title, created_at");
+    expect(query.select).toHaveBeenCalledWith("id, title, created_at, tags");
   });
 
   it("sorts cards by creation time then ID, regardless of text changes", async () => {
@@ -229,6 +283,7 @@ describe("set reads", () => {
     const data = {
       id: "set",
       title: "Title",
+      tags: [],
       created_at: "2026-11-08",
       flashcards: [
         row("c", "2026-11-08T12:00:00Z"),
@@ -246,10 +301,10 @@ describe("set reads", () => {
   });
 
   it("distinguishes an empty set, an invisible set, and a database error", async () => {
-    const empty = setup({ id: "set", title: "Empty", created_at: "2026-11-08", flashcards: null });
+    const empty = setup({ id: "set", title: "Empty", created_at: "2026-11-08", tags: [], flashcards: null });
     await expect(empty.repository.getSetWithCards("set")).resolves.toEqual({
       ok: true,
-      data: { id: "set", title: "Empty", createdAt: "2026-11-08", cards: [] },
+      data: { id: "set", title: "Empty", createdAt: "2026-11-08", tags: [], cards: [] },
     });
     await expect(setup(null).repository.getSetWithCards("missing")).resolves.toEqual({ ok: false, error: "not-found" });
     const failed = setup(null, { message: "private error" }).repository;

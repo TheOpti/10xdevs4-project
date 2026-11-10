@@ -1,10 +1,13 @@
 import type { AstroCookies } from "astro";
 import { createClient } from "@/lib/supabase";
+import { toTags } from "@/lib/flashcard-tags";
+import { isUuid } from "@/lib/flashcard-validation";
 
 export interface FlashcardSetSummary {
   id: string;
   title: string;
   createdAt: string;
+  tags: string[];
 }
 
 export interface Flashcard {
@@ -52,6 +55,7 @@ export interface FlashcardRepository {
   createSet(input: CreateFlashcardSetInput): Promise<FlashcardRepositoryResult<CreatedFlashcardSet>>;
   saveCards(input: SaveFlashcardsInput): Promise<FlashcardRepositoryResult<SavedFlashcards>>;
   listSets(): Promise<FlashcardRepositoryResult<FlashcardSetSummary[]>>;
+  updateSetTags(setId: string, tags: string[]): Promise<FlashcardRepositoryResult<string[]>>;
   getSetWithCards(setId: string): Promise<FlashcardRepositoryResult<FlashcardSetWithCards>>;
   addCard(setId: string, input: FlashcardInput): Promise<FlashcardRepositoryResult<Flashcard>>;
   updateCard(cardId: string, input: FlashcardInput): Promise<FlashcardRepositoryResult<Flashcard>>;
@@ -63,6 +67,7 @@ interface FlashcardSetRow {
   id: string;
   title: string;
   created_at: string;
+  tags: string[];
 }
 
 interface FlashcardRow {
@@ -89,7 +94,7 @@ function isNonEmpty(value: string) {
 }
 
 function toSetSummary(row: FlashcardSetRow): FlashcardSetSummary {
-  return { id: row.id, title: row.title, createdAt: row.created_at };
+  return { id: row.id, title: row.title, createdAt: row.created_at, tags: row.tags };
 }
 
 function toFlashcard(row: FlashcardRow): Flashcard {
@@ -157,7 +162,7 @@ export function createFlashcardRepository(requestHeaders: Headers, cookies: Astr
     async listSets() {
       const { data, error } = await supabase
         .from("flashcard_sets")
-        .select("id, title, created_at")
+        .select("id, title, created_at, tags")
         .order("created_at", { ascending: false })
         .order("id", { ascending: true })
         .overrideTypes<FlashcardSetRow[], { merge: false }>();
@@ -176,7 +181,7 @@ export function createFlashcardRepository(requestHeaders: Headers, cookies: Astr
 
       const { data, error } = await supabase
         .from("flashcard_sets")
-        .select("id, title, created_at, flashcards(id, question, answer, created_at)")
+        .select("id, title, created_at, tags, flashcards(id, question, answer, created_at)")
         .eq("id", setId)
         .maybeSingle()
         .overrideTypes<FlashcardSetWithCardsRow | null, { merge: false }>();
@@ -197,6 +202,23 @@ export function createFlashcardRepository(requestHeaders: Headers, cookies: Astr
             .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt) || a.id.localeCompare(b.id)),
         },
       };
+    },
+
+    async updateSetTags(setId, input) {
+      const tags = toTags(input);
+      if (!isUuid(setId) || !tags) return invalidInput();
+
+      const { data, error } = await supabase
+        .from("flashcard_sets")
+        .update({ tags })
+        .eq("id", setId)
+        .select("tags")
+        .maybeSingle()
+        .overrideTypes<{ tags: string[] } | null, { merge: false }>();
+
+      if (error) return requestFailed();
+      if (!data) return notFound();
+      return { ok: true, data: data.tags };
     },
 
     async addCard(setId, input) {
