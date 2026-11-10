@@ -145,4 +145,3 @@ describe("tag editor state", () => {
     expect(tagsFromResponse({ tags: Array.from({ length: 11 }, (_, i) => `tag-${i}`) })).toBeNull();
   });
 });
-

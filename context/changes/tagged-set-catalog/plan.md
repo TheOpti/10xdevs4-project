@@ -160,20 +160,20 @@ For application rollback, retain the tags column and its data. No new credential
 
 #### Automated
 
-- [x] 2.1 Catalog tests verify single-tag and untagged filtering, owner-derived choices, URL handling, stable ordering, and distinct empty/error states.
-- [x] 2.2 Editor tests verify save, cancellation, pending controls, normalized server responses, and draft retention on failure.
+- [x] 2.1 Catalog tests verify single-tag and untagged filtering, owner-derived choices, URL handling, stable ordering, and distinct empty/error states. — eb82ac5
+- [x] 2.2 Editor tests verify save, cancellation, pending controls, normalized server responses, and draft retention on failure. — eb82ac5
 
 #### Manual
 
-- [x] 2.3 Tag editing and filters work with a keyboard and on a narrow screen without disrupting card drafts.
+- [x] 2.3 Tag editing and filters work with a keyboard and on a narrow screen without disrupting card drafts. — eb82ac5
 
 ### Phase 3: Integration and Verification
 
 #### Automated
 
-- [ ] 3.1 Playwright verifies tag persistence, filtering, navigation, empty-set retention, and failed-save draft retention.
-- [ ] 3.2 `npx supabase test db`, catalog and saved-card-editing Playwright tests, and `npm run verify` pass.
+- [x] 3.1 Playwright verifies tag persistence, filtering, navigation, empty-set retention, and failed-save draft retention.
+- [x] 3.2 `npx supabase test db`, catalog and saved-card-editing Playwright tests, and `npm run verify` pass.
 
 #### Manual
 
-- [ ] 3.3 Two tabs demonstrate last-successful-write-wins behavior; an obsolete tag URL shows a recoverable no-results state.
+- [x] 3.3 Two tabs demonstrate last-successful-write-wins behavior; an obsolete tag URL shows a recoverable no-results state.

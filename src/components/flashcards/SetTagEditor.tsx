@@ -139,6 +139,7 @@ export default function SetTagEditor({ setId, initialTags }: { setId: string; in
             type="button"
             variant="outline"
             disabled={pending}
+            aria-label="Cancel tag changes"
             onClick={() => {
               dispatch({ type: "cancel" });
             }}
