@@ -50,6 +50,17 @@ describe("set page read states", () => {
 });
 
 describe("catalog filter parsing and url formatting", () => {
+  it.each(["?tag=%ZZ", "?tag=%FF", "?tag=%", "?tag=%C4", "?untagged=%FF"])(
+    "resets malformed query encoding %s to all sets",
+    (query) => {
+      expect(parseCatalogFilter(query)).toEqual({ type: "all" });
+    },
+  );
+
+  it.each(["100%", "%ZZ", "język polski", "c++", "�"])("preserves valid encoded label %s", (tag) => {
+    expect(parseCatalogFilter(`?tag=${encodeURIComponent(tag)}`)).toEqual({ type: "tag", tag: tag.toLowerCase() });
+  });
+
   it("parses valid tag filter and normalizes case and whitespace", () => {
     expect(parseCatalogFilter("?tag=biology")).toEqual({ type: "tag", tag: "biology" });
     expect(parseCatalogFilter("?tag=%20%20Biology%20%20")).toEqual({ type: "tag", tag: "biology" });

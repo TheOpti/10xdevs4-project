@@ -16,6 +16,11 @@ export default function SetTagEditor({ setId, initialTags }: { setId: string; in
 
   async function save() {
     if (requestPending.current || pending || missing) return;
+    if (input.trim().length > 0) {
+      dispatch({ type: "failed", message: "Use Add tag before saving, or clear the tag name." });
+      inputRef.current?.focus();
+      return;
+    }
     requestPending.current = true;
     dispatch({ type: "pending" });
     try {

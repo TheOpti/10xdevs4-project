@@ -18,8 +18,24 @@ export type SetListView = SetListReadyView | { status: "unavailable" };
 
 export function parseCatalogFilter(input: URLSearchParams | string | null | undefined): CatalogFilter {
   if (!input) return { type: "all" };
-  const params =
-    typeof input === "string" ? new URLSearchParams(input.startsWith("?") ? input.slice(1) : input) : input;
+  let params: URLSearchParams;
+  if (typeof input === "string") {
+    params = new URLSearchParams();
+    try {
+      // Decode strictly: URLSearchParams alone silently repairs malformed encodings.
+      for (const part of input.replace(/^\?/, "").split("&")) {
+        if (!part) continue;
+        const separator = part.indexOf("=");
+        const key = separator < 0 ? part : part.slice(0, separator);
+        const value = separator < 0 ? "" : part.slice(separator + 1);
+        params.append(decodeURIComponent(key.replace(/\+/g, " ")), decodeURIComponent(value.replace(/\+/g, " ")));
+      }
+    } catch {
+      return { type: "all" };
+    }
+  } else {
+    params = input;
+  }
 
   const tagValues = params.getAll("tag");
   const untaggedValues = params.getAll("untagged");

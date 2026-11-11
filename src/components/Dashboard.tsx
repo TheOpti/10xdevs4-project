@@ -39,16 +39,6 @@ export default function Dashboard({ email, view }: { email?: string; view: SetLi
             Retry loading collections
           </a>
         </div>
-      ) : view.totalSetsCount === 0 ? (
-        <Card>
-          <CardContent className="space-y-3">
-            <h2 className="text-lg font-medium">No sets yet</h2>
-            <p className="text-muted-foreground">Create your first set from source text.</p>
-            <a href="/dashboard/new" className="text-primary underline">
-              Create a set
-            </a>
-          </CardContent>
-        </Card>
       ) : (
         <div className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-4">
@@ -84,7 +74,17 @@ export default function Dashboard({ email, view }: { email?: string; view: SetLi
             )}
           </div>
 
-          {view.sets.length === 0 ? (
+          {view.totalSetsCount === 0 && view.filter.type === "all" ? (
+            <Card>
+              <CardContent className="space-y-3">
+                <h2 className="text-lg font-medium">No sets yet</h2>
+                <p className="text-muted-foreground">Create your first set from source text.</p>
+                <a href="/dashboard/new" className="text-primary underline">
+                  Create a set
+                </a>
+              </CardContent>
+            </Card>
+          ) : view.sets.length === 0 ? (
             <Card>
               <CardContent className="space-y-3 py-6">
                 <h2 className="text-lg font-medium">No matching sets</h2>

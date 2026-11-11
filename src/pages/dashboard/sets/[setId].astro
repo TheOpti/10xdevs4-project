@@ -6,7 +6,7 @@ import SetTagEditor from "@/components/flashcards/SetTagEditor";
 import { createFlashcardRepository } from "@/lib/flashcards";
 import { formatCatalogHref, loadSetView, parseCatalogFilter } from "@/lib/flashcard-views";
 
-const filter = parseCatalogFilter(Astro.url.searchParams);
+const filter = parseCatalogFilter(Astro.url.search);
 const backHref = formatCatalogHref(filter);
 
 const view = await loadSetView(createFlashcardRepository(Astro.request.headers, Astro.cookies), Astro.params.setId);

@@ -2,6 +2,108 @@ import { expect, test } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 import { createCatalogFixtureCollection, createFlashcardFixture } from "./flashcard-fixture";
 
+test("keeps unadded tag input and card drafts during keyboard tag editing on a narrow screen", async ({
+  page,
+}, testInfo) => {
+  const fixture = await createFlashcardFixture();
+  try {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto(`/dashboard/sets/${fixture.setId}`);
+    await expect(page.locator("astro-island[ssr]")).toHaveCount(0);
+    await page.getByRole("button", { name: "Edit", exact: true }).click();
+    await page.getByLabel("Answer", { exact: true }).fill("Keep this card draft");
+    const input = page.getByLabel("Tag name");
+    await input.fill("keyboard tag");
+    let saves = 0;
+    page.on("request", (request) => {
+      if (request.method() === "PATCH" && request.url().endsWith(`/sets/${fixture.setId}/tags`)) saves++;
+    });
+    await page.getByRole("button", { name: "Save tags", exact: true }).click();
+    await expect(page.getByText("Use Add tag before saving, or clear the tag name.")).toBeVisible();
+    await expect(input).toHaveValue("keyboard tag");
+    await expect(input).toBeFocused();
+    expect(saves).toBe(0);
+    await page.keyboard.press("Enter");
+    await input.fill("second tag");
+    await page.getByRole("button", { name: "Save tags", exact: true }).click();
+    await expect(input).toHaveValue("second tag");
+    expect(saves).toBe(0);
+    await page.keyboard.press("Enter");
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("button", { name: "Save tags", exact: true })).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page.getByText("Tags saved.", { exact: true })).toBeVisible();
+    await expect(page.getByLabel("Answer", { exact: true })).toHaveValue("Keep this card draft");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath("narrow-tag-editor.png"), fullPage: true });
+    await page.getByRole("link", { name: "Back to collections", exact: true }).click();
+    await expect(page.locator("astro-island[ssr]")).toHaveCount(0);
+    const filter = page.getByLabel("Filter sets by tag");
+    await filter.focus();
+    await page.keyboard.press("Home");
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL("/dashboard?untagged=1");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath("narrow-filter.png"), fullPage: true });
+  } finally {
+    await fixture.cleanup();
+  }
+});
+
+test("two stale tabs replace tags with the last successful write and recover an obsolete filter", async ({
+  page,
+  context,
+}) => {
+  const fixture = await createFlashcardFixture(false);
+  const second = await context.newPage();
+  const obsoleteTag = `obsolete-${randomUUID().slice(0, 8)}`;
+  try {
+    for (const tab of [page, second]) {
+      await tab.goto(`/dashboard/sets/${fixture.setId}`);
+      await expect(tab.locator("astro-island[ssr]")).toHaveCount(0);
+    }
+    await page.getByLabel("Tag name").fill(obsoleteTag);
+    await page.getByRole("button", { name: "Add tag", exact: true }).click();
+    await page.getByRole("button", { name: "Save tags", exact: true }).click();
+    await expect(page.getByText("Tags saved.", { exact: true })).toBeVisible();
+    await second.getByLabel("Tag name").fill("last writer");
+    await second.getByRole("button", { name: "Add tag", exact: true }).click();
+    await second.getByRole("button", { name: "Save tags", exact: true }).click();
+    await expect(second.getByText("Tags saved.", { exact: true })).toBeVisible();
+    await page.reload();
+    await expect(page.getByRole("list", { name: "Current tags" })).toHaveText("last writer");
+    await page.goto(`/dashboard?tag=${obsoleteTag}`);
+    await expect(page.getByRole("heading", { name: "No matching sets" })).toBeVisible();
+    await page.getByRole("link", { name: "Clear filter", exact: true }).first().click();
+    await expect(page.getByRole("link", { name: fixture.title, exact: true })).toBeVisible();
+  } finally {
+    await second.close();
+    await fixture.cleanup();
+  }
+});
+
+test("malformed filter encodings reset catalog and detail navigation", async ({ page }) => {
+  const fixture = await createFlashcardFixture(false);
+  try {
+    for (const query of ["?tag=%ZZ", "?tag=%FF"]) {
+      await page.goto(`/dashboard${query}`);
+      await expect(page.getByLabel("Filter sets by tag")).toHaveValue("all");
+      await expect(page.getByRole("link", { name: fixture.title, exact: true })).toHaveAttribute(
+        "href",
+        `/dashboard/sets/${fixture.setId}`,
+      );
+      await page.goto(`/dashboard/sets/${fixture.setId}${query}`);
+      await expect(page.getByRole("link", { name: "Back to collections", exact: true })).toHaveAttribute(
+        "href",
+        "/dashboard",
+      );
+    }
+  } finally {
+    await fixture.cleanup();
+  }
+});
+
 test("filters catalog by tag and untagged, preserves filter in navigation, and updates tags persistently", async ({
   page,
 }) => {
