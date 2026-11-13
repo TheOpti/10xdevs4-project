@@ -3,6 +3,7 @@ import {
   formatCatalogHref,
   formatCatalogQuery,
   formatSetHref,
+  formatReviewHref,
   loadSetListView,
   loadSetView,
   parseCatalogFilter,
@@ -106,6 +107,11 @@ describe("catalog filter parsing and url formatting", () => {
     expect(formatSetHref("123", { type: "all" })).toBe("/dashboard/sets/123");
     expect(formatSetHref("123", { type: "untagged" })).toBe("/dashboard/sets/123?untagged=1");
     expect(formatSetHref("123", { type: "tag", tag: "biology" })).toBe("/dashboard/sets/123?tag=biology");
+    expect(formatReviewHref(id, { type: "all" })).toBe(`/dashboard/sets/${id}/review`);
+    expect(formatReviewHref(id, { type: "untagged" })).toBe(`/dashboard/sets/${id}/review?untagged=1`);
+    expect(formatReviewHref(id, { type: "tag", tag: "c++ / c#" })).toBe(
+      `/dashboard/sets/${id}/review?tag=c%2B%2B%20%2F%20c%23`,
+    );
   });
 });
 

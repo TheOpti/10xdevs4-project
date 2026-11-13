@@ -227,17 +227,17 @@ If application rollout must be reverted, deploy the prior application while reta
 
 #### Automated
 
-- [x] 1.1 The additive migration applies on local Supabase and `npx supabase test db` passes scheduling, grants, RLS, replay, and existing persistence regressions.
-- [x] 1.2 `node scripts/test-review-concurrency.mjs` passes the local concurrent-rating and request-key collision scenarios.
-- [x] 1.3 `npm run verify` passes after the database contract changes.
+- [x] 1.1 The additive migration applies on local Supabase and `npx supabase test db` passes scheduling, grants, RLS, replay, and existing persistence regressions. — bb378f9
+- [x] 1.2 `node scripts/test-review-concurrency.mjs` passes the local concurrent-rating and request-key collision scenarios. — bb378f9
+- [x] 1.3 `npm run verify` passes after the database contract changes. — bb378f9
 
 ### Phase 2: Review API and data loading
 
 #### Automated
 
-- [ ] 2.1 Review repository and view tests pass for RPC mapping, response validation, due ordering, empty versus unavailable states, and preserved catalog filters.
-- [ ] 2.2 Rating endpoint and middleware tests pass for valid ratings/replays, invalid payloads, protected paths, 404/409 mapping, and sanitized failures.
-- [ ] 2.3 `npm run verify` passes after the review API and loader changes.
+- [x] 2.1 Review repository and view tests pass for RPC mapping, response validation, due ordering, empty versus unavailable states, and preserved catalog filters.
+- [x] 2.2 Rating endpoint and middleware tests pass for valid ratings/replays, invalid payloads, protected paths, 404/409 mapping, and sanitized failures.
+- [x] 2.3 `npm run verify` passes after the review API and loader changes.
 
 ### Phase 3: Study screen and verification
 

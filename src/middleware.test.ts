@@ -24,6 +24,8 @@ describe("route protection", () => {
     [true, "/api/flashcards/cards/card-id"],
     [false, "/api/flashcards/sets/set-id/tags"],
     [true, "/api/flashcards/sets/set-id/tags"],
+    [false, "/api/flashcards/cards/card-id/review"],
+    [true, "/api/flashcards/cards/card-id/review"],
   ] as const)("blocks private API requests with JSON (configured: %s, path: %s)", async (configured, path) => {
     vi.mocked(createClient).mockReturnValue(
       configured ? ({ auth: { getUser: vi.fn().mockResolvedValue({ data: { user: null } }) } } as never) : null,
@@ -31,33 +33,39 @@ describe("route protection", () => {
     const next = vi.fn();
     const response = (await onRequest(context(path), next)) as Response;
     expect(response.status).toBe(configured ? 401 : 503);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
     await expect(response.json()).resolves.toEqual({
       error: configured ? "Authentication required" : "Service unavailable",
     });
     expect(next).not.toHaveBeenCalled();
   });
 
-  it.each(["/api/flashcards/cards/card-id", "/api/flashcards/sets/set-id/tags"])(
-    "allows authenticated requests to %s and supplies the user",
+  it.each([
+    "/api/flashcards/cards/card-id",
+    "/api/flashcards/sets/set-id/tags",
+    "/api/flashcards/cards/card-id/review",
+    "/dashboard/sets/set-id/review",
+  ])("allows authenticated requests to %s and supplies the user", async (path) => {
+    const user = { id: "owner" };
+    vi.mocked(createClient).mockReturnValue({
+      auth: { getUser: vi.fn().mockResolvedValue({ data: { user } }) },
+    } as never);
+    const ctx = context(path);
+    const next = vi.fn().mockResolvedValue(new Response("ok"));
+    await onRequest(ctx, next);
+    expect(ctx.locals.user).toEqual(user);
+    expect(next).toHaveBeenCalledOnce();
+  });
+
+  it.each(["/dashboard/sets/set-id", "/dashboard/sets/set-id/review"])(
+    "preserves page redirects for %s",
     async (path) => {
-      const user = { id: "owner" };
-      vi.mocked(createClient).mockReturnValue({
-        auth: { getUser: vi.fn().mockResolvedValue({ data: { user } }) },
-      } as never);
+      vi.mocked(createClient).mockReturnValue(null);
       const ctx = context(path);
-      const next = vi.fn().mockResolvedValue(new Response("ok"));
-      await onRequest(ctx, next);
-      expect(ctx.locals.user).toEqual(user);
-      expect(next).toHaveBeenCalledOnce();
+      await onRequest(ctx, vi.fn());
+      expect(ctx.redirect).toHaveBeenCalledWith("/auth/signin");
     },
   );
-
-  it("preserves page redirects", async () => {
-    vi.mocked(createClient).mockReturnValue(null);
-    const ctx = context("/dashboard/sets/set-id");
-    await onRequest(ctx, vi.fn());
-    expect(ctx.redirect).toHaveBeenCalledWith("/auth/signin");
-  });
 
   it.each(["/", "/api/flashcards/save", "/api/flashcards/generate", "/api/auth/signin"])(
     "leaves %s behavior to its handler",

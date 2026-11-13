@@ -21,7 +21,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
       if (PROTECTED_API_ROUTES.some((route) => context.url.pathname.startsWith(route))) {
         return Response.json(
           { error: supabase ? "Authentication required" : "Service unavailable" },
-          { status: supabase ? 401 : 503 },
+          { status: supabase ? 401 : 503, headers: { "Cache-Control": "no-store" } },
         );
       }
       return context.redirect("/auth/signin");

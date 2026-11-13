@@ -85,6 +85,10 @@ export function formatSetHref(setId: string, filter: CatalogFilter): string {
   return `/dashboard/sets/${setId}${formatCatalogQuery(filter)}`;
 }
 
+export function formatReviewHref(setId: string, filter: CatalogFilter): string {
+  return `/dashboard/sets/${setId}/review${formatCatalogQuery(filter)}`;
+}
+
 export async function loadSetView(
   repository: Pick<FlashcardRepository, "getSetWithCards"> | null,
   id: string | undefined,
