@@ -46,7 +46,7 @@ Samodzielnie ucząca się osoba potrzebuje szybko zamieniać własne materiały 
 | S-02 | proposal-review-and-save      | zaakceptować komplet propozycji albo edytować i usunąć propozycje przed zapisem zestawu | S-01          | US-01, FR-003         | in-progress |
 | S-03 | saved-card-editing            | edytować i usuwać wygenerowane fiszki w zapisanym zestawie                              | S-02          | FR-004                | done        |
 | S-04 | tagged-set-catalog            | przeglądać zapisane zestawy i filtrować je według tagów                                 | S-02          | FR-005                | in-progress |
-| S-05 | fixed-interval-review         | rozpocząć sesję nauki zapisanego zestawu ze stałymi odstępami                           | S-02          | US-01, FR-007         | planning    |
+| S-05 | fixed-interval-review         | rozpocząć sesję nauki zapisanego zestawu ze stałymi odstępami                           | S-02          | US-01, FR-007         | in-progress |
 
 ## Streams
 
@@ -146,7 +146,7 @@ What's already in place in the codebase as of `2026-09-22` (auto-researched + us
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** It follows saving because review uses accepted cards, while fixed intervals keep the learning workflow bounded by the agreed MVP rule.
-- **Status:** planning
+- **Status:** in-progress
 
 ## Backlog Handoff
 
