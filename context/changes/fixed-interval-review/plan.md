@@ -227,9 +227,9 @@ If application rollout must be reverted, deploy the prior application while reta
 
 #### Automated
 
-- [ ] 1.1 The additive migration applies on local Supabase and `npx supabase test db` passes scheduling, grants, RLS, replay, and existing persistence regressions.
-- [ ] 1.2 `node scripts/test-review-concurrency.mjs` passes the local concurrent-rating and request-key collision scenarios.
-- [ ] 1.3 `npm run verify` passes after the database contract changes.
+- [x] 1.1 The additive migration applies on local Supabase and `npx supabase test db` passes scheduling, grants, RLS, replay, and existing persistence regressions.
+- [x] 1.2 `node scripts/test-review-concurrency.mjs` passes the local concurrent-rating and request-key collision scenarios.
+- [x] 1.3 `npm run verify` passes after the database contract changes.
 
 ### Phase 2: Review API and data loading
 
