@@ -138,3 +138,46 @@ export async function createCatalogFixtureCollection(
     throw error;
   }
 }
+
+export interface ReviewFixtureCard {
+  id: string;
+  question: string;
+  answer: string;
+  due_at: string;
+  revision: number;
+}
+
+export async function createReviewFixture(cardCount = 1) {
+  const fixture = await createFlashcardFixture({ withCard: false, titlePrefix: "Review", tags: ["review test"] });
+  const { client, email, password } = getLocalSupabaseClient();
+  try {
+    const { error: authError } = await client.auth.signInWithPassword({ email, password });
+    if (authError) throw new Error("Could not sign in as the E2E owner");
+    if (cardCount > 0) {
+      const { error } = await client.rpc("save_reviewed_flashcards", {
+        set_id: fixture.setId,
+        request_id: randomUUID(),
+        cards: Array.from({ length: cardCount }, (_, index) => ({
+          question: `Review question ${index + 1}`,
+          answer: `Review answer ${index + 1}`,
+        })),
+      });
+      if (error) throw new Error("Could not save review fixture cards");
+    }
+    async function readCards(): Promise<ReviewFixtureCard[]> {
+      const { data, error } = await client
+        .from("flashcards")
+        .select("id, question, answer, due_at, revision")
+        .eq("set_id", fixture.setId)
+        .order("due_at")
+        .order("id")
+        .overrideTypes<ReviewFixtureCard[], { merge: false }>();
+      if (error) throw new Error("Could not read review fixture cards");
+      return data;
+    }
+    return { ...fixture, cards: await readCards(), readCards };
+  } catch (error) {
+    await fixture.cleanup();
+    throw error;
+  }
+}

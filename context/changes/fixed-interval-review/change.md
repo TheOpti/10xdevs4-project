@@ -3,7 +3,7 @@ change_id: fixed-interval-review
 title: Fixed interval review
 status: implementing
 created: 2026-11-12
-updated: 2026-11-13
+updated: 2026-11-14
 archived_at: null
 ---
 

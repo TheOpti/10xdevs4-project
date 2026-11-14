@@ -4,7 +4,8 @@ import AppShell from "@/components/AppShell";
 import SavedFlashcardSet from "@/components/flashcards/SavedFlashcardSet";
 import SetTagEditor from "@/components/flashcards/SetTagEditor";
 import { createFlashcardRepository } from "@/lib/flashcards";
-import { formatCatalogHref, loadSetView, parseCatalogFilter } from "@/lib/flashcard-views";
+import { formatCatalogHref, formatReviewHref, loadSetView, parseCatalogFilter } from "@/lib/flashcard-views";
+import { Button } from "@/components/ui/button";
 
 const filter = parseCatalogFilter(Astro.url.search);
 const backHref = formatCatalogHref(filter);
@@ -21,6 +22,11 @@ if (view.status === "unavailable") Astro.response.status = 503;
     </a>
     {view.status === "ready" ? (
       <div class="space-y-6">
+        {view.set.cards.length > 0 && (
+          <Button asChild>
+            <a href={formatReviewHref(view.set.id, filter)}>Start review</a>
+          </Button>
+        )}
         <SetTagEditor setId={view.set.id} initialTags={view.set.tags} client:load />
         <SavedFlashcardSet title={view.set.title} cards={view.set.cards} client:load />
       </div>

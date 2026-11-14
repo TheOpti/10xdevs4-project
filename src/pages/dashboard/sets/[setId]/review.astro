@@ -1,0 +1,41 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import ReviewSession from "@/components/flashcards/ReviewSession";
+import { Button } from "@/components/ui/button";
+import { createReviewRepository } from "@/lib/flashcard-reviews";
+import { loadReviewView } from "@/lib/review-views";
+import { formatCatalogHref, formatReviewHref, formatSetHref, parseCatalogFilter } from "@/lib/flashcard-views";
+
+Astro.response.headers.set("Cache-Control", "no-store");
+const filter = parseCatalogFilter(Astro.url.search);
+const view = await loadReviewView(
+  createReviewRepository(Astro.request.headers, Astro.cookies),
+  Astro.params.setId,
+  Astro.url.search,
+);
+if (view.status === "not-found") Astro.response.status = 404;
+if (view.status === "unavailable") Astro.response.status = 503;
+---
+
+<Layout title={view.status === "ready" ? `Review ${view.queue.title}` : "Review unavailable"}>
+  {view.status === "ready" ? (
+    <ReviewSession queue={view.queue} backHref={formatSetHref(view.queue.setId, view.filter)} client:load />
+  ) : (
+    <main class="mx-auto max-w-3xl space-y-4 px-4 py-8">
+      <h1 class="text-2xl font-semibold">{view.status === "not-found" ? "Set not found" : "Could not load reviews"}</h1>
+      <p class="text-muted-foreground">
+        {view.status === "not-found"
+          ? "This set is not available to your account."
+          : "Your reviews could not be loaded. Please try again."}
+      </p>
+      {view.status === "unavailable" && Astro.params.setId && (
+        <Button asChild>
+          <a href={formatReviewHref(Astro.params.setId, filter)}>Retry loading reviews</a>
+        </Button>
+      )}
+      <Button variant="outline" asChild>
+        <a href={formatCatalogHref(filter)}>Back to collections</a>
+      </Button>
+    </main>
+  )}
+</Layout>

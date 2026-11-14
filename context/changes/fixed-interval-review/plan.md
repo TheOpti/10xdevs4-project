@@ -235,17 +235,17 @@ If application rollout must be reverted, deploy the prior application while reta
 
 #### Automated
 
-- [x] 2.1 Review repository and view tests pass for RPC mapping, response validation, due ordering, empty versus unavailable states, and preserved catalog filters.
-- [x] 2.2 Rating endpoint and middleware tests pass for valid ratings/replays, invalid payloads, protected paths, 404/409 mapping, and sanitized failures.
-- [x] 2.3 `npm run verify` passes after the review API and loader changes.
+- [x] 2.1 Review repository and view tests pass for RPC mapping, response validation, due ordering, empty versus unavailable states, and preserved catalog filters. — 708d83d
+- [x] 2.2 Rating endpoint and middleware tests pass for valid ratings/replays, invalid payloads, protected paths, 404/409 mapping, and sanitized failures. — 708d83d
+- [x] 2.3 `npm run verify` passes after the review API and loader changes. — 708d83d
 
 ### Phase 3: Study screen and verification
 
 #### Automated
 
-- [ ] 3.1 Session-state tests pass for reveal, pending locks, confirmed advance, exact retries, stale conflicts, missing-card skips, and completion counts.
-- [ ] 3.2 `npx playwright test tests/e2e/fixed-interval-review.spec.ts tests/e2e/saved-card-editing.spec.ts tests/e2e/tagged-set-catalog.spec.ts` passes against local Supabase and production preview.
-- [ ] 3.3 `npm run verify`, `npx supabase test db`, and `node scripts/test-review-concurrency.mjs` pass for the completed feature.
+- [x] 3.1 Session-state tests pass for reveal, pending locks, confirmed advance, exact retries, stale conflicts, missing-card skips, and completion counts.
+- [x] 3.2 `npx playwright test tests/e2e/fixed-interval-review.spec.ts tests/e2e/saved-card-editing.spec.ts tests/e2e/tagged-set-catalog.spec.ts` passes against local Supabase and production preview.
+- [x] 3.3 `npm run verify`, `npx supabase test db`, and `node scripts/test-review-concurrency.mjs` pass for the completed feature.
 
 #### Manual
 
