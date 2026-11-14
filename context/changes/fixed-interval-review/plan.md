@@ -243,9 +243,9 @@ If application rollout must be reverted, deploy the prior application while reta
 
 #### Automated
 
-- [x] 3.1 Session-state tests pass for reveal, pending locks, confirmed advance, exact retries, stale conflicts, missing-card skips, and completion counts.
-- [x] 3.2 `npx playwright test tests/e2e/fixed-interval-review.spec.ts tests/e2e/saved-card-editing.spec.ts tests/e2e/tagged-set-catalog.spec.ts` passes against local Supabase and production preview.
-- [x] 3.3 `npm run verify`, `npx supabase test db`, and `node scripts/test-review-concurrency.mjs` pass for the completed feature.
+- [x] 3.1 Session-state tests pass for reveal, pending locks, confirmed advance, exact retries, stale conflicts, missing-card skips, and completion counts. — e65e3bf
+- [x] 3.2 `npx playwright test tests/e2e/fixed-interval-review.spec.ts tests/e2e/saved-card-editing.spec.ts tests/e2e/tagged-set-catalog.spec.ts` passes against local Supabase and production preview. — e65e3bf
+- [x] 3.3 `npm run verify`, `npx supabase test db`, and `node scripts/test-review-concurrency.mjs` pass for the completed feature. — e65e3bf
 
 #### Manual
 
